@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MySDAInterless</string>
+    <string name="search">Search Programs</string>
+    <string name="list">List of Programs</string>
+    <string name="favorite">Favorited Programs</string>
+    <string name="channel">My Channel</string>
 </resources>

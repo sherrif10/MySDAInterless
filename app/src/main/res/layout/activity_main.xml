@@ -5,7 +5,71 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scaleType = "centerCrop"
-    android:background="@drawable/images/blue_base.jpg"
-    tools:context="org.threeabn.apps.mysdainterless.MainActivity">
+    tools:context="org.threeabn.apps.mysdainterless.MainActivity"
+    android:background="@drawable/bluebase">
 
+    <ImageView
+        android:id="@+id/image_mysdatv_logo"
+        android:layout_width="1080dp"
+        android:layout_height="375dp"
+        android:src="@drawable/mysdatv_logo"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_search"
+        android:layout_width="94dp"
+        android:layout_height="117dp"
+        app:srcCompat="@drawable/search"
+        android:pointerIcon="text"
+        tools:layout_editor_absoluteX="44dp"
+        tools:layout_editor_absoluteY="381dp" />
+
+    <ImageView
+        android:id="@+id/image_favorite"
+        android:layout_width="94dp"
+        android:layout_height="117dp"
+        android:pointerIcon="text"
+        app:srcCompat="@drawable/star"
+        tools:layout_editor_absoluteX="288dp"
+        tools:layout_editor_absoluteY="382dp" />
+
+
+    <ImageView
+        android:id="@+id/image_list"
+        android:layout_width="94dp"
+        android:layout_height="117dp"
+        android:pointerIcon="text"
+        app:srcCompat="@drawable/list"
+        tools:layout_editor_absoluteX="530dp"
+        tools:layout_editor_absoluteY="390dp" />
+
+    <ImageView
+        android:id="@+id/image_threeadn"
+        android:layout_width="94dp"
+        android:layout_height="117dp"
+        android:pointerIcon="text"
+        app:srcCompat="@drawable/threeabn"
+        tools:layout_editor_absoluteX="810dp"
+        tools:layout_editor_absoluteY="390dp" />
+
+    <TextView
+        android:id="@+id/text_interless"
+        android:layout_width="949dp"
+        android:layout_height="103dp"
+        android:inputType="text"
+        android:text="Interless"
+        tools:layout_editor_absoluteX="7dp"
+        tools:layout_editor_absoluteY="287dp"
+        android:background="@null"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="50dp"
+        android:textColor="#FFFFFF"/>
 </android.support.constraint.ConstraintLayout>
