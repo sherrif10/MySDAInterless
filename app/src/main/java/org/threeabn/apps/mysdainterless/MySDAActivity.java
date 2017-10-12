@@ -42,12 +42,14 @@ public class MySDAActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //TODO
-        //DBSession dbSession = new DBSession(this);
+        if(!(this instanceof LoginActivity) || !(this instanceof LoginActivity) || !(this instanceof LoginActivity)) {
+            //TODO
+            //DBSession dbSession = new DBSession(this);
 
-        //dbSession.onCreate(null, null);
+            //dbSession.onCreate(null, null);
 
-        super.onCreate(savedInstanceState);
-        hideSoftKeyboard();
+            super.onCreate(savedInstanceState);
+            hideSoftKeyboard();
+        }
     }
 }

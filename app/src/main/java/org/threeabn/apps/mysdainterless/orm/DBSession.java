@@ -12,6 +12,7 @@ import org.threeabn.apps.mysdainterless.modal.Channel;
 import org.threeabn.apps.mysdainterless.modal.Period;
 import org.threeabn.apps.mysdainterless.modal.Person;
 import org.threeabn.apps.mysdainterless.modal.Program;
+import org.threeabn.apps.mysdainterless.modal.User;
 import org.threeabn.apps.mysdainterless.modal.Video;
 
 import java.sql.SQLException;
@@ -43,6 +44,7 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
             TableUtils.createTable(cs, Period.class);
             TableUtils.createTable(cs, Video.class);
             TableUtils.createTable(cs, Person.class);
+            TableUtils.createTable(cs, User.class);
             TableUtils.createTable(cs, Program.class);
             TableUtils.createTable(cs, Channel.class);
         } catch (SQLException e) {

@@ -51,6 +51,9 @@ public class Person {
 	@DatabaseField(columnName = "address")
 	private String address;
 
+	@DatabaseField(columnName = "category", canBeNull = false)
+	private String category;
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -101,5 +104,17 @@ public class Person {
 
 	public String getDisplayName() {
 		return (StringUtils.isNotBlank(getFirstName()) ? getFirstName() + " " : "") + (StringUtils.isNotBlank(getLastName()) ? getLastName() : "");
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(PersonCategory category) {
+		this.category = category.name();
+	}
+
+	public enum PersonCategory {
+		GUEST, HOST, OTHER
 	}
 }
