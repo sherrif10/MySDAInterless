@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import org.threeabn.apps.mysdainterless.orm.DBSession;
+
 /**
  * Created by k-joseph on 10/10/2017.
  */
@@ -40,6 +42,11 @@ public class MySDAActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //TODO
+        //DBSession dbSession = new DBSession(this);
+
+        //dbSession.onCreate(null, null);
+
         super.onCreate(savedInstanceState);
         hideSoftKeyboard();
     }
