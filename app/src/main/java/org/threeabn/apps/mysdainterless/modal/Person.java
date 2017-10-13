@@ -24,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  */
 @DatabaseTable(tableName = "person")
-public class Person {
+public class Person extends MySDAObject {
 
 	Person() {}
 

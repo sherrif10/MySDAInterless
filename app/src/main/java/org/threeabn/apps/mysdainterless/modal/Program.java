@@ -20,7 +20,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.List;
 
 /**
-	A TV program is basically what it is, a program can have properties such as name, time range (use joda api), description, video, Series, code, episode, hosts/guests and functionalities such as favorite, set alert
+	A TV program is basically what it is, a program can have properties such as name, time range (use joda api???), description, video, Series, code, episode, hosts/guests and functionalities such as favorite, set alert
 */
 @DatabaseTable(tableName = "program")
 public class Program extends MySDAObject {

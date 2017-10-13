@@ -21,18 +21,17 @@
     <TextView
         android:id="@+id/text_interless"
         android:layout_width="949dp"
-        android:layout_height="100dp"
+        android:layout_height="60dp"
         android:inputType="text"
         android:text="Interless"
         android:background="@null"
-        android:layout_gravity="center"
         android:gravity="center"
         android:textSize="30dp"
         android:textColor="#FFFFFF"
         android:layout_alignParentStart="true"
         android:layout_centerHorizontal="true"
         android:layout_alignBottom="@+id/image_mysdatv_logo"
-        android:layout_marginTop="150dp"/>
+        android:layout_marginTop="170dp"/>
 
     <ImageView
         android:id="@+id/image_search"
@@ -42,7 +41,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="20dp"/>
 
     <ImageView
         android:id="@+id/image_favorite"
@@ -52,8 +51,8 @@
         app:srcCompat="@drawable/star"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/image_search"
-        android:layout_marginLeft="62dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginLeft="180dp"
+        android:layout_marginBottom="20dp"/>
 
 
     <ImageView
@@ -64,8 +63,8 @@
         app:srcCompat="@drawable/list"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/image_threeadn"
-        android:layout_marginRight="62dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginRight="180dp"
+        android:layout_marginBottom="20dp"/>
 
     <ImageView
         android:id="@+id/image_threeadn"
@@ -76,7 +75,18 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="20dp"/>
+
+    <ImageView
+        android:id="@+id/imageView_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/image_threeadn"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        app:srcCompat="@drawable/user"
+        android:layout_alignParentRight="true"/>
 
 
 </RelativeLayout>

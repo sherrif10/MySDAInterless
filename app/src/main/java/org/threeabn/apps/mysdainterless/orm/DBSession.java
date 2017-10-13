@@ -22,13 +22,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * TODO Hide behind {@link org.threeabn.apps.mysdainterless.service.MySDAService}
  * Created by k-joseph on 09/10/2017.
  */
 
 public class DBSession extends OrmLiteSqliteOpenHelper  {
     // Fields
 
-    public static final String DB_NAME = "mysda_interless.db";
+    public static final String DB_NAME = ".mysda_interless.db";
     private static final int DB_VERSION = 1;
 
     // Public methods
@@ -82,6 +83,11 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
     public <T> T getById(Class<T> clazz, Object aId) throws SQLException {
         Dao<T, Object> dao = getDao(clazz);
         return dao.queryForId(aId);
+    }
+
+    public <T> List<T> getByField(Class<T> clazz, String fieldName, String fieldValue) throws SQLException {
+        Dao<T, Object> dao = getDao(clazz);
+        return dao.queryForEq(fieldName, fieldValue);
     }
 
     public <T> List<T> query(Class<T> clazz, Map<String, Object> aMap) throws SQLException {

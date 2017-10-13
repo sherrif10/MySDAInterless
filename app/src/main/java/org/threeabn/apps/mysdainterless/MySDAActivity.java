@@ -7,13 +7,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import org.threeabn.apps.mysdainterless.orm.DBSession;
+import org.threeabn.apps.mysdainterless.service.MySDAService;
 
 /**
  * Created by k-joseph on 10/10/2017.
  */
 
 public class MySDAActivity extends Activity {
+
+    MySDAService service;
+
+    MySDAService getService() {
+        if(service == null)
+            return new MySDAService(this);
+        return service;
+    }
     /**
      * Hides the soft keyboard
      */
@@ -35,6 +43,16 @@ public class MySDAActivity extends Activity {
                     startActivity(new Intent(context, ListActivity.class));
                 } else if(R.id.image_threeadn == v.getId()) {
                     startActivity(new Intent(context, MyChannelActivity.class));
+                } else if(R.id.image_threeadn == v.getId()) {
+                    startActivity(new Intent(context, MyChannelActivity.class));
+                } else if(R.id.image_threeadn == v.getId()) {
+                    startActivity(new Intent(context, MyChannelActivity.class));
+                } else if(R.id.imageView_user == v.getId()) {
+                    if(getService() != null && getService().checkIfLoggedIn()) {
+                        startActivity(new Intent(context, UserActivity.class));
+                    } else {
+                        startActivity(new Intent(context, LoginActivity.class));
+                    }
                 }
             }
         });
@@ -42,14 +60,19 @@ public class MySDAActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(!(this instanceof LoginActivity) || !(this instanceof LoginActivity) || !(this instanceof LoginActivity)) {
-            //TODO
-            //DBSession dbSession = new DBSession(this);
+        //show title bar when not on main screen
+        if(!(this instanceof MainActivity)) {
+            setTheme(android.R.style.Theme_DeviceDefault_Light_DarkActionBar);
+        }
+        if(!(this instanceof LoginActivity) || !(this instanceof UserActivity) || !(this instanceof ProgramsActivity)) {
+            //TODO maybe database setup (creation of these tables) should be loaded here and nothing else
 
-            //dbSession.onCreate(null, null);
 
-            super.onCreate(savedInstanceState);
-            hideSoftKeyboard();
+        }
+        super.onCreate(savedInstanceState);
+        hideSoftKeyboard();
+        if(getService() != null) {
+            getService().createDBSchemas();
         }
     }
 }
