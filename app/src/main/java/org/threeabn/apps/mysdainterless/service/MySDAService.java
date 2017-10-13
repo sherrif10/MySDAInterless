@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.j256.ormlite.dao.Dao;
 
+import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.modal.Channel;
 import org.threeabn.apps.mysdainterless.modal.Period;
 import org.threeabn.apps.mysdainterless.modal.Program;
@@ -190,4 +191,17 @@ public class MySDAService {
             return list.get(0);
         return null;
     }
+
+    public User authenticateUser(String username, String password) throws SQLException {
+        password = new PassHashing(password).generateHash();
+        if(StringUtils.isNotBlank(username)) {
+            for (User u : getAllUsers()) {
+                if (username.equals(u.getUsername()) && (StringUtils.isBlank(password) ? StringUtils.isBlank(u.getPassword()) : password.equals(u.getPassword()))) {
+                    return u;
+                }
+            }
+        }
+        return null;
+    }
+
 }

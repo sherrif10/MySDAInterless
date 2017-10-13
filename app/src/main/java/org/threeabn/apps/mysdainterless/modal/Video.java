@@ -33,7 +33,7 @@ public class Video extends MySDAObject {
 	 * Time where last play ended in micro seconds within the video, TODO is meant to support resume play
 	 */
 	@DatabaseField(columnName = "micro_secs", dataType = DataType.LONG)
-	private Long microSecs;
+	private long microSecs;
 
 	//TODO add video quality property such as High, Mid or low
 
@@ -58,7 +58,7 @@ public class Video extends MySDAObject {
 		return microSecs;
 	}
 
-	public void setMicroSecsSecs(Long mSecs) {
+	public void setMicroSecsSecs(long mSecs) {
 		this.microSecs = mSecs;
 	}
 }

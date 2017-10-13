@@ -3,26 +3,27 @@ package org.threeabn.apps.mysdainterless.modal;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import org.threeabn.apps.mysdainterless.service.PassHashing;
+
 /**
  * TODO add a basic default user called guest
  * Created by k-joseph on 12/10/2017.
+ * TODO perhaps could extend Person
  */
-
 @DatabaseTable(tableName = "user")
-public class User extends Person {
+public class User extends MySDAObject {
     @DatabaseField(columnName = "category", canBeNull = false)
     private String category;
 
     @DatabaseField(columnName = "username", canBeNull = false)
     private String username;
 
-    @DatabaseField(columnName = "pass_hash", canBeNull = false)
-    private String passHash;
+    @DatabaseField(columnName = "password", canBeNull = true)
+    private String password;
 
-    /*TODO not sure with ormlite
     @DatabaseField(columnName = "person", foreign = true, foreignAutoRefresh = true)
     private Person person;
-  */
+
     public String getCategory() {
         return category;
     }
@@ -39,12 +40,24 @@ public class User extends Person {
         this.username = username;
     }
 
-    public String getPassHash() {
-        return passHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassHash(String passHash) {
-        this.passHash = passHash;
+    public void setPassword(String password) {
+        this.password = new PassHashing(password).generateHash();
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public enum UserCategory {

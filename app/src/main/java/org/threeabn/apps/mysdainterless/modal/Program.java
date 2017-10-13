@@ -13,6 +13,7 @@
  */
 package org.threeabn.apps.mysdainterless.modal;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -45,11 +46,11 @@ public class Program extends MySDAObject {
 	@DatabaseField(columnName = "series")
 	private String series;
 
-	@ForeignCollectionField()
-	private List<Person> hosts;
+	@ForeignCollectionField(columnName = "host", foreignFieldName = "hosts")
+	private ForeignCollection<Person> hosts;
 
-	@ForeignCollectionField()
-	private List<Person> guests;
+	@ForeignCollectionField(columnName = "guests", foreignFieldName = "guests")
+	private ForeignCollection<Person> guests;
 
 	@DatabaseField(columnName = "presentation", foreign = true, foreignAutoRefresh = true)
 	private Video presentation;
@@ -110,19 +111,19 @@ public class Program extends MySDAObject {
 		this.series = series;
 	}
 
-	public List<Person> getHosts() {
+	public ForeignCollection<Person> getHosts() {
 		return hosts;
 	}
 
-	public void setHosts(List<Person> hosts) {
+	public void setHosts(ForeignCollection<Person> hosts) {
 		this.hosts = hosts;
 	}
 
-	public List<Person> getGuests() {
+	public ForeignCollection<Person> getGuests() {
 		return guests;
 	}
 
-	public void setGuests(List<Person> guests) {
+	public void setGuests(ForeignCollection<Person> guests) {
 		this.guests = guests;
 	}
 }
