@@ -2,6 +2,7 @@ package org.threeabn.apps.mysdainterless.orm;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
@@ -9,6 +10,9 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import org.threeabn.apps.mysdainterless.modal.Channel;
+import org.threeabn.apps.mysdainterless.modal.ChannelProgram;
+import org.threeabn.apps.mysdainterless.modal.Guest;
+import org.threeabn.apps.mysdainterless.modal.Host;
 import org.threeabn.apps.mysdainterless.modal.Period;
 import org.threeabn.apps.mysdainterless.modal.Person;
 import org.threeabn.apps.mysdainterless.modal.Program;
@@ -27,12 +31,10 @@ import java.util.Map;
  */
 
 public class DBSession extends OrmLiteSqliteOpenHelper  {
-    // Fields
 
+    //TODO pull these 2 into the manifest file
     public static final String DB_NAME = ".mysda_interless.db";
     private static final int DB_VERSION = 1;
-
-    // Public methods
 
     public DBSession(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -42,12 +44,16 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
     @Override
     public void onCreate(SQLiteDatabase db, ConnectionSource cs) {
         try {
+            Log.i(DBSession.class.getName(), "onCreate");
             TableUtils.createTable(cs, Period.class);
             TableUtils.createTable(cs, Video.class);
             TableUtils.createTable(cs, Person.class);
             TableUtils.createTable(cs, User.class);
             TableUtils.createTable(cs, Program.class);
+            TableUtils.clearTable(cs, Guest.class);
+            TableUtils.clearTable(cs, Host.class);
             TableUtils.createTable(cs, Channel.class);
+            TableUtils.clearTable(cs, ChannelProgram.class);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

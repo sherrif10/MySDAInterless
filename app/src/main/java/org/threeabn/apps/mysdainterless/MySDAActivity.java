@@ -15,9 +15,13 @@ import org.threeabn.apps.mysdainterless.service.MySDAService;
 
 public class MySDAActivity extends Activity {
 
-    MySDAService service;
+    private MySDAService service;
 
-    MySDAService getService() {
+    /**
+     * DB initialised by default, just call this service
+     * @return
+     */
+    public MySDAService getService() {
         if(service == null)
             return new MySDAService(this);
         return service;
@@ -71,8 +75,5 @@ public class MySDAActivity extends Activity {
         }
         super.onCreate(savedInstanceState);
         hideSoftKeyboard();
-        if(getService() != null) {
-            getService().createDBSchemas();
-        }
     }
 }

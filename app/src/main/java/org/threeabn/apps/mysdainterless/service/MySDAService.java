@@ -2,8 +2,11 @@ package org.threeabn.apps.mysdainterless.service;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.support.ConnectionSource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.modal.Channel;
@@ -43,13 +46,13 @@ public class MySDAService {
 
     public DBSession getDbSession() {
         if(this.dbSession == null && this.context != null)
-            return new DBSession(this.context);
+            return OpenHelperManager.getHelper(context, DBSession.class);
         else
             return this.dbSession;//TODO initialise in inbuilt context pointing to mainactivity perhaps so as this never returns null
     }
 
-    public void createDBSchemas() {
-        getDbSession().onCreate(null, null);
+    public void createDBSchemas(SQLiteDatabase db, ConnectionSource conn) {
+        getDbSession().onCreate(db, conn);
     }
 
     public List<Period> getAllPeriods() throws SQLException {

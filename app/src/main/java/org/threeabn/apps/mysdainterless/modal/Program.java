@@ -46,12 +46,6 @@ public class Program extends MySDAObject {
 	@DatabaseField(columnName = "series")
 	private String series;
 
-	@ForeignCollectionField(columnName = "host", foreignFieldName = "hosts")
-	private ForeignCollection<Person> hosts;
-
-	@ForeignCollectionField(columnName = "guests", foreignFieldName = "guests")
-	private ForeignCollection<Person> guests;
-
 	@DatabaseField(columnName = "presentation", foreign = true, foreignAutoRefresh = true)
 	private Video presentation;
 
@@ -109,21 +103,5 @@ public class Program extends MySDAObject {
 
 	public void setSeries(String series) {
 		this.series = series;
-	}
-
-	public ForeignCollection<Person> getHosts() {
-		return hosts;
-	}
-
-	public void setHosts(ForeignCollection<Person> hosts) {
-		this.hosts = hosts;
-	}
-
-	public ForeignCollection<Person> getGuests() {
-		return guests;
-	}
-
-	public void setGuests(ForeignCollection<Person> guests) {
-		this.guests = guests;
 	}
 }

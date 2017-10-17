@@ -35,9 +35,6 @@ public class Channel extends MySDAObject {
     @DatabaseField(columnName = "description")
     private String description;
 
-    @ForeignCollectionField()
-    private List<Program> programs;
-
     public String getName() {
         return name;
     }
@@ -60,13 +57,5 @@ public class Channel extends MySDAObject {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<Program> getPrograms() {
-        return programs;
-    }
-
-    public void setPrograms(List<Program> programs) {
-        this.programs = programs;
     }
 }
