@@ -36,6 +36,7 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
     public static final String DB_NAME = ".mysda_interless.db";
     private static final int DB_VERSION = 1;
 
+    //TODO TEST: if db file on device is accessible and editable, encrypt it
     public DBSession(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         getWritableDatabase();

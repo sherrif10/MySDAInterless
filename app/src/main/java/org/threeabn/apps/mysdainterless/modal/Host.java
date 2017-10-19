@@ -9,25 +9,42 @@ import com.j256.ormlite.table.DatabaseTable;
  * https://stackoverflow.com/questions/10287578/create-table-with-foreign-collection-field
  */
 //TODO add to  service
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @DatabaseTable(tableName = "host")
 public class Host extends MySDAObject {
+    @JsonProperty("person")
     @DatabaseField(columnName = "person", foreign = true, foreignAutoRefresh = true)
     private Person person;
+
+    @JsonProperty("program")
     @DatabaseField(columnName = "program", foreign = true, foreignAutoRefresh = true)
     private  Program program;
 
+    public Host() {
+
+    }
+
+    public Host(Person person, Program program) {
+        setPerson(person);
+        setProgram(program);
+    }
+
+    @JsonProperty("person")
     public Person getPerson() {
         return person;
     }
 
+    @JsonProperty("person")
     public void setPerson(Person person) {
         this.person = person;
     }
 
+    @JsonProperty("program")
     public Program getProgram() {
         return program;
     }
 
+    @JsonProperty("program")
     public void setProgram(Program program) {
         this.program = program;
     }

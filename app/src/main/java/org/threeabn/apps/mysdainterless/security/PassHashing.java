@@ -1,4 +1,4 @@
-package org.threeabn.apps.mysdainterless.service;
+package org.threeabn.apps.mysdainterless.security;
 
 import org.apache.commons.lang3.StringUtils;
 

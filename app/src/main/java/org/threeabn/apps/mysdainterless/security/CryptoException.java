@@ -1,4 +1,4 @@
-package org.threeabn.apps.mysdainterless.crypto;
+package org.threeabn.apps.mysdainterless.security;
 
 public class CryptoException extends Exception {
 

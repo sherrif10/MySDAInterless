@@ -14,47 +14,54 @@
 package org.threeabn.apps.mysdainterless.modal;
 
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
-
-import java.util.List;
 
 /**
  * Created by k-joseph on 26/09/17.
  * represents a TV channel such as 3ABN international, 3ABN latino, AFTV
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @DatabaseTable(tableName = "channel")
 public class Channel extends MySDAObject {
 
+    @JsonProperty("name")
     @DatabaseField(columnName = "name")
     private String name;
 
-    @DatabaseField(columnName = "web_domain")
+    @JsonProperty("website")
+    @DatabaseField(columnName = "web_site")
     private String website;
 
+    @JsonProperty("description")
     @DatabaseField(columnName = "description")
     private String description;
 
+    @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    @JsonProperty("website")
     public String getWebsite() {
         return website;
     }
 
+    @JsonProperty("website")
     public void setWebsite(String website) {
         this.website = website;
     }
 
+    @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }

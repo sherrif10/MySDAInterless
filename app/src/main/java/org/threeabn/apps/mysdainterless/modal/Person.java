@@ -13,9 +13,9 @@
  */
 package org.threeabn.apps.mysdainterless.modal;
 
-import com.j256.ormlite.dao.ForeignCollection;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,81 +25,102 @@ import org.apache.commons.lang3.StringUtils;
  * @author k-joseph
  *
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @DatabaseTable(tableName = "person")
 public class Person extends MySDAObject {
 
-	Person() {}
+	public Person() {}
 
-	Person(String firstName, String lastName) {
+	public Person(String firstName, String lastName, PersonCategory category) {
 		setFirstName(firstName);
 		setLastName(lastName);
+		setCategory(category);
 	}
 
+	@JsonProperty("firstName")
 	@DatabaseField(columnName = "first_name", canBeNull = false)
 	private String firstName;
 
+	@JsonProperty("lastName")
 	@DatabaseField(columnName = "last_name", canBeNull = false)
 	private String lastName;
 
+	@JsonProperty("otherNames")
 	@DatabaseField(columnName = "other_names")
 	private String otherNames;
 
+	@JsonProperty("phoneNumber")
 	@DatabaseField(columnName = "phone_number")
 	private String phoneNumber;
 
+	@JsonProperty("emailAddress")
 	@DatabaseField(columnName = "email_address")
 	private String emailAddress;
 
+	@JsonProperty("address")
 	@DatabaseField(columnName = "address")
 	private String address;
 
+	@JsonProperty("category")
 	@DatabaseField(columnName = "category", canBeNull = false)
 	private String category;
 
+	@JsonProperty("firstName")
 	public String getFirstName() {
 		return firstName;
 	}
 
+	@JsonProperty("firstName")
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
+	@JsonProperty("lastName")
 	public String getLastName() {
 		return lastName;
 	}
 
+	@JsonProperty("lastName")
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
+	@JsonProperty("otherNames")
 	public String getOtherNames() {
 		return otherNames;
 	}
 
+	@JsonProperty("otherNames")
 	public void setOtherNames(String otherNames) {
 		this.otherNames = otherNames;
 	}
 
+	@JsonProperty("phoneNumber")
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
+	@JsonProperty("phoneNumber")
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
+	@JsonProperty("emailAddress")
 	public String getEmailAddress() {
 		return emailAddress;
 	}
 
+	@JsonProperty("emailAddress")
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
 
+	@JsonProperty("address")
 	public String getAddress() {
 		return address;
 	}
 
+	@JsonProperty("address")
 	public void setAddress(String address) {
 		this.address = address;
 	}
@@ -108,10 +129,12 @@ public class Person extends MySDAObject {
 		return (StringUtils.isNotBlank(getFirstName()) ? getFirstName() + " " : "") + (StringUtils.isNotBlank(getLastName()) ? getLastName() : "");
 	}
 
+	@JsonProperty("category")
 	public String getCategory() {
 		return category;
 	}
 
+	@JsonProperty("category")
 	public void setCategory(PersonCategory category) {
 		this.category = category.name();
 	}

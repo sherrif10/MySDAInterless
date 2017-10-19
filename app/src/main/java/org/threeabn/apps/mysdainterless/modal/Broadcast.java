@@ -5,5 +5,6 @@ package org.threeabn.apps.mysdainterless.modal;
  *
  * @TODO TV or radio
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Broadcast extends MySDAObject {
 }

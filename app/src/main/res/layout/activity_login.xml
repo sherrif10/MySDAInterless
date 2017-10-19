@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scaleType = "centerCrop"
+    android:orientation="vertical"
     tools:context="org.threeabn.apps.mysdainterless.LoginActivity"
     android:background="@drawable/bluebase">
 
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="600dp"
+        android:textSize="50dp"
+        android:layout_gravity="center"
         android:layout_above="@+id/editText_password"
         android:layout_alignParentStart="true"
         android:text="Username" />
@@ -20,28 +21,30 @@
 
     <EditText
         android:id="@+id/editText_username"
-        android:layout_width="wrap_content"
+        android:textSize="50dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:ems="10"
+        android:layout_width="600dp"
+        android:layout_gravity="center"
         android:inputType="textPersonName"/>
 
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="600dp"
+        android:textSize="50dp"
+        android:layout_gravity="center"
         android:layout_alignBottom="@+id/editText_password"
         android:layout_alignEnd="@+id/textView"
         android:text="Password" />
 
     <EditText
         android:id="@+id/editText_password"
-        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="50dp"
         android:layout_height="wrap_content"
+        android:layout_width="600dp"
         android:layout_below="@+id/editText_username"
-        android:layout_weight="1"
-        android:ems="10"
         android:inputType="textPassword"/>
 
-</RelativeLayout>
+</LinearLayout>

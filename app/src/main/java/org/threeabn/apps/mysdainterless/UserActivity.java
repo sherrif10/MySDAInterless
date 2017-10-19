@@ -1,5 +1,7 @@
 package org.threeabn.apps.mysdainterless;
 
+import android.os.Bundle;
+
 /**
  * TODO User sign up, this is used to retrace last programs as well as the time in the which the user had been watching into the program/video
  * Created by k-joseph on 12/10/2017.
@@ -7,4 +9,10 @@ package org.threeabn.apps.mysdainterless;
  */
 public class UserActivity extends MySDAActivity {
     //TODO when logged in, bring change password and add user options, when not load add user fields
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_users);
+    }
 }

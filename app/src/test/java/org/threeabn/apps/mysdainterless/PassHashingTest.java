@@ -2,7 +2,7 @@ package org.threeabn.apps.mysdainterless;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.threeabn.apps.mysdainterless.service.PassHashing;
+import org.threeabn.apps.mysdainterless.security.PassHashing;
 
 import java.util.HashMap;
 import java.util.Map;

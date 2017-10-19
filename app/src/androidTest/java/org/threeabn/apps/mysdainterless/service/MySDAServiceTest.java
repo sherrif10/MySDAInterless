@@ -6,11 +6,11 @@ import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.threeabn.apps.mysdainterless.modal.Period;
-import org.threeabn.apps.mysdainterless.orm.DBSession;
+import org.threeabn.apps.mysdainterless.modal.Person;
+import org.threeabn.apps.mysdainterless.modal.User;
 
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -18,7 +18,7 @@ import java.util.Calendar;
 /**
  * Created by k-joseph on 13/10/2017.
  */
-
+//TODO include test data in xml format
 @RunWith(AndroidJUnit4.class)
 public class MySDAServiceTest {
     MySDAService service;
@@ -26,6 +26,7 @@ public class MySDAServiceTest {
     @Before
     public void init() {
         service = new MySDAService(InstrumentationRegistry.getTargetContext());
+        service.emptyDatabase();
     }
 
     @Test
@@ -40,17 +41,53 @@ public class MySDAServiceTest {
     public void test_dbSetup() {
         try {
             Calendar now = Calendar.getInstance();
+            Period p = new Period(now.getTime(), now.getTime());
 
             Assert.assertNotNull(service.getAllPeriods());
             Assert.assertEquals(0, service.getAllPeriods().size());
 
-            service.savePeriod(new Period(now.getTime(), now.getTime()));
+            service.savePeriod(p);
 
             Assert.assertEquals(1, service.getAllPeriods().size());
             Assert.assertEquals(now.getTime(), ((Period) service.getAllPeriods().get(0)).getStart());
             Assert.assertEquals(now.getTime(), ((Period) service.getAllPeriods().get(0)).getEnd());
+            Assert.assertEquals(p, service.getPeriodById(1));
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void test_login() {
+        try {
+            Person p = new Person("Joseph", "Kaweesi", Person.PersonCategory.GUEST);
+
+            service.savePerson(p);
+
+            User kjose = new User("k-joseph", "test123", User.UserCategory.VIEWER, p);
+
+            Assert.assertFalse(service.checkIfLoggedIn());
+
+            service.saveUser(kjose);
+
+            Assert.assertNotNull(service.getPersonByUuid(p.getUuid()));
+
+            User authenticatedUser = service.authenticateUser("k-joseph", "test123");
+
+            Assert.assertNull(service.authenticateUser("k-joseph", "test"));
+            Assert.assertNotNull(authenticatedUser);
+            Assert.assertEquals(kjose.getUsername(), authenticatedUser.getUsername());
+            Assert.assertEquals(kjose.getPassword(), authenticatedUser.getPassword());
+            Assert.assertEquals(kjose.getUuid(), authenticatedUser.getUuid());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void test_convertObjectToJsonString() {
+        Person p = new Person("Joseph", "Kaweesi", Person.PersonCategory.GUEST);
+
+        Assert.assertTrue(service.convertObjectToJsonString(p).contains("\"firstName\":\"Joseph\""));
     }
 }
