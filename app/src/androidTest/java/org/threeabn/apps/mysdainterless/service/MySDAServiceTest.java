@@ -85,9 +85,12 @@ public class MySDAServiceTest {
     }
 
     @Test
-    public void test_convertObjectToJsonString() {
+    public void test_jackson_convertObjectToJsonString_and_convertJsonStringToObject() {
         Person p = new Person("Joseph", "Kaweesi", Person.PersonCategory.GUEST);
+        String s = service.convertObjectToJsonString(p);
 
-        Assert.assertTrue(service.convertObjectToJsonString(p).contains("\"firstName\":\"Joseph\""));
+        Assert.assertTrue(s.contains("\"firstName\":\"Joseph\""));
+        Assert.assertTrue(s.contains("\"lastName\":\"Kaweesi\""));
+        Assert.assertEquals(((Person) service.convertJsonStringToObject(s, Person.class)).getUuid(), p.getUuid());
     }
 }

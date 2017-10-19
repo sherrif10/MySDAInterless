@@ -13,6 +13,7 @@
  */
 package org.threeabn.apps.mysdainterless.modal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.j256.ormlite.field.DataType;
@@ -23,6 +24,7 @@ import com.j256.ormlite.table.DatabaseTable;
 	A TV Video is basically what it is, it can have properties such as name, file location/path, resume (last played time and time where it stopped)
 */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @DatabaseTable(tableName = "video")
 public class Video extends MySDAObject {
 

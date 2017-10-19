@@ -1,5 +1,6 @@
 package org.threeabn.apps.mysdainterless.modal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.j256.ormlite.field.DatabaseField;
@@ -12,6 +13,7 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 //TODO add to  service
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @DatabaseTable(tableName = "host")
 public class Host extends MySDAObject {
     @JsonProperty("person")

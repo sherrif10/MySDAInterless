@@ -1,5 +1,6 @@
 package org.threeabn.apps.mysdainterless.modal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.j256.ormlite.field.DatabaseField;
@@ -11,6 +12,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * https://stackoverflow.com/questions/10287578/create-table-with-foreign-collection-field
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @DatabaseTable(tableName = "guest")
 //TODO add to  service
 public class Guest extends MySDAObject {

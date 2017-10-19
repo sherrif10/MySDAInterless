@@ -13,6 +13,7 @@
  */
 package org.threeabn.apps.mysdainterless.modal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.j256.ormlite.field.DatabaseField;
@@ -23,6 +24,7 @@ import java.util.UUID;
  * Created by k-joseph on 26/09/17.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MySDAObject {
 
     @JsonProperty("id")

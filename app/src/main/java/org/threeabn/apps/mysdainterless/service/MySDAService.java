@@ -342,7 +342,7 @@ public class MySDAService {
         }
     }
 
-    public <T> T convertJsonStringToObject(String string, Class<T> clazz) {
+    public Object convertJsonStringToObject(String string, Class clazz) {
         try {
             return new ObjectMapper().readValue(string, clazz);
         } catch (IOException e) {
@@ -355,8 +355,6 @@ public class MySDAService {
         try {
             return new ObjectMapper().writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
