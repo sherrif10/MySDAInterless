@@ -1,5 +1,7 @@
 package org.threeabn.apps.mysdainterless.modal;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * Created by k-joseph on 26/09/17.
  *
