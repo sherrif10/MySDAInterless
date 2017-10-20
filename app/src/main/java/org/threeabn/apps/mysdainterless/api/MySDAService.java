@@ -1,4 +1,4 @@
-package org.threeabn.apps.mysdainterless.service;
+package org.threeabn.apps.mysdainterless.api;
 
 import android.content.Context;
 
@@ -10,6 +10,7 @@ import com.j256.ormlite.dao.Dao;
 import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.modal.Channel;
 import org.threeabn.apps.mysdainterless.modal.ChannelProgram;
+import org.threeabn.apps.mysdainterless.modal.Favourite;
 import org.threeabn.apps.mysdainterless.modal.Guest;
 import org.threeabn.apps.mysdainterless.modal.Host;
 import org.threeabn.apps.mysdainterless.modal.Period;
@@ -91,6 +92,11 @@ public class MySDAService {
         return getDbSession().getAll(Channel.class);
     }
 
+    public List<Favourite> getAllFavourites() throws SQLException {
+        return getDbSession().getAll(Favourite.class);
+    }
+
+
     public Period getPeriodById(Integer id) throws SQLException {
         return getDbSession().getById(Period.class, id);
     }
@@ -125,6 +131,10 @@ public class MySDAService {
 
     public ChannelProgram getChannelProgramById(Integer id) throws SQLException {
         return getDbSession().getById(ChannelProgram.class, id);
+    }
+
+    public Favourite getFavouriteById(Integer id) throws SQLException {
+        return getDbSession().getById(Favourite.class, id);
     }
 
     public void deletePeriod(Period obj) throws SQLException {
@@ -163,6 +173,10 @@ public class MySDAService {
         getDbSession().deleteById(ChannelProgram.class, obj.getId());
     }
 
+    public void deleteFavourite(Favourite obj) throws SQLException {
+        getDbSession().deleteById(Favourite.class, obj.getId());
+    }
+
     public void deleteAllPeriods() throws SQLException {
         getDbSession().deleteAll(Period.class);
     }
@@ -199,6 +213,10 @@ public class MySDAService {
         getDbSession().deleteAll(ChannelProgram.class);
     }
 
+    public void deleteAllFavourites() throws SQLException {
+        getDbSession().deleteAll(Favourite.class);
+    }
+
     public Dao.CreateOrUpdateStatus savePeriod(Period obj) throws SQLException {
         return getDbSession().createOrUpdate(obj);
     }
@@ -223,6 +241,10 @@ public class MySDAService {
     }
 
     public Dao.CreateOrUpdateStatus saveChannel(Channel obj) throws SQLException {
+        return getDbSession().createOrUpdate(obj);
+    }
+
+    public Dao.CreateOrUpdateStatus saveFavourite(Favourite obj) throws SQLException {
         return getDbSession().createOrUpdate(obj);
     }
 
@@ -273,6 +295,38 @@ public class MySDAService {
             return list.get(0);
         return null;
     }
+
+    public Program getProgramByCode(String code) throws SQLException {
+        List<Program> list = getDbSession().getByField(Program.class, "code", code);
+
+        if(list != null && list.size() == 1)
+            return list.get(0);
+        return null;
+    }
+
+    public List<Program> getProgramsBySeriesCode(String seriesCode) throws SQLException {
+        return getDbSession().getByField(Program.class, "series", seriesCode);
+    }
+
+    public Favourite getFavouriteByUuid(String uuid) throws SQLException {
+        List<Favourite> list = getDbSession().getByField(Favourite.class, "uuid", uuid);
+
+        if(list != null && list.size() == 1)
+            return list.get(0);
+        return null;
+    }
+
+    public List<Program> getProgramsBySeries(String seriesCode) throws SQLException {
+        return getDbSession().getByField(Program.class, "series", seriesCode);
+    }
+
+    public List<Program> getProgramsByCategories(List<Program.ProgramCategory> categories) throws SQLException {
+        getDbSession().containedIn("category", Program.ProgramCategory.getNames(categories), Program.class);
+
+        return null;
+    }
+
+    //TODO in the future getPrograms that fall in a duration
 
     public Channel getChannelByUuid(String uuid) throws SQLException {
         List<Channel> list = getDbSession().getByField(Channel.class, "uuid", uuid);
@@ -337,6 +391,7 @@ public class MySDAService {
             deleteAllHosts();
             deleteAllChannels();
             deleteAllChannelPrograms();
+            deleteAllFavourites();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -359,4 +414,6 @@ public class MySDAService {
         }
         return null;
     }
+
+    //TODO add getallfavouritesbyUser
 }

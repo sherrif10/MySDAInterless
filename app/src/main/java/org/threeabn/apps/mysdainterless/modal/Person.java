@@ -16,10 +16,13 @@ package org.threeabn.apps.mysdainterless.modal;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Date;
 
 /**
  * any person, such as a guest, host, 
@@ -62,6 +65,10 @@ public class Person extends MySDAObject {
 	@JsonProperty("address")
 	@DatabaseField(columnName = "address")
 	private String address;
+
+	@JsonProperty("dateOfBirth")
+	@DatabaseField(columnName = "date_of_birth", dataType = DataType.DATE)
+	private Date dateOfBirth;
 
 	@JsonProperty("category")
 	@DatabaseField(columnName = "category", canBeNull = false)
@@ -140,6 +147,17 @@ public class Person extends MySDAObject {
 	public void setCategory(PersonCategory category) {
 		this.category = category.name();
 	}
+
+	@JsonProperty("dateOfBirth")
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	@JsonProperty("dateOfBirth")
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
 
 	public enum PersonCategory {
 		GUEST, HOST, OTHER

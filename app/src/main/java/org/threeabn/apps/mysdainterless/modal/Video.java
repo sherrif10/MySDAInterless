@@ -33,7 +33,7 @@ public class Video extends MySDAObject {
 	private String name;
 
 	@JsonProperty("path")
-	@DatabaseField(columnName = "path")
+	@DatabaseField(columnName = "path", canBeNull = false)
 	private String path;//TODO crate Uri object from path
 
 	/**
@@ -44,6 +44,10 @@ public class Video extends MySDAObject {
 	private long microSecs;
 
 	public Video() {}
+
+	public Video(String path) {
+		setPath(path);
+	}
 
 	public Video(String name, String path) {
 		setName(name);

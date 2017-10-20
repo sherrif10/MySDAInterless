@@ -6,11 +6,13 @@ import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import org.threeabn.apps.mysdainterless.modal.Channel;
 import org.threeabn.apps.mysdainterless.modal.ChannelProgram;
+import org.threeabn.apps.mysdainterless.modal.Favourite;
 import org.threeabn.apps.mysdainterless.modal.Guest;
 import org.threeabn.apps.mysdainterless.modal.Host;
 import org.threeabn.apps.mysdainterless.modal.Period;
@@ -20,13 +22,14 @@ import org.threeabn.apps.mysdainterless.modal.User;
 import org.threeabn.apps.mysdainterless.modal.Video;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * TODO Hide behind {@link org.threeabn.apps.mysdainterless.service.MySDAService}
+ * TODO Hide behind {@link org.threeabn.apps.mysdainterless.api.MySDAService}
  * Created by k-joseph on 09/10/2017.
  */
 
@@ -55,6 +58,7 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
             TableUtils.clearTable(cs, Host.class);
             TableUtils.createTable(cs, Channel.class);
             TableUtils.clearTable(cs, ChannelProgram.class);
+            TableUtils.clearTable(cs, Favourite.class);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -143,5 +147,11 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
         HashMap<String, Object> result = new HashMap<String, Object>();
         result.put(aVar, aValue);
         return result;
+    }
+
+    public <T> Where<T, ?> containedIn(String fieldName, List<String> comparableList, Class<T> clazz) throws SQLException {
+        Dao<T, ?> dao = getDao(clazz);
+
+        return dao.queryBuilder().where().in(fieldName, comparableList);
     }
 }

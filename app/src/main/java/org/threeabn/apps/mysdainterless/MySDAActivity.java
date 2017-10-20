@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import org.threeabn.apps.mysdainterless.service.MySDAService;
+import org.threeabn.apps.mysdainterless.api.MySDAService;
 
 /**
  * Created by k-joseph on 10/10/2017.
@@ -52,10 +52,10 @@ public class MySDAActivity extends Activity {
                 } else if(R.id.image_threeadn == v.getId()) {
                     startActivity(new Intent(context, MyChannelActivity.class));
                 } else if(R.id.imageView_user == v.getId()) {
-                    if(getService() != null && getService().checkIfLoggedIn()) {
+                    if(getService() != null && getService().checkIfLoggedIn()) {//TODO show menu such as; change password, edit user details etc
                         startActivity(new Intent(context, UserActivity.class));
                     } else {
-                        startActivity(new Intent(context, LoginActivity.class));
+                        startActivity(new Intent(context, LoginActivity.class));//TODO show menu such as; login, signup (only available for admin at first installation)
                     }
                 }
             }
