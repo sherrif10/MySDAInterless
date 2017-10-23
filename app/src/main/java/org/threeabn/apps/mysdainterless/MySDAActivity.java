@@ -45,34 +45,15 @@ public class MySDAActivity extends Activity {
                     startActivity(new Intent(context, FavoriteActivity.class));
                 } else if(R.id.image_list == v.getId()) {
                     startActivity(new Intent(context, ListActivity.class));
-                } else if(R.id.image_threeadn == v.getId()) {
-                    startActivity(new Intent(context, MyChannelActivity.class));
-                } else if(R.id.image_threeadn == v.getId()) {
-                    startActivity(new Intent(context, MyChannelActivity.class));
-                } else if(R.id.image_threeadn == v.getId()) {
-                    startActivity(new Intent(context, MyChannelActivity.class));
-                } else if(R.id.imageView_user == v.getId()) {
-                    if(getService() != null && getService().checkIfLoggedIn()) {//TODO show menu such as; change password, edit user details etc
-                        startActivity(new Intent(context, UserActivity.class));
-                    } else {
-                        startActivity(new Intent(context, LoginActivity.class));//TODO show menu such as; login, signup (only available for admin at first installation)
-                    }
-                }
+                }/* else if(R.id.image_playback == v.getId()) {
+                    startActivity(new Intent(context, PlayBackActivity.class));
+                }*/
             }
         });
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //show title bar when not on main screen
-        if(!(this instanceof MainActivity)) {
-            setTheme(android.R.style.Theme_DeviceDefault_Light_DarkActionBar);
-        }
-        if(!(this instanceof LoginActivity) || !(this instanceof UserActivity) || !(this instanceof ProgramsActivity)) {
-            //TODO maybe database setup (creation of these tables) should be loaded here and nothing else
-
-
-        }
         super.onCreate(savedInstanceState);
         hideSoftKeyboard();
     }

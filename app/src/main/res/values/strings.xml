@@ -46,4 +46,5 @@
     <string name="login">User Login</string>
     <string name="admin_username">admin</string>
     <string name="admin_password">3ABN:Interless-app</string>
+    <string name="playback">Program PlayBack</string>
 </resources>

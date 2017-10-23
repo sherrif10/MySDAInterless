@@ -6,86 +6,39 @@
     android:layout_height="match_parent"
     android:scaleType = "centerCrop"
     tools:context="org.threeabn.apps.mysdainterless.MainActivity"
-    android:background="@drawable/bluebase">
-
-    <ImageView
-        android:id="@+id/image_mysdatv_logo"
-        android:layout_width="match_parent"
-        android:layout_height="1000dp"
-        android:background="@drawable/mysdatv_logo"
-        android:layout_marginBottom="150dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:id="@+id/text_interless"
-        android:layout_width="949dp"
-        android:layout_height="60dp"
-        android:inputType="text"
-        android:text="Interless"
-        android:background="@null"
-        android:gravity="center"
-        android:textSize="30dp"
-        android:textColor="#FFFFFF"
-        android:layout_alignParentStart="true"
-        android:layout_centerHorizontal="true"
-        android:layout_alignBottom="@+id/image_mysdatv_logo"
-        android:layout_marginTop="120dp"/>
+    android:background="@drawable/backgroundscreen">
 
     <ImageView
         android:id="@+id/image_search"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:background="@drawable/search"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
+        android:background="@drawable/search_icon"
         android:layout_marginLeft="20dp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginEnd="44dp"
+        android:layout_alignTop="@+id/image_threeadn"
+        android:layout_toStartOf="@+id/image_favorite" />
 
     <ImageView
         android:id="@+id/image_favorite"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:pointerIcon="text"
-        android:background="@drawable/star"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/image_search"
+        android:background="@drawable/icon_favorites"
         android:layout_marginLeft="150dp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_alignTop="@+id/image_threeadn"
+        android:layout_centerHorizontal="true" />
 
-
-    <ImageView
-        android:id="@+id/image_list"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:pointerIcon="text"
-        android:background="@drawable/list"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/image_threeadn"
-        android:layout_marginRight="150dp"
-        android:layout_marginBottom="20dp"/>
 
     <ImageView
         android:id="@+id/image_threeadn"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:pointerIcon="text"
-        android:background="@drawable/threeabn"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
+        android:background="@drawable/icon_program_list"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"/>
-
-    <ImageView
-        android:id="@+id/imageView_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/image_threeadn"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/user"
-        android:layout_alignParentRight="true"/>
+        android:layout_marginBottom="69dp"
+        android:layout_marginEnd="99dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

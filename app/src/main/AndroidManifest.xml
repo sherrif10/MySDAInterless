@@ -29,26 +29,20 @@
         </activity>
         <activity
             android:name=".SearchActivity"
+            android:theme="@style/AppTheme"
             android:label="@string/search" />
         <activity
             android:name=".FavoriteActivity"
+            android:theme="@style/AppTheme"
             android:label="@string/favorite" />
         <activity
             android:name=".ListActivity"
+            android:theme="@style/AppTheme"
             android:label="@string/list" />
         <activity
-            android:name=".MyChannelActivity"
-            android:label="@string/channel" />
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/login">
-        </activity>
-        <activity
-            android:name=".UserActivity"
-            android:label="@string/users" />
-        <activity
-            android:name=".CreateObjectsActivity"
-            android:label="@string/users" />
+            android:name=".PlayBackActivity"
+            android:theme="@style/AppTheme"
+            android:label="@string/playback" />
     </application>
 
 </manifest>
