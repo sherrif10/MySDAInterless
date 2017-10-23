@@ -28,16 +28,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.appwidget.AppWidgetHost.deleteAllHosts;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+
 /**
  * TODO Hide behind {@link org.threeabn.apps.mysdainterless.api.MySDAService}
  * Created by k-joseph on 09/10/2017.
+ * All foreign key on modal objects are required to be persisted first to be looked up, otherwise ormlite doesn't check these foreign existances
  */
 
 public class DBSession extends OrmLiteSqliteOpenHelper  {
 
     //TODO pull these 2 into the manifest file
     public static final String DB_NAME = ".mysda_interless.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     //TODO TEST: if db file on device is accessible and editable, encrypt it
     public DBSession(Context context) {
@@ -48,25 +52,54 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
     @Override
     public void onCreate(SQLiteDatabase db, ConnectionSource cs) {
         try {
-            Log.i(DBSession.class.getName(), "onCreate");
-            TableUtils.createTable(cs, Period.class);
-            TableUtils.createTable(cs, Video.class);
-            TableUtils.createTable(cs, Person.class);
-            TableUtils.createTable(cs, User.class);
-            TableUtils.createTable(cs, Program.class);
-            TableUtils.clearTable(cs, Guest.class);
-            TableUtils.clearTable(cs, Host.class);
-            TableUtils.createTable(cs, Channel.class);
-            TableUtils.clearTable(cs, ChannelProgram.class);
-            TableUtils.clearTable(cs, Favourite.class);
+            createAllTables(cs);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    private void createAllTables(ConnectionSource cs) throws SQLException {
+        Log.i(DBSession.class.getName(), "onCreate");
+        TableUtils.createTable(cs, Period.class);
+        TableUtils.createTable(cs, Video.class);
+        TableUtils.createTable(cs, Person.class);
+        TableUtils.createTable(cs, User.class);
+        TableUtils.createTable(cs, Program.class);
+        TableUtils.clearTable(cs, Guest.class);
+        TableUtils.clearTable(cs, Host.class);
+        TableUtils.createTable(cs, Channel.class);
+        TableUtils.clearTable(cs, ChannelProgram.class);
+        TableUtils.clearTable(cs, Favourite.class);
+    }
+
+    private void deleteAllTables(ConnectionSource cs) throws SQLException {
+        try {
+            Log.i(DBSession.class.getName(), "onCreate");
+            TableUtils.dropTable(cs, Period.class, false);
+            TableUtils.dropTable(cs, Video.class, false);
+            TableUtils.dropTable(cs, Person.class, false);
+            TableUtils.dropTable(cs, User.class, false);
+            TableUtils.dropTable(cs, Program.class, false);
+            TableUtils.dropTable(cs, Guest.class, false);
+            TableUtils.dropTable(cs, Host.class, false);
+            TableUtils.dropTable(cs, Channel.class, false);
+            TableUtils.dropTable(cs, ChannelProgram.class, false);
+            TableUtils.dropTable(cs, Favourite.class, false);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource cs, int oldVersion, int newVersion) {
-        //TODO
+        try {
+            if(oldVersion == 1 && newVersion == 2) {
+                deleteAllTables(cs);
+                createAllTables(cs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public <T> List<T> getAll(Class<T> clazz) throws SQLException {
@@ -149,9 +182,9 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
         return result;
     }
 
-    public <T> Where<T, ?> containedIn(String fieldName, List<String> comparableList, Class<T> clazz) throws SQLException {
+    public <T> List<T> containedIn(String fieldName, List<String> comparableList, Class<T> clazz) throws SQLException {
         Dao<T, ?> dao = getDao(clazz);
 
-        return dao.queryBuilder().where().in(fieldName, comparableList);
+        return dao.query(dao.queryBuilder().where().in(fieldName, comparableList).prepare());
     }
 }

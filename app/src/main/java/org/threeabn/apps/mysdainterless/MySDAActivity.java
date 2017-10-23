@@ -76,4 +76,14 @@ public class MySDAActivity extends Activity {
         super.onCreate(savedInstanceState);
         hideSoftKeyboard();
     }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+    }
 }

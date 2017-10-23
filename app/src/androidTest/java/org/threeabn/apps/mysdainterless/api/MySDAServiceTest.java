@@ -5,7 +5,8 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.threeabn.apps.mysdainterless.modal.Period;
@@ -17,29 +18,29 @@ import org.threeabn.apps.mysdainterless.modal.Video;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-import static android.R.attr.duration;
-import static android.R.attr.name;
-
 /**
  * Created by k-joseph on 13/10/2017.
  */
 //TODO include test data in xml format
 @RunWith(AndroidJUnit4.class)
+@Ignore
 public class MySDAServiceTest {
     MySDAService service;
     Person kjos;
     User kjose;
     Program program1;
 
-    @BeforeClass
+    @Before
     public void init() {
         service = new MySDAService(InstrumentationRegistry.getTargetContext());
-        service.emptyDatabase();
+
         kjos = new Person("Joseph", "Kaweesi", Person.PersonCategory.GUEST);
         kjose = new User("k-joseph", "test123", User.UserCategory.VIEWER, kjos);
 
         //TODO start
-        program1 = new Program("3ABN Today", "", "LittleRichard-Promo", "", new Video(""));
+        program1 = new Program("3ABN Today - LittleRichard-Promo", null, "LittleRichardPromo", "", new Video("/sdcard/MysDAInterless/.programs/LittleRichardPromo.mp4"));
+
+        service.emptyDatabase();
     }
 
     @Test
@@ -101,10 +102,39 @@ public class MySDAServiceTest {
         Assert.assertEquals(((Person) service.convertJsonStringToObject(s, Person.class)).getUuid(), kjos.getUuid());
     }
 
-    public void test_getProgramsByCategories() {
+    //TODO test service.checkURIResource for video play
+
+    @Test
+    public void test_getProgramsByCategoriesAndSeries() {
         try {
-            //TODO start
-            service.getProgramsByCategories(null);
+            Assert.assertEquals(0, service.getAllPrograms().size());
+            Assert.assertEquals(0, service.getProgramsByCategories(null).size());
+
+            service.saveVideo(program1.getPresentation());
+            service.saveProgram(program1);
+
+            Program p = service.getProgramByUuid(program1.getUuid());
+            Video pv = service.getVideoByUuid(p.getPresentation().getUuid());
+
+            Assert.assertEquals(1, service.getAllPrograms().size());
+            Assert.assertNotNull(p);
+            Assert.assertNotNull(pv);
+            Assert.assertEquals(0, service.getProgramsByCategories(null).size());
+            Assert.assertEquals(0, service.getProgramsBySeries("3ABN").size());
+            Assert.assertEquals(p.getCode(), "LittleRichardPromo");
+            Assert.assertNull(p.getDescription());
+            Assert.assertEquals("/sdcard/MysDAInterless/.programs/LittleRichardPromo.mp4", pv.getPath());
+
+            program1.setSeries("3ABN");
+            program1.setCategory(Program.ProgramCategory.THREEABN_TODAY);
+
+            //second saving should just actually edit existing entry
+            service.saveProgram(program1);
+
+            Assert.assertEquals(1, service.getAllPrograms().size());
+            Assert.assertEquals(1, service.getProgramsByCategories(null).size());
+            Assert.assertEquals(Program.ProgramCategory.THREEABN_TODAY.name(), service.getProgramsByCategories(null).get(0).getCategory());
+            Assert.assertEquals(1, service.getProgramsBySeries("3ABN").size());
         } catch (SQLException e) {
             e.printStackTrace();
         }

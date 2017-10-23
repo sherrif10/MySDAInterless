@@ -1,6 +1,8 @@
 package org.threeabn.apps.mysdainterless.api;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,7 +44,8 @@ public class MySDAService {
     }
     /**
      * Checks if there's an active user session besides the default which is guest
-     * TODO
+     * TODO never use until supported
+     *
      * @return
      */
     public boolean checkIfLoggedIn() {
@@ -321,13 +324,14 @@ public class MySDAService {
     }
 
     public List<Program> getProgramsByCategories(List<Program.ProgramCategory> categories) throws SQLException {
-        getDbSession().containedIn("category", Program.ProgramCategory.getNames(categories), Program.class);
+        return getDbSession().containedIn("category", Program.ProgramCategory.getNames(categories), Program.class);
+    }
 
-        return null;
+    public List<Program> getProgramsBySeries(List<String> seriesCodes) throws SQLException {
+        return getDbSession().containedIn("series", seriesCodes, Program.class);
     }
 
     //TODO in the future getPrograms that fall in a duration
-
     public Channel getChannelByUuid(String uuid) throws SQLException {
         List<Channel> list = getDbSession().getByField(Channel.class, "uuid", uuid);
 
@@ -387,11 +391,11 @@ public class MySDAService {
             deleteAllPeople();
             deleteAllUsers();
             deleteAllPrograms();
+            deleteAllChannelPrograms();
+            deleteAllFavourites();
             deleteAllGuests();
             deleteAllHosts();
             deleteAllChannels();
-            deleteAllChannelPrograms();
-            deleteAllFavourites();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -413,6 +417,16 @@ public class MySDAService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     *
+     * @param uri
+     * @return, returns if resource exists or not
+     */
+    public boolean checkURIResource(Uri uri) {
+        Cursor cursor = this.context.getContentResolver().query(uri, null, null, null, null);
+        return (cursor != null && cursor.moveToFirst());
     }
 
     //TODO add getallfavouritesbyUser

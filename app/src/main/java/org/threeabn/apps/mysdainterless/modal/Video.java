@@ -20,6 +20,8 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
 	A TV Video is basically what it is, it can have properties such as name, file location/path, resume (last played time and time where it stopped)
 */
@@ -71,8 +73,14 @@ public class Video extends MySDAObject {
 		return path;
 	}
 
+	/**
+	 *
+	 * @param path, res is consired root, so, a folder in res containing videos would have a path such as; /programs
+	 */
 	@JsonProperty("path")
 	public void setPath(String path) {
+		/*if(StringUtils.isNotBlank(path))
+			path = "android.resource://mysdainterless" + path;*/
 		this.path = path;
 	}
 
