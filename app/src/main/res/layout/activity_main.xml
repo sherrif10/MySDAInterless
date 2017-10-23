@@ -15,7 +15,7 @@
         android:background="@drawable/search_icon"
         android:layout_marginLeft="20dp"
         android:layout_marginEnd="44dp"
-        android:layout_alignTop="@+id/image_threeadn"
+        android:layout_alignTop="@+id/image_list"
         android:layout_toStartOf="@+id/image_favorite" />
 
     <ImageView
@@ -25,12 +25,12 @@
         android:pointerIcon="text"
         android:background="@drawable/icon_favorites"
         android:layout_marginLeft="150dp"
-        android:layout_alignTop="@+id/image_threeadn"
+        android:layout_alignTop="@+id/image_list"
         android:layout_centerHorizontal="true" />
 
 
     <ImageView
-        android:id="@+id/image_threeadn"
+        android:id="@+id/image_list"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:pointerIcon="text"

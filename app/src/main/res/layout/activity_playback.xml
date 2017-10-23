@@ -8,4 +8,24 @@
     tools:context="org.threeabn.apps.mysdainterless.MainActivity"
     android:background="@drawable/playback_empty_screen">
 
+    <VideoView
+        android:id="@+id/videoView_playback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="157dp"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/button_full_sreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/videoView_playback"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="90dp"
+        android:text="Full Screen" />
+
 </RelativeLayout>
