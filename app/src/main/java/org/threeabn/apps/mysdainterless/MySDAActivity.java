@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.api.MySDAService;
+
+import java.io.File;
 
 /**
  * Created by k-joseph on 10/10/2017.
@@ -44,7 +47,7 @@ public class MySDAActivity extends Activity {
                 } else if(R.id.image_favorite == v.getId()) {
                     startActivity(new Intent(context, FavoriteActivity.class));
                 } else if(R.id.image_list == v.getId()) {
-                    startActivity(new Intent(context, ListActivity.class));
+                    startActivity(new Intent(context, ProgramsListActivity.class));
                 }/* else if(R.id.image_playback == v.getId()) {
                     startActivity(new Intent(context, PlayBackActivity.class));
                 }*/
@@ -66,5 +69,12 @@ public class MySDAActivity extends Activity {
     @Override
     public void onStop(){
         super.onStop();
+    }
+
+    public String getFileDisplayName(String path) {
+        if(StringUtils.isNotBlank(path))
+            //TODO this should rather load the program name from the api using this current returned file name/code
+            return path.substring(path.lastIndexOf(File.separator), path.length());
+        return null;
     }
 }

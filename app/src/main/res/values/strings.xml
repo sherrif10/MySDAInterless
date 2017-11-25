@@ -43,4 +43,5 @@
     <string name="dismiss_error">Dismiss</string>
     <string name="oops">Oops</string>
     <string name="playback">Program PlayBack</string>
+    <string name="programs_folder_in_data">.mysdainterless</string>
 </resources>
