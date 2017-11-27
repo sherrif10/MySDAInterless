@@ -12,6 +12,5 @@ public class MainActivity extends MySDAActivity {
         loadActivityByView(findViewById(R.id.image_search), MainActivity.this);
         loadActivityByView(findViewById(R.id.image_favorite), MainActivity.this);
         loadActivityByView(findViewById(R.id.image_list), MainActivity.this);
-        loadActivityByView(findViewById(R.id.image_list), MainActivity.this);
     }
 }

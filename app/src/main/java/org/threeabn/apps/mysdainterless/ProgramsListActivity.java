@@ -1,5 +1,6 @@
 package org.threeabn.apps.mysdainterless;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,12 +34,18 @@ public class ProgramsListActivity extends MySDAActivity {
             list.setAdapter(listAdapter);
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-                    Toast.makeText(ProgramsListActivity.this, "Opening " + getFileDisplayName(programsFolder.list()[position]) + " ...", Toast.LENGTH_SHORT).show();
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    File selectedProgram = programsFolder.listFiles()[position];
+
+                    if(selectedProgram != null && selectedProgram.exists()) {
+                        findViewById(R.id.programPreviewPlay).setTag(selectedProgram.getAbsolutePath());
+                        playProgram(R.id.programPreview, Uri.fromFile(selectedProgram));
+                        Toast.makeText(ProgramsListActivity.this, "Opening: " + getFileDisplayName(selectedProgram.getPath()), Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
+        loadActivityByView(findViewById(R.id.programPreviewPlay), ProgramsListActivity.this);
     }
 
     public String[] filterOutNonVideoFiles(String[] names) {
