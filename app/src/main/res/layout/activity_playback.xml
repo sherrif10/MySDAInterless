@@ -10,23 +10,12 @@
 
     <VideoView
         android:id="@+id/videoView_playback"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="157dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_alignParentBottom="true"
+        android:layout_height="fill_parent"/>
 
-    <Button
-        android:id="@+id/button_full_sreen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/videoView_playback"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="75dp"
-        android:text="Full Screen" />
 
 </RelativeLayout>

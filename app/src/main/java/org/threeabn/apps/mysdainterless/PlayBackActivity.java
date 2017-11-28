@@ -2,6 +2,9 @@ package org.threeabn.apps.mysdainterless;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -12,10 +15,13 @@ import java.io.File;
 public class PlayBackActivity extends MySDAActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playback);
 
         playProgram(R.id.videoView_playback, Uri.fromFile(new File(getIntent().getStringExtra("program"))));
-        loadActivityByView(findViewById(R.id.button_full_sreen), PlayBackActivity.this);
+        Toast.makeText(PlayBackActivity.this, "Playing: " + getFileDisplayName(getIntent().getStringExtra("program")), Toast.LENGTH_SHORT).show();
     }
 }

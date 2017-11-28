@@ -57,9 +57,6 @@ public class MySDAActivity extends Activity {
 
                     intent.putExtra("program", (String) view.getTag());
                     startActivity(intent);
-                } else if(R.id.button_full_sreen == v.getId()) {
-                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
                 }
             }
         });
