@@ -48,17 +48,4 @@ public class ProgramsListActivity extends MySDAActivity {
         loadActivityByView(findViewById(R.id.programPreviewPlay), ProgramsListActivity.this);
     }
 
-    public String[] filterOutNonVideoFiles(String[] names) {
-        List<String> strs = new ArrayList<String>();
-
-        if(names != null) {
-            for(String s : names) {//TODO
-                if(checkIfFileNameBelongsToVideoType(s)) {
-                    strs.add(s);
-                }
-            }
-        }
-
-        return strs.size() > 0 ? strs.toArray(new String[strs.size()]) : new String[]{};
-    }
 }

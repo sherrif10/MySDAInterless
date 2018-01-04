@@ -18,6 +18,7 @@ import org.threeabn.apps.mysdainterless.modal.Host;
 import org.threeabn.apps.mysdainterless.modal.Period;
 import org.threeabn.apps.mysdainterless.modal.Person;
 import org.threeabn.apps.mysdainterless.modal.Program;
+import org.threeabn.apps.mysdainterless.modal.Transcript;
 import org.threeabn.apps.mysdainterless.modal.User;
 import org.threeabn.apps.mysdainterless.modal.Video;
 
@@ -60,31 +61,33 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
 
     private void createAllTables(ConnectionSource cs) throws SQLException {
         Log.i(DBSession.class.getName(), "onCreate");
-        TableUtils.createTable(cs, Period.class);
+        /*TableUtils.createTable(cs, Period.class);
         TableUtils.createTable(cs, Video.class);
+        TableUtils.createTable(cs, Transcript.class);
         TableUtils.createTable(cs, Person.class);
-        TableUtils.createTable(cs, User.class);
+        TableUtils.createTable(cs, User.class);*/
         TableUtils.createTable(cs, Program.class);
-        TableUtils.clearTable(cs, Guest.class);
+        /*TableUtils.clearTable(cs, Guest.class);
         TableUtils.clearTable(cs, Host.class);
         TableUtils.createTable(cs, Channel.class);
         TableUtils.clearTable(cs, ChannelProgram.class);
-        TableUtils.clearTable(cs, Favourite.class);
+        TableUtils.clearTable(cs, Favourite.class);*/
     }
 
     private void deleteAllTables(ConnectionSource cs) throws SQLException {
         try {
             Log.i(DBSession.class.getName(), "onCreate");
-            TableUtils.dropTable(cs, Period.class, false);
+            /*TableUtils.dropTable(cs, Period.class, false);
             TableUtils.dropTable(cs, Video.class, false);
             TableUtils.dropTable(cs, Person.class, false);
             TableUtils.dropTable(cs, User.class, false);
+            */
             TableUtils.dropTable(cs, Program.class, false);
-            TableUtils.dropTable(cs, Guest.class, false);
+            /*TableUtils.dropTable(cs, Guest.class, false);
             TableUtils.dropTable(cs, Host.class, false);
             TableUtils.dropTable(cs, Channel.class, false);
             TableUtils.dropTable(cs, ChannelProgram.class, false);
-            TableUtils.dropTable(cs, Favourite.class, false);
+            TableUtils.dropTable(cs, Favourite.class, false);*/
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -92,11 +95,15 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource cs, int oldVersion, int newVersion) {
+        if(oldVersion == 1 && newVersion == 2) {
+            reCreateDatabase(cs);
+        }
+    }
+
+    public void reCreateDatabase(ConnectionSource cs) {
         try {
-            if(oldVersion == 1 && newVersion == 2) {
-                deleteAllTables(cs);
-                createAllTables(cs);
-            }
+            deleteAllTables(cs);
+            createAllTables(cs);
         } catch (SQLException e) {
             e.printStackTrace();
         }

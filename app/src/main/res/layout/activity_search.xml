@@ -7,4 +7,21 @@
     tools:context="org.threeabn.apps.mysdainterless.SearchActivity"
     android:background="@drawable/background_search">
 
+    <EditText
+        android:id="@+id/searchText"
+        android:layout_width="176dp"
+        android:layout_height="38dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Program"
+        tools:layout_editor_absoluteX="606dp"
+        tools:layout_editor_absoluteY="85dp" />
+
+    <ListView
+        android:id="@+id/search_programs_list"
+        android:layout_width="941dp"
+        android:layout_height="355dp"
+        tools:layout_editor_absoluteX="11dp"
+        tools:layout_editor_absoluteY="155dp" />
+
 </android.support.constraint.ConstraintLayout>

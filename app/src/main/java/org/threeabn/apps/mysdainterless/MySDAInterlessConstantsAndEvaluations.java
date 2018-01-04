@@ -18,10 +18,22 @@ import java.util.List;
 public class MySDAInterlessConstantsAndEvaluations {
     public static String  PROGRAMS_DIRECTORY = getMySDAVideosFolderPath();
 
+    public static String PROGRAMS_CSV_FILENAME = "programs.csv";
+
     private static String getMySDAVideosFolderPath() {
-        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + ".mysdainterless";
+        File mySdaStorageLocation = new File(getDataDirectory().getAbsolutePath() + File.separator + "programs");
+
+        if(!mySdaStorageLocation.exists())
+            mySdaStorageLocation.mkdirs();
+        return mySdaStorageLocation.getAbsolutePath();
     }
 
+    /*
+     * TODO improve hard cording here
+     */
+    public static File getDataDirectory() {
+        return new File("/sdcard/.mysdainterless");
+    }
     /**
      * Supports all video file formats at https://en.wikipedia.org/wiki/Video_file_format by this file creation date
      * @param name

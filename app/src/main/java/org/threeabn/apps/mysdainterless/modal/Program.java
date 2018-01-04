@@ -16,9 +16,11 @@ package org.threeabn.apps.mysdainterless.modal;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,28 +34,25 @@ import java.util.List;
 public class Program extends MySDAObject {
 
 	@JsonProperty("name")
-	@DatabaseField(columnName = "name")
+	@DatabaseField()
 	private String name;
 
 	@JsonProperty("description")
-	@DatabaseField(columnName = "description")
+	@DatabaseField()
 	private String description;
-
-	@JsonProperty("period")
-	@DatabaseField(columnName = "period", foreign = true, foreignAutoRefresh = true)
-	private Period period;
 
 	/**
 	 * Series code, contains a code from the serie and number string; such as; WOE000001. It must match the video file name
 	 * //TODO should i have this as a object with name and code?
+	 * This is the program's unique identifier
 	 * */
 	@JsonProperty("code")
-	@DatabaseField(columnName = "code")
+	@DatabaseField(unique = true)
 	private String code;
 
 	//TODO appropriate datatype
 	@JsonProperty("episode")
-	@DatabaseField(columnName = "episode")
+	@DatabaseField()
 	private String episode;
 
 	//TODO appropriate datatype
@@ -61,74 +60,75 @@ public class Program extends MySDAObject {
      * E.g. series code e.g. WOE
      */
 	@JsonProperty("series")
-	@DatabaseField(columnName = "series")
+	@DatabaseField()
 	private String series;
 
     @JsonProperty("duration")
-    @DatabaseField(columnName = "duration")
+    @DatabaseField()
     private String duration;
 
     @JsonProperty("participants")
-    @DatabaseField(columnName = "participants")
+    @DatabaseField()
     private String participants;
 
 	@JsonProperty("presentation")
-	@DatabaseField(columnName = "presentation", foreign = true, foreignAutoRefresh = true)
-	private Video presentation;
+	@DatabaseField()
+	private String presentation;
 
 	@JsonProperty("category")
-	@DatabaseField(columnName = "category")
+	@DatabaseField()
 	private String category;
+
+	@JsonProperty("favourited")
+	@DatabaseField()
+	private boolean favourited;
+
+	/**
+	 * path file location of transcript
+	 */
+	@JsonProperty("transcript")
+	@DatabaseField()
+	private String transcript;
 
 	public Program() {
 	}
 
-	public Program(String name, String description, String code, String duration, Video video) {
+	public Program(String code) {
+		setCode(code);
+	}
+
+	public Program(String code, String name, String description, String duration, String participants, String video, String transcript) {
 		setName(name);
         setDescription(description);
 		setCode(code);
 		setDuration(duration);
+		setParticipants(participants);
 		setPresentation(video);
+		setTranscript(transcript);
 	}
 
-	@JsonProperty("presentation")
-	public Video getPresentation() {
+	public String getPresentation() {
 		return presentation;
 	}
 
-	@JsonProperty("presentation")
-	public void setPresentation(Video presentation) {
+	public void setPresentation(String presentation) {
 		this.presentation = presentation;
 	}
 
-	@JsonProperty("name")
 	public String getName() {
 		return name;
 	}
 
-	@JsonProperty("name")
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	@JsonProperty("description")
 	public String getDescription() {
 		return description;
 	}
 
-	@JsonProperty("description")
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	@JsonProperty("period")
-	public Period getPeriod() {
-		return period;
-	}
-
-	@JsonProperty("period")
-	public void setPeriod(Period period) {
-		this.period = period;
 	}
 
     /**
@@ -144,17 +144,14 @@ public class Program extends MySDAObject {
      * Series code, contains a code from the serie and number string; such as; WOE000001
      * //TODO should i have this as a object with name and code?
      * */
-	@JsonProperty("code")
 	public void setCode(String code) {
 		this.code = code;
 	}
 
-	@JsonProperty("episode")
 	public String getEpisode() {
 		return episode;
 	}
 
-	@JsonProperty("episode")
 	public void setEpisode(String episode) {
 		this.episode = episode;
 	}
@@ -163,7 +160,6 @@ public class Program extends MySDAObject {
     /**
      * E.g. series code e.g. WOE
      */
-	@JsonProperty("series")
 	public String getSeries() {
 		return series;
 	}
@@ -172,42 +168,55 @@ public class Program extends MySDAObject {
     /**
      * E.g. series code e.g. WOE
      */
-	@JsonProperty("series")
 	public void setSeries(String series) {
 		this.series = series;
 	}
 
-	@JsonProperty("category")
 	public String getCategory() {
 		return category;
 	}
 
-	@JsonProperty("category")
 	public void setCategory(ProgramCategory category) {
 		this.category = category.name();
 	}
 
-    @JsonProperty("duration")
     public String getDuration() {
         return duration;
     }
 
-    @JsonProperty("duration")
     public void setDuration(String duration) {
         this.duration = duration;
     }
 
-    @JsonProperty("participants")
     public String getParticipants() {
         return participants;
     }
 
-    @JsonProperty("participants")
     public void setParticipants(String participants) {
         this.participants = participants;
     }
 
-    public enum ProgramCategory {
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public boolean isFavourited() {
+		return favourited;
+	}
+
+	public void setFavourited(boolean favourited) {
+		this.favourited = favourited;
+	}
+
+	public String getTranscript() {
+		return transcript;
+	}
+
+	public void setTranscript(String transcript) {
+		this.transcript = transcript;
+	}
+
+	public enum ProgramCategory {
 		THREEABN_TODAY("3ABN Today"),
 		PREACHING("Preaching"),
 		HEALTH("Cooking, Exercise (Health)"),

@@ -6,6 +6,7 @@ import android.net.Uri;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
@@ -23,9 +24,15 @@ import org.threeabn.apps.mysdainterless.modal.Video;
 import org.threeabn.apps.mysdainterless.orm.DBSession;
 import org.threeabn.apps.mysdainterless.security.PassHashing;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by k-joseph on 13/10/2017.
@@ -54,7 +61,7 @@ public class MySDAService {
 
     public DBSession getDbSession() {
         if(this.dbSession == null && this.context != null)
-            return OpenHelperManager.getHelper(context, DBSession.class);
+            return new DBSession(this.context);
         else
             return this.dbSession;//TODO initialise in inbuilt context pointing to mainactivity perhaps so as this never returns null
     }
@@ -386,19 +393,26 @@ public class MySDAService {
      */
     public void emptyDatabase() {
         try {
-            deleteAllPeriods();
+            /*deleteAllPeriods();
             deleteAllVideos();
             deleteAllPeople();
-            deleteAllUsers();
+            deleteAllUsers();*/
             deleteAllPrograms();
-            deleteAllChannelPrograms();
+            /*deleteAllChannelPrograms();
             deleteAllFavourites();
             deleteAllGuests();
             deleteAllHosts();
-            deleteAllChannels();
+            deleteAllChannels();*/
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * TODO to be used within the unit tests
+     */
+    public void reCreateDatabase() {
+
     }
 
     public Object convertJsonStringToObject(String string, Class clazz) {
@@ -430,4 +444,32 @@ public class MySDAService {
     }
 
     //TODO add getallfavouritesbyUser
+
+    public List<Program> loadProgramsFromCSV(File csvFile) {
+        Pattern pattern = Pattern.compile(",(?=([^\\\"]*\\\"[^\\\"]*\\\")*(?![^\\\"]*\\\"))");
+        List <Program> programs = null;
+
+        if(csvFile != null && csvFile.exists()) {
+            try (BufferedReader in = new BufferedReader(new FileReader(csvFile))) {
+                programs = in.lines().skip(1).map(line -> {
+                    String[] x = pattern.split(line);
+                    //wire in the right video and transfcript; maybe excell should contains rather path to the files
+                    return new Program(trimer(x[0]), trimer(x[1]), trimer(x[2]), trimer(x[3]), trimer(x[4]), null, null);
+                }).collect(Collectors.toList());
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.enable(SerializationFeature.INDENT_OUTPUT);
+                mapper.writeValue(System.out, programs);
+
+            } catch (FileNotFoundException e) {
+
+            } catch (IOException e) {
+
+            }
+        }
+        return programs;
+    }
+
+    private String trimer(String str) {
+        return StringUtils.isNotBlank(str) ? str.replaceAll("\"", "") : str;
+    }
 }

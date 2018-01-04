@@ -7,14 +7,19 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.VideoView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.api.MySDAService;
+import org.threeabn.apps.mysdainterless.modal.Program;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.threeabn.apps.mysdainterless.MySDAInterlessConstantsAndEvaluations.checkIfFileNameBelongsToVideoType;
 
 /**
  * Created by k-joseph on 10/10/2017.
@@ -23,6 +28,7 @@ import java.io.File;
 public class MySDAActivity extends Activity {
 
     private MySDAService service;
+    String programsFolderPath = MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY;
 
     /**
      * DB initialised by default, just call this service
@@ -52,7 +58,8 @@ public class MySDAActivity extends Activity {
                     startActivity(new Intent(context, FavoriteActivity.class));
                 } else if(R.id.image_list == v.getId()) {
                     startActivity(new Intent(context, ProgramsListActivity.class));
-                } else if(R.id.programPreviewPlay == v.getId() && StringUtils.isNoneBlank((String) view.getTag())) {
+                }
+                else if(R.id.programPreviewPlay == v.getId() && StringUtils.isNoneBlank((String) view.getTag())) {
                     Intent intent = new Intent(context, PlayBackActivity.class);
 
                     intent.putExtra("program", (String) view.getTag());
@@ -62,10 +69,45 @@ public class MySDAActivity extends Activity {
         });
     }
 
+    private void installPrograms() {
+        if(StringUtils.isNoneBlank(programsFolderPath)) {
+            File programsFolder = new File(programsFolderPath);
+
+            if(programsFolder.exists() && Arrays.asList(programsFolder.list()).contains(MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME)) {
+                File programsCSV = new File(programsFolder.getAbsolutePath() + File.separator + MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME);
+
+                if(programsCSV.exists() && programsCSV.length() > 0) {
+                    //TODO reset db with programs
+                    //getService().emptyDatabase();
+                    List<Program> programs = getService().loadProgramsFromCSV(programsCSV);
+
+                    if(programs != null) {
+                        for(Program p: programs) {
+                            try {
+                                getService().saveProgram(p);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    programsCSV.delete();
+                }
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hideSoftKeyboard();
+        //hideSoftKeyboard();
+        if(StringUtils.isNotBlank(programsFolderPath)) {
+            File programsFolder = new File(programsFolderPath);
+
+            if(!programsFolder.exists()) {
+                programsFolder.mkdirs();
+            }
+            installPrograms();
+        }
     }
 
     @Override
@@ -97,5 +139,19 @@ public class MySDAActivity extends Activity {
             videoView.requestFocus();
             }
         });
+    }
+
+    public String[] filterOutNonVideoFiles(String[] names) {
+        List<String> strs = new ArrayList<String>();
+
+        if(names != null) {
+            for(String s : names) {//TODO
+                if(checkIfFileNameBelongsToVideoType(s)) {
+                    strs.add(s);
+                }
+            }
+        }
+
+        return strs.size() > 0 ? strs.toArray(new String[strs.size()]) : new String[]{};
     }
 }
