@@ -74,6 +74,8 @@ public class ProgramsList extends ArrayAdapter<String> {
         return rowView;
     }
 
+
+
     public Bitmap createThumbnailFromPath(String filePath, int type){
         return ThumbnailUtils.createVideoThumbnail(filePath, type);
     }
