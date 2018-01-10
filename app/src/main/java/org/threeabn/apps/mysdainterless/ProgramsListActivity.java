@@ -66,4 +66,5 @@ public class ProgramsListActivity extends MySDAActivity {
         loadActivityByView(findViewById(R.id.programPreviewPlay), ProgramsListActivity.this);
     }
 
+
 }
