@@ -30,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -261,7 +262,7 @@ public class MySDAService {
     public Period getPeriodByUuid(String uuid) throws SQLException {
         List<Period> list = getDbSession().getByField(Period.class, "uuid", uuid);
 
-        if(list != null && list.size() == 1)
+        if(list != null)
             return list.get(0);
         return null;
     }
@@ -269,7 +270,7 @@ public class MySDAService {
     public Video getVideoByUuid(String uuid) throws SQLException {
         List<Video> list = getDbSession().getByField(Video.class, "uuid", uuid);
 
-        if(list != null && list.size() == 1)
+        if(list != null)
             return list.get(0);
         return null;
     }
@@ -277,7 +278,7 @@ public class MySDAService {
     public Person getPersonByUuid(String uuid) throws SQLException {
         List<Person> list = getDbSession().getByField(Person.class, "uuid", uuid);
 
-        if(list != null && list.size() == 1)
+        if(list != null)
             return list.get(0);
         return null;
     }
@@ -285,7 +286,7 @@ public class MySDAService {
     public User getUserByUuid(String uuid) throws SQLException {
         List<User> list = getDbSession().getByField(User.class, "uuid", uuid);
 
-        if(list != null && list.size() == 1)
+        if(list != null)
             return list.get(0);
         return null;
     }
@@ -293,7 +294,7 @@ public class MySDAService {
     public User getUserByUsername(String username) throws SQLException {
         List<User> list = getDbSession().getByField(User.class, "username", username);
 
-        if(list != null && list.size() == 1)
+        if(list != null)
             return list.get(0);
         return null;
     }
@@ -301,7 +302,7 @@ public class MySDAService {
     public Program getProgramByUuid(String uuid) throws SQLException {
         List<Program> list = getDbSession().getByField(Program.class, "uuid", uuid);
 
-        if(list != null && list.size() == 1)
+        if(list != null)
             return list.get(0);
         return null;
     }
@@ -309,7 +310,7 @@ public class MySDAService {
     public Program getProgramByCode(String code) throws SQLException {
         List<Program> list = getDbSession().getByField(Program.class, "code", code);
 
-        if(list != null && list.size() == 1)
+        if(list != null)
             return list.get(0);
         return null;
     }
@@ -321,7 +322,7 @@ public class MySDAService {
     public Favourite getFavouriteByUuid(String uuid) throws SQLException {
         List<Favourite> list = getDbSession().getByField(Favourite.class, "uuid", uuid);
 
-        if(list != null && list.size() == 1)
+        if(list != null)
             return list.get(0);
         return null;
     }
@@ -342,7 +343,7 @@ public class MySDAService {
     public Channel getChannelByUuid(String uuid) throws SQLException {
         List<Channel> list = getDbSession().getByField(Channel.class, "uuid", uuid);
 
-        if(list != null && list.size() == 1)
+        if(list != null)
             return list.get(0);
         return null;
     }
@@ -350,7 +351,7 @@ public class MySDAService {
     public Guest getGuestByUuid(String uuid) throws SQLException {
         List<Guest> list = getDbSession().getByField(Guest.class, "uuid", uuid);
 
-        if(list != null && list.size() == 1)
+        if(list != null)
             return list.get(0);
         return null;
     }
@@ -358,7 +359,7 @@ public class MySDAService {
     public Host getHostByUuid(String uuid) throws SQLException {
         List<Host> list = getDbSession().getByField(Host.class, "uuid", uuid);
 
-        if(list != null && list.size() == 1)
+        if(list != null)
             return list.get(0);
         return null;
     }
@@ -366,7 +367,7 @@ public class MySDAService {
     public ChannelProgram getChannelProgramByUuid(String uuid) throws SQLException {
         List<ChannelProgram> list = getDbSession().getByField(ChannelProgram.class, "uuid", uuid);
 
-        if(list != null && list.size() == 1)
+        if(list != null)
             return list.get(0);
         return null;
     }

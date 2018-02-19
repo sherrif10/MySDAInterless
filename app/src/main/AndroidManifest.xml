@@ -31,7 +31,12 @@
         <activity
             android:name=".SearchActivity"
             android:theme="@style/AppTheme"
-            android:label="@string/search" />
+            android:label="@string/search"
+            android:windowSoftInputMode="stateVisible|adjustResize"/>
+        <activity
+            android:name=".SearchResultsActivity"
+            android:theme="@style/AppTheme"
+            android:label="@string/search_results"/>
         <activity
             android:name=".FavoriteActivity"
             android:theme="@style/AppTheme"

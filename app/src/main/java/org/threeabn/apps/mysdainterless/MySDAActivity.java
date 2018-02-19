@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.VideoView;
@@ -32,18 +34,20 @@ public class MySDAActivity extends Activity {
 
     /**
      * DB initialised by default, just call this service
+     *
      * @return
      */
     public MySDAService getService() {
-        if(service == null)
+        if (service == null)
             return new MySDAService(this);
         return service;
     }
+
     /**
      * Hides the soft keyboard
      */
     public void hideSoftKeyboard() {
-        if(getCurrentFocus()!=null) {
+        if (getCurrentFocus() != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
@@ -52,14 +56,13 @@ public class MySDAActivity extends Activity {
     public void loadActivityByView(final View view, final Context context) {
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(R.id.image_search == v.getId()) {
+                if (R.id.image_search == v.getId()) {
                     startActivity(new Intent(context, SearchActivity.class));
-                } else if(R.id.image_favorite == v.getId()) {
+                } else if (R.id.image_favorite == v.getId()) {
                     startActivity(new Intent(context, FavoriteActivity.class));
-                } else if(R.id.image_list == v.getId()) {
+                } else if (R.id.image_list == v.getId()) {
                     startActivity(new Intent(context, ProgramsListActivity.class));
-                }
-                else if(R.id.programPreviewPlay == v.getId() && StringUtils.isNoneBlank((String) view.getTag())) {
+                } else if (R.id.programPreviewPlay == v.getId() && StringUtils.isNoneBlank((String) view.getTag())) {
                     Intent intent = new Intent(context, PlayBackActivity.class);
 
                     intent.putExtra("program", (String) view.getTag());
@@ -70,19 +73,19 @@ public class MySDAActivity extends Activity {
     }
 
     private void installPrograms() {
-        if(StringUtils.isNoneBlank(programsFolderPath)) {
+        if (StringUtils.isNoneBlank(programsFolderPath)) {
             File programsFolder = new File(programsFolderPath);
 
-            if(programsFolder.exists() && Arrays.asList(programsFolder.list()).contains(MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME)) {
+            if (programsFolder.exists() && Arrays.asList(programsFolder.list()).contains(MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME)) {
                 File programsCSV = new File(programsFolder.getAbsolutePath() + File.separator + MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME);
 
-                if(programsCSV.exists() && programsCSV.length() > 0) {
+                if (programsCSV.exists() && programsCSV.length() > 0) {
                     //TODO reset db with programs
                     //getService().emptyDatabase();
                     List<Program> programs = getService().loadProgramsFromCSV(programsCSV);
 
-                    if(programs != null) {
-                        for(Program p: programs) {
+                    if (programs != null) {
+                        for (Program p : programs) {
                             try {
                                 getService().saveProgram(p);
                             } catch (Exception e) {
@@ -100,10 +103,10 @@ public class MySDAActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //hideSoftKeyboard();
-        if(StringUtils.isNotBlank(programsFolderPath)) {
+        if (StringUtils.isNotBlank(programsFolderPath)) {
             File programsFolder = new File(programsFolderPath);
 
-            if(!programsFolder.exists()) {
+            if (!programsFolder.exists()) {
                 programsFolder.mkdirs();
             }
             installPrograms();
@@ -111,18 +114,18 @@ public class MySDAActivity extends Activity {
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
     }
 
     //TODO this should rather load the program name from the api using this current returned file name/code
     public String getFileDisplayName(String path) {
-        if(StringUtils.isNotBlank(path))
+        if (StringUtils.isNotBlank(path))
             return path.substring(path.lastIndexOf(File.separator), path.length()).replace(File.separator, "");
         return null;
     }
@@ -134,21 +137,35 @@ public class MySDAActivity extends Activity {
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-            mp.setLooping(true);
-            videoView.start();
-            videoView.requestFocus();
+                mp.setLooping(true);
+                videoView.start();
+                videoView.requestFocus();
             }
         });
     }
 
-    public String[] filterOutNonVideoFiles(String[] names) {
+    public String[] filterOutNonVideoFilesAndMatchSearchPhrase(String[] codes, String searchText) {
         List<String> strs = new ArrayList<String>();
 
-        if(names != null) {
-            for(String s : names) {//TODO
-                if(checkIfFileNameBelongsToVideoType(s)) {
-                    strs.add(s);
+        if (codes != null) {
+            try {
+                for (String s : codes) {//TODO
+                    Program p = getService().getProgramByCode(s.substring(0, s.indexOf(".")));
+
+                    if (p != null && checkIfFileNameBelongsToVideoType(s) &&
+                            ((!TextUtils.isEmpty(p.getName()) && p.getName().toLowerCase().contains(searchText.toLowerCase()))
+                            || (!TextUtils.isEmpty(p.getCategory()) && p.getCategory().toLowerCase().contains(searchText.toLowerCase()))
+                            || (!TextUtils.isEmpty(p.getSeries()) && p.getSeries().toLowerCase().contains(searchText.toLowerCase()))
+                            || (!TextUtils.isEmpty(p.getEpisode()) && p.getEpisode().toLowerCase().contains(searchText.toLowerCase()))
+                            || (!TextUtils.isEmpty(p.getCode()) && p.getCode().toLowerCase().contains(searchText.toLowerCase()))
+                            || (!TextUtils.isEmpty(p.getDescription()) && p.getDescription().toLowerCase().contains(searchText.toLowerCase()))
+                            || (!TextUtils.isEmpty(p.getParticipants()) && p.getParticipants().toLowerCase().contains(searchText.toLowerCase()))
+                            || (!TextUtils.isEmpty(p.getDuration()) && p.getDuration().toLowerCase().contains(searchText.toLowerCase())))) {
+                        strs.add(s);
+                    }
                 }
+            } catch (Exception e) {
+                Log.e("SQL_ERROR: ", e.getLocalizedMessage());
             }
         }
 

@@ -1,39 +1,32 @@
 package org.threeabn.apps.mysdainterless;
 
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import java.io.File;
+import android.widget.Button;
+import android.widget.EditText;
 
 /**
  * Created by k-joseph on 10/10/2017.
  */
 
 public class SearchActivity extends MySDAActivity {
+    public static String SEARCH_TEXT = "searchText";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        EditText inputSearch = (EditText) findViewById(R.id.searchText);
 
-        final File programsFolder = new File(MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY);
-        ProgramsList listAdapter = new ProgramsList(SearchActivity.this, filterOutNonVideoFiles(programsFolder.list()), true);
-        ListView list = (ListView) findViewById(R.id.search_programs_list);
-
-        list.setAdapter(listAdapter);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ((Button) findViewById(R.id.searchEnter)).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                File selectedProgram = programsFolder.listFiles()[position];
-
-                if(selectedProgram != null && selectedProgram.exists()) {
-                    findViewById(R.id.programPreviewPlay).setTag(selectedProgram.getAbsolutePath());
-                    playProgram(R.id.programPreview, Uri.fromFile(selectedProgram));
-                    Toast.makeText(SearchActivity.this, "Opening: " + getFileDisplayName(selectedProgram.getPath()), Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(inputSearch.getText()) && inputSearch.getText().length() >= 3) {
+                    Intent i = new Intent(getApplicationContext(), SearchResultsActivity.class);
+                    i.putExtra(SEARCH_TEXT, inputSearch.getText());
+                    getApplicationContext().startActivity(i);
                 }
             }
         });

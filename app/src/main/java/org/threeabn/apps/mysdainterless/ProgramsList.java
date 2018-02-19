@@ -1,6 +1,7 @@
 package org.threeabn.apps.mysdainterless;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,11 +25,10 @@ import java.util.List;
  * Created by k-joseph on 29/10/2017.
  */
 
-public class ProgramsList extends ArrayAdapter<String> {
+public class ProgramsList extends ArrayAdapter<String> implements Filterable {
     private Activity context;
     private String[] programPaths;
     private boolean detailPrograms;
-    private List<Program> programs;
 
 
     public ProgramsList(Activity context, String[] programPaths) {
@@ -95,47 +96,62 @@ public class ProgramsList extends ArrayAdapter<String> {
 
     @Override
     public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                List<Program> filteredResult = getFilteredResults(charSequence);
-
-                FilterResults results = new FilterResults();
-                results.values = filteredResult;
-                results.count = filteredResult.size();
-
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                programs = (ArrayList<Program>) filterResults.values;
-                ProgramsList.this.notifyDataSetChanged();
-            }
-
-
-            private List<Program> getFilteredResults(CharSequence constraint) {
-                ArrayList<Program> listResult = new ArrayList<Program>();
-
-                try {
-                    List<Program> allPrograms = ((MySDAActivity) context).getService().getAllPrograms();
-                    if (constraint.length() == 0) {
-                        return allPrograms;
-                    }
-                    for (Program p : allPrograms) {
-                        //TODO constraint???
-                        if (constraint.equals(p.getName()) || constraint.equals(p.getCategory()) ||
-                                constraint.equals(p.getSeries()) || constraint.equals(p.getEpisode())
-                                || constraint.equals(p.getCode()) || constraint.equals(p.getDescription())
-                                || constraint.equals(p.getParticipants()) || constraint.equals(p.getDuration())) {
-                            listResult.add(p);
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return listResult;
-            }
-        };
+        return new ProgramFilter(context);
     }
+
+    public class ProgramFilter extends Filter {
+
+        ProgramFilter(Context context) {
+            context = context;
+        }
+
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<Program> filteredResult = getFilteredResults(charSequence);
+
+            FilterResults results = new FilterResults();
+            results.values = filteredResult;
+            results.count = filteredResult.size();
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            if (filterResults.count == 0) {
+                notifyDataSetInvalidated();
+            } else {
+                notifyDataSetChanged();
+            }
+        }
+
+
+        private List<Program> getFilteredResults(CharSequence constraint) {
+            ArrayList<Program> listResult = new ArrayList<Program>();
+
+            try {
+                List<Program> allPrograms = ((MySDAActivity) context).getService().getAllPrograms();
+                if (constraint.length() == 0) {
+                    return allPrograms;
+                }
+                for (Program p : allPrograms) {
+                    //TODO constraint???
+                    if (p.getName().toLowerCase().contains(constraint.toString().toLowerCase())
+                            || p.getCategory().toLowerCase().contains(constraint.toString().toLowerCase())
+                            || p.getSeries().toLowerCase().contains(constraint.toString().toLowerCase())
+                            || p.getEpisode().toLowerCase().contains(constraint.toString().toLowerCase())
+                            || p.getCode().toLowerCase().contains(constraint.toString().toLowerCase())
+                            || p.getDescription().toLowerCase().contains(constraint.toString().toLowerCase())
+                            || p.getParticipants().toLowerCase().contains(constraint.toString().toLowerCase())
+                            || p.getDuration().toLowerCase().contains(constraint.toString().toLowerCase())) {
+                        listResult.add(p);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return listResult;
+        }
+    }
+
 }

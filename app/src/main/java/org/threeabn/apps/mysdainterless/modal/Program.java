@@ -35,11 +35,11 @@ public class Program extends MySDAObject {
 
 	@JsonProperty("name")
 	@DatabaseField()
-	private String name;
+	private String name = "";
 
 	@JsonProperty("description")
 	@DatabaseField()
-	private String description;
+	private String description = "";
 
 	/**
 	 * Series code, contains a code from the serie and number string; such as; WOE000001. It must match the video file name

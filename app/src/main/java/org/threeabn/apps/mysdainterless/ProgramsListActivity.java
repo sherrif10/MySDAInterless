@@ -2,11 +2,8 @@ package org.threeabn.apps.mysdainterless;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,30 +22,9 @@ public class ProgramsListActivity extends MySDAActivity {
         final File programsFolder = new File(MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY);
 
         if(programsFolder != null && programsFolder.exists() && programsFolder.list().length> 0) {
-            ProgramsList listAdapter = new ProgramsList(ProgramsListActivity.this, filterOutNonVideoFiles(programsFolder.list()));
+            ProgramsList listAdapter = new ProgramsList(ProgramsListActivity.this, filterOutNonVideoFilesAndMatchSearchPhrase(programsFolder.list(), null));
             ListView list = (ListView) findViewById(R.id.list_programs_view);
-            EditText inputSearch = (EditText) findViewById(R.id.searchText);
 
-            if(inputSearch != null) {
-                /**
-                 * Enabling Search Filter
-                 * */
-                inputSearch.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                        // When user changed the Text
-                        listAdapter.getFilter().filter(cs);
-                    }
-
-                    @Override
-                    public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable arg0) {
-                    }
-                });
-            }
             list.setAdapter(listAdapter);
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
