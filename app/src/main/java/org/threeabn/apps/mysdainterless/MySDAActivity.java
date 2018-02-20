@@ -147,7 +147,7 @@ public class MySDAActivity extends Activity {
     public String[] filterOutNonVideoFilesAndMatchSearchPhrase(String[] codes, String searchText) {
         List<String> strs = new ArrayList<String>();
 
-        if (codes != null) {
+        if (codes != null && !TextUtils.isEmpty(searchText)) {
             try {
                 for (String s : codes) {//TODO
                     Program p = getService().getProgramByCode(s.substring(0, s.indexOf(".")));

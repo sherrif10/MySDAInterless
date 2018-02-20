@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -28,10 +29,15 @@ public class SearchResultsActivity extends MySDAActivity {
         });
         String searchText = getIntent().getExtras().get(SearchActivity.SEARCH_TEXT).toString();
         final File programsFolder = new File(MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY);
-        ProgramsList listAdapter = new ProgramsList(SearchResultsActivity.this, filterOutNonVideoFilesAndMatchSearchPhrase(programsFolder.list(), searchText), true);
+        String[] foundProgramsPaths = filterOutNonVideoFilesAndMatchSearchPhrase(programsFolder.list(), searchText);
+        ProgramsList listAdapter = new ProgramsList(SearchResultsActivity.this, foundProgramsPaths, true);
         ListView list = (ListView) findViewById(R.id.search_programs_list);
+        TextView foundSearchResults = (TextView) findViewById(R.id.foundSearchResults);
 
         list.setAdapter(listAdapter);
+        if(foundProgramsPaths != null) {
+            foundSearchResults.setText(getString(R.string.search_found_results, foundProgramsPaths.length, searchText));
+        }
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -20,6 +21,7 @@ public class SearchActivity extends MySDAActivity {
         setContentView(R.layout.activity_search);
         EditText inputSearch = (EditText) findViewById(R.id.searchText);
 
+        inputSearch.requestFocus();
         ((Button) findViewById(R.id.searchEnter)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -30,5 +32,10 @@ public class SearchActivity extends MySDAActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void hideSoftKeyboard() {
+        //do nothing
     }
 }

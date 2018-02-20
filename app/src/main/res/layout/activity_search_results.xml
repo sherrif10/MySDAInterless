@@ -10,6 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/foundSearchResults"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_found_programs"
+            android:gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:textSize="24dp"/>
         <ListView
             android:id="@+id/search_programs_list"
             android:layout_width="match_parent"
