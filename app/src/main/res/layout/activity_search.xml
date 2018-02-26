@@ -18,10 +18,9 @@
                 android:id="@+id/searchText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:padding="10dp"
                 android:hint="Program code/name/description..."
-                />
+                android:inputType="textPersonName"
+                android:padding="10dp" />
             <Button
                 android:id="@+id/searchEnter"
                 android:layout_width="wrap_content"

@@ -22,7 +22,7 @@ public class ProgramsListActivity extends MySDAActivity {
         final File programsFolder = new File(MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY);
 
         if(programsFolder != null && programsFolder.exists() && programsFolder.list().length> 0) {
-            ProgramsList listAdapter = new ProgramsList(ProgramsListActivity.this, filterOutNonVideoFilesAndMatchSearchPhrase(programsFolder.list(), null));
+            ProgramsList listAdapter = new ProgramsList(ProgramsListActivity.this, filterOutNonVideoFilesAndMatchSearchPhraseOrFavorited(programsFolder.list(), null, true));
             ListView list = (ListView) findViewById(R.id.list_programs_view);
 
             list.setAdapter(listAdapter);

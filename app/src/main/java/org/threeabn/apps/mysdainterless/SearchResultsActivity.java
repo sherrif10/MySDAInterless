@@ -29,7 +29,7 @@ public class SearchResultsActivity extends MySDAActivity {
         });
         String searchText = getIntent().getExtras().get(SearchActivity.SEARCH_TEXT).toString();
         final File programsFolder = new File(MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY);
-        String[] foundProgramsPaths = filterOutNonVideoFilesAndMatchSearchPhrase(programsFolder.list(), searchText);
+        String[] foundProgramsPaths = filterOutNonVideoFilesAndMatchSearchPhraseOrFavorited(programsFolder.list(), searchText, null);
         ProgramsList listAdapter = new ProgramsList(SearchResultsActivity.this, foundProgramsPaths, true);
         ListView list = (ListView) findViewById(R.id.search_programs_list);
         TextView foundSearchResults = (TextView) findViewById(R.id.foundSearchResults);

@@ -7,4 +7,23 @@
     tools:context="org.threeabn.apps.mysdainterless.FavoriteActivity"
     android:background="@drawable/backgroundscreen">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/programCategorySpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="4dp">
+
+        </Spinner>
+        <ListView
+            android:id="@+id/favorite_programs_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

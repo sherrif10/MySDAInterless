@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.VideoView;
 
 import org.apache.commons.lang3.StringUtils;
@@ -51,6 +52,11 @@ public class MySDAActivity extends Activity {
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
+    }
+
+    public void showSoftKeyboard(Context context, EditText editText){
+        InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
     public void loadActivityByView(final View view, final Context context) {
@@ -144,31 +150,45 @@ public class MySDAActivity extends Activity {
         });
     }
 
-    public String[] filterOutNonVideoFilesAndMatchSearchPhrase(String[] codes, String searchText) {
+    public String[] filterOutNonVideoFilesAndMatchSearchPhraseOrFavorited(String[] codes, String searchText, Boolean favorited) {
         List<String> strs = new ArrayList<String>();
+        try {
+            if (codes != null && !TextUtils.isEmpty(searchText)) {
 
-        if (codes != null && !TextUtils.isEmpty(searchText)) {
-            try {
-                for (String s : codes) {//TODO
+                    for (String s : codes) {//TODO
+                        Program p = getService().getProgramByCode(s.substring(0, s.indexOf(".")));
+
+                        if (p != null && checkIfFileNameBelongsToVideoType(s) &&
+                                ((!TextUtils.isEmpty(p.getName()) && p.getName().toLowerCase().contains(searchText.toLowerCase()))
+                                || (!TextUtils.isEmpty(p.getCategory()) && p.getCategory().toLowerCase().contains(searchText.toLowerCase()))
+                                || (!TextUtils.isEmpty(p.getSeries()) && p.getSeries().toLowerCase().contains(searchText.toLowerCase()))
+                                || (!TextUtils.isEmpty(p.getEpisode()) && p.getEpisode().toLowerCase().contains(searchText.toLowerCase()))
+                                || (!TextUtils.isEmpty(p.getCode()) && p.getCode().toLowerCase().contains(searchText.toLowerCase()))
+                                || (!TextUtils.isEmpty(p.getDescription()) && p.getDescription().toLowerCase().contains(searchText.toLowerCase()))
+                                || (!TextUtils.isEmpty(p.getParticipants()) && p.getParticipants().toLowerCase().contains(searchText.toLowerCase()))
+                                || (!TextUtils.isEmpty(p.getDuration()) && p.getDuration().toLowerCase().contains(searchText.toLowerCase())))) {
+                            strs.add(s);
+                        }
+                    }
+
+            } else if(codes != null && favorited) {
+                for (String s : codes) {
                     Program p = getService().getProgramByCode(s.substring(0, s.indexOf(".")));
 
-                    if (p != null && checkIfFileNameBelongsToVideoType(s) &&
-                            ((!TextUtils.isEmpty(p.getName()) && p.getName().toLowerCase().contains(searchText.toLowerCase()))
-                            || (!TextUtils.isEmpty(p.getCategory()) && p.getCategory().toLowerCase().contains(searchText.toLowerCase()))
-                            || (!TextUtils.isEmpty(p.getSeries()) && p.getSeries().toLowerCase().contains(searchText.toLowerCase()))
-                            || (!TextUtils.isEmpty(p.getEpisode()) && p.getEpisode().toLowerCase().contains(searchText.toLowerCase()))
-                            || (!TextUtils.isEmpty(p.getCode()) && p.getCode().toLowerCase().contains(searchText.toLowerCase()))
-                            || (!TextUtils.isEmpty(p.getDescription()) && p.getDescription().toLowerCase().contains(searchText.toLowerCase()))
-                            || (!TextUtils.isEmpty(p.getParticipants()) && p.getParticipants().toLowerCase().contains(searchText.toLowerCase()))
-                            || (!TextUtils.isEmpty(p.getDuration()) && p.getDuration().toLowerCase().contains(searchText.toLowerCase())))) {
+                    if(p != null && p.isFavourited()) {
                         strs.add(s);
                     }
                 }
-            } catch (Exception e) {
-                Log.e("SQL_ERROR: ", e.getLocalizedMessage());
             }
+        } catch (Exception e) {
+            Log.e("SQL_ERROR: ", e.getLocalizedMessage());
         }
-
         return strs.size() > 0 ? strs.toArray(new String[strs.size()]) : new String[]{};
     }
+
+    /*
+     * TODO:
+     * 1. replaced list adapters with fragmentation
+     * 2. increase search speed by caching programs
+     */
 }
