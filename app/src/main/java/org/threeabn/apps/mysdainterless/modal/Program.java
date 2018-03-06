@@ -97,7 +97,7 @@ public class Program extends MySDAObject {
 		setCode(code);
 	}
 
-	public Program(String code, String name, String description, String duration, String participants, String video, String transcript) {
+	public Program(String code, String name, String description, String duration, String participants, String video, String transcript, Boolean favourited) {
 		setName(name);
         setDescription(description);
 		setCode(code);
@@ -105,6 +105,7 @@ public class Program extends MySDAObject {
 		setParticipants(participants);
 		setPresentation(video);
 		setTranscript(transcript);
+		setFavourited(favourited);
 	}
 
 	public String getPresentation() {

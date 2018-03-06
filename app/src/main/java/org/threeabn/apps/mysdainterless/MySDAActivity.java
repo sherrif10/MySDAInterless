@@ -14,12 +14,10 @@ import android.widget.EditText;
 import android.widget.VideoView;
 
 import org.apache.commons.lang3.StringUtils;
-import org.threeabn.apps.mysdainterless.api.MySDAService;
 import org.threeabn.apps.mysdainterless.modal.Program;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.threeabn.apps.mysdainterless.MySDAInterlessConstantsAndEvaluations.checkIfFileNameBelongsToVideoType;
@@ -27,22 +25,7 @@ import static org.threeabn.apps.mysdainterless.MySDAInterlessConstantsAndEvaluat
 /**
  * Created by k-joseph on 10/10/2017.
  */
-
 public class MySDAActivity extends Activity {
-
-    private MySDAService service;
-    String programsFolderPath = MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY;
-
-    /**
-     * DB initialised by default, just call this service
-     *
-     * @return
-     */
-    public MySDAService getService() {
-        if (service == null)
-            return new MySDAService(this);
-        return service;
-    }
 
     /**
      * Hides the soft keyboard
@@ -78,45 +61,10 @@ public class MySDAActivity extends Activity {
         });
     }
 
-    private void installPrograms() {
-        if (StringUtils.isNoneBlank(programsFolderPath)) {
-            File programsFolder = new File(programsFolderPath);
-
-            if (programsFolder.exists() && Arrays.asList(programsFolder.list()).contains(MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME)) {
-                File programsCSV = new File(programsFolder.getAbsolutePath() + File.separator + MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME);
-
-                if (programsCSV.exists() && programsCSV.length() > 0) {
-                    //TODO reset db with programs
-                    //getService().emptyDatabase();
-                    List<Program> programs = getService().loadProgramsFromCSV(programsCSV);
-
-                    if (programs != null) {
-                        for (Program p : programs) {
-                            try {
-                                getService().saveProgram(p);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                    programsCSV.delete();
-                }
-            }
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //hideSoftKeyboard();
-        if (StringUtils.isNotBlank(programsFolderPath)) {
-            File programsFolder = new File(programsFolderPath);
-
-            if (!programsFolder.exists()) {
-                programsFolder.mkdirs();
-            }
-            installPrograms();
-        }
     }
 
     @Override
@@ -156,7 +104,7 @@ public class MySDAActivity extends Activity {
             if (codes != null && !TextUtils.isEmpty(searchText)) {
 
                     for (String s : codes) {//TODO
-                        Program p = getService().getProgramByCode(s.substring(0, s.indexOf(".")));
+                        Program p = ((MySDAInterlessApp)getApplication()).getService().getProgramByCode(s.substring(0, s.indexOf(".")));
 
                         if (p != null && checkIfFileNameBelongsToVideoType(s) &&
                                 ((!TextUtils.isEmpty(p.getName()) && p.getName().toLowerCase().contains(searchText.toLowerCase()))
@@ -173,7 +121,7 @@ public class MySDAActivity extends Activity {
 
             } else if(codes != null && favorited) {
                 for (String s : codes) {
-                    Program p = getService().getProgramByCode(s.substring(0, s.indexOf(".")));
+                    Program p = ((MySDAInterlessApp)getApplication()).getService().getProgramByCode(s.substring(0, s.indexOf(".")));
 
                     if(p != null && p.isFavourited()) {
                         strs.add(s);

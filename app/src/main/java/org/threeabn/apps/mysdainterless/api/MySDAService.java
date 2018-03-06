@@ -3,13 +3,14 @@ package org.threeabn.apps.mysdainterless.api;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.modal.Channel;
 import org.threeabn.apps.mysdainterless.modal.ChannelProgram;
@@ -30,7 +31,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -453,9 +453,11 @@ public class MySDAService {
         if(csvFile != null && csvFile.exists()) {
             try (BufferedReader in = new BufferedReader(new FileReader(csvFile))) {
                 programs = in.lines().skip(1).map(line -> {
-                    String[] x = pattern.split(line);
+                    String[] x = pattern.split(line, -1);
+                    //TODO fix this
                     //wire in the right video and transfcript; maybe excell should contains rather path to the files
-                    return new Program(trimer(x[0]), trimer(x[1]), trimer(x[2]), trimer(x[3]), trimer(x[4]), null, null);
+                    return new Program(trimer(x[0]), trimer(x[1]), trimer(x[2]), trimer(x[3]), trimer(x[4])
+                            , null, null, !TextUtils.isEmpty(trimer(x[7])) ? BooleanUtils.toBoolean(trimer(x[7])) : false);
                 }).collect(Collectors.toList());
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.enable(SerializationFeature.INDENT_OUTPUT);
