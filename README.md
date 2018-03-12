@@ -1,5 +1,4 @@
 # MySDA interless app
-_____________________
 
 This is MySDA app similarly to MySDA streaming app, this is rather meant to store the programs on the device and play off that
 
@@ -15,7 +14,7 @@ This is MySDA app similarly to MySDA streaming app, this is rather meant to stor
 ## Pending
 
 - [ ] Favorite program
-- [ ] Hundle program duplication, probably ORMlite isn't good here
+- [x] Hundle program duplication, probably ORMlite isn't good here
 - [ ] Replace list view with well improved layout fragments
 - [ ] Remove all unused code
 - [ ] Cache programs
@@ -27,4 +26,5 @@ This is MySDA app similarly to MySDA streaming app, this is rather meant to stor
 - [ ] Document process of importing programs and managment, this app is just a container,
 it should be versioned separately from the included programs
 - [ ] encrypt programs
+- [ ] Apply included formatter onto the code and do final refactoring
 - [ ] Demo app

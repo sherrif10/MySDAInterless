@@ -54,6 +54,8 @@ dependencies {
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.7.0'
     implementation 'org.apache.commons:commons-lang3:3.6'
     implementation 'com.android.support:multidex:1.0.0'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:r2.4.0'
+
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.android.support.test:runner:0.5'
     testImplementation 'com.android.support.test:rules:0.5'

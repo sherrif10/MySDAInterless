@@ -3,20 +3,16 @@ package org.threeabn.apps.mysdainterless;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.VideoView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.modal.Program;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +33,8 @@ public class MySDAActivity extends Activity {
         }
     }
 
-    public void showSoftKeyboard(Context context, EditText editText){
-        InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+    public void showSoftKeyboard(Context context, EditText editText) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
@@ -77,59 +73,42 @@ public class MySDAActivity extends Activity {
         super.onStop();
     }
 
-    //TODO this should rather load the program name from the api using this current returned file name/code
-    public String getFileDisplayName(String path) {
-        if (StringUtils.isNotBlank(path))
-            return path.substring(path.lastIndexOf(File.separator), path.length()).replace(File.separator, "");
-        return null;
-    }
-
-    public void playProgram(int playerId, Uri program) {
-        final VideoView videoView = (VideoView) findViewById(playerId);
-
-        videoView.setVideoURI(program);
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.setLooping(true);
-                videoView.start();
-                videoView.requestFocus();
-            }
-        });
-    }
-
-    public String[] filterOutNonVideoFilesAndMatchSearchPhraseOrFavorited(String[] codes, String searchText, Boolean favorited) {
+    /**
+     * @param codes
+     * @param searchText, can be null or applied one or with favorited
+     * @param favorited,  can be null or applied one or with searchText
+     * @return
+     */
+    public String[] filterPrograms(String[] codes, String searchText, Boolean favorited) {
         List<String> strs = new ArrayList<String>();
-        try {
-            if (codes != null && !TextUtils.isEmpty(searchText)) {
 
-                    for (String s : codes) {//TODO
-                        Program p = ((MySDAInterlessApp)getApplication()).getService().getProgramByCode(s.substring(0, s.indexOf(".")));
+        if (codes != null) {
+            for (String s : codes) {//TODO
+                Program p = null;
+                try {
+                    p = ((MySDAInterlessApp) getApplication()).getService().getProgramByCode(s.substring(0, s.indexOf(".")));
+                } catch (Exception e) {
+                    Log.e("SQL_ERROR: ", e.getLocalizedMessage());
+                    continue;
+                }
+                if (checkIfFileNameBelongsToVideoType(s) && p != null) {
+                    if (TextUtils.isEmpty(searchText) || (!TextUtils.isEmpty(searchText) &&
+                            ((!TextUtils.isEmpty(p.getName()) && p.getName().toLowerCase().contains(searchText.toLowerCase()))
+                                    || (!TextUtils.isEmpty(p.getCategory()) && p.getCategory().toLowerCase().contains(searchText.toLowerCase()))
+                                    || (!TextUtils.isEmpty(p.getSeries()) && p.getSeries().toLowerCase().contains(searchText.toLowerCase()))
+                                    || (!TextUtils.isEmpty(p.getEpisode()) && p.getEpisode().toLowerCase().contains(searchText.toLowerCase()))
+                                    || (!TextUtils.isEmpty(p.getCode()) && p.getCode().toLowerCase().contains(searchText.toLowerCase()))
+                                    || (!TextUtils.isEmpty(p.getDescription()) && p.getDescription().toLowerCase().contains(searchText.toLowerCase()))
+                                    || (!TextUtils.isEmpty(p.getParticipants()) && p.getParticipants().toLowerCase().contains(searchText.toLowerCase()))
+                                    || (!TextUtils.isEmpty(p.getDuration()) && p.getDuration().toLowerCase().contains(searchText.toLowerCase()))))) {
 
-                        if (p != null && checkIfFileNameBelongsToVideoType(s) &&
-                                ((!TextUtils.isEmpty(p.getName()) && p.getName().toLowerCase().contains(searchText.toLowerCase()))
-                                || (!TextUtils.isEmpty(p.getCategory()) && p.getCategory().toLowerCase().contains(searchText.toLowerCase()))
-                                || (!TextUtils.isEmpty(p.getSeries()) && p.getSeries().toLowerCase().contains(searchText.toLowerCase()))
-                                || (!TextUtils.isEmpty(p.getEpisode()) && p.getEpisode().toLowerCase().contains(searchText.toLowerCase()))
-                                || (!TextUtils.isEmpty(p.getCode()) && p.getCode().toLowerCase().contains(searchText.toLowerCase()))
-                                || (!TextUtils.isEmpty(p.getDescription()) && p.getDescription().toLowerCase().contains(searchText.toLowerCase()))
-                                || (!TextUtils.isEmpty(p.getParticipants()) && p.getParticipants().toLowerCase().contains(searchText.toLowerCase()))
-                                || (!TextUtils.isEmpty(p.getDuration()) && p.getDuration().toLowerCase().contains(searchText.toLowerCase())))) {
+                        if (favorited == null || (favorited != null && favorited && p.isFavourited())) {
                             strs.add(s);
                         }
                     }
-
-            } else if(codes != null && favorited) {
-                for (String s : codes) {
-                    Program p = ((MySDAInterlessApp)getApplication()).getService().getProgramByCode(s.substring(0, s.indexOf(".")));
-
-                    if(p != null && p.isFavourited()) {
-                        strs.add(s);
-                    }
                 }
             }
-        } catch (Exception e) {
-            Log.e("SQL_ERROR: ", e.getLocalizedMessage());
+
         }
         return strs.size() > 0 ? strs.toArray(new String[strs.size()]) : new String[]{};
     }

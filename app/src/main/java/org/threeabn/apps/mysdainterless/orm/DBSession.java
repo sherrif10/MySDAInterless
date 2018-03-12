@@ -6,31 +6,16 @@ import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
-import org.threeabn.apps.mysdainterless.modal.Channel;
-import org.threeabn.apps.mysdainterless.modal.ChannelProgram;
-import org.threeabn.apps.mysdainterless.modal.Favourite;
-import org.threeabn.apps.mysdainterless.modal.Guest;
-import org.threeabn.apps.mysdainterless.modal.Host;
-import org.threeabn.apps.mysdainterless.modal.Period;
-import org.threeabn.apps.mysdainterless.modal.Person;
 import org.threeabn.apps.mysdainterless.modal.Program;
-import org.threeabn.apps.mysdainterless.modal.Transcript;
-import org.threeabn.apps.mysdainterless.modal.User;
-import org.threeabn.apps.mysdainterless.modal.Video;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.appwidget.AppWidgetHost.deleteAllHosts;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * TODO Hide behind {@link org.threeabn.apps.mysdainterless.api.MySDAService}
@@ -164,6 +149,7 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
 
     public <T> Dao.CreateOrUpdateStatus createOrUpdate(T obj) throws SQLException {
         Dao<T, ?> dao = (Dao<T, ?>) getDao(obj.getClass());
+
         return dao.createOrUpdate(obj);
     }
 

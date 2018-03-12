@@ -29,6 +29,7 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
     private Activity context;
     private String[] programPaths;
     private boolean detailPrograms;
+    public static Integer MAX_RECORDS = 5;
 
 
     public ProgramsList(Activity context, String[] programPaths) {

@@ -8,7 +8,7 @@
     tools:context="org.threeabn.apps.mysdainterless.MainActivity"
     android:background="@drawable/playback_empty_screen">
 
-    <VideoView
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/videoView_playback"
         android:layout_width="fill_parent"
         android:layout_alignParentRight="true"

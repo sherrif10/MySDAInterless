@@ -1,7 +1,6 @@
 package org.threeabn.apps.mysdainterless;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,10 +14,10 @@ import java.io.File;
  * Created by k-joseph on 10/10/2017.
  */
 
-public class SearchResultsActivity extends MySDAActivity {
+public class SearchResultsActivity extends VideoActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
 
@@ -29,7 +28,7 @@ public class SearchResultsActivity extends MySDAActivity {
         });
         String searchText = getIntent().getExtras().get(SearchActivity.SEARCH_TEXT).toString();
         final File programsFolder = new File(MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY);
-        String[] foundProgramsPaths = filterOutNonVideoFilesAndMatchSearchPhraseOrFavorited(programsFolder.list(), searchText, null);
+        String[] foundProgramsPaths = filterPrograms(programsFolder.list(), searchText, null);
         ProgramsList listAdapter = new ProgramsList(SearchResultsActivity.this, foundProgramsPaths, true);
         ListView list = (ListView) findViewById(R.id.search_programs_list);
         TextView foundSearchResults = (TextView) findViewById(R.id.foundSearchResults);
@@ -37,20 +36,20 @@ public class SearchResultsActivity extends MySDAActivity {
         list.setAdapter(listAdapter);
         if(foundProgramsPaths != null) {
             foundSearchResults.setText(getString(R.string.search_found_results, foundProgramsPaths.length, searchText));
-        }
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                File selectedProgram = programsFolder.listFiles()[position];
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    File selectedProgram = new File(programsFolder.getAbsolutePath() + File.separator + foundProgramsPaths[position]);
 
-                if(selectedProgram != null && selectedProgram.exists()) {
-                    Intent intent = new Intent(getApplicationContext(), PlayBackActivity.class);
+                    if (selectedProgram != null && selectedProgram.exists()) {
+                        Intent intent = new Intent(getApplicationContext(), PlayBackActivity.class);
 
-                    intent.putExtra("program", selectedProgram.getAbsolutePath());
-                    startActivity(intent);
-                    Toast.makeText(SearchResultsActivity.this, "Opening: " + getFileDisplayName(selectedProgram.getPath()), Toast.LENGTH_SHORT).show();
+                        intent.putExtra("program", selectedProgram.getAbsolutePath());
+                        startActivity(intent);
+                        Toast.makeText(SearchResultsActivity.this, "Opening: " + getFileDisplayName(selectedProgram.getPath()), Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 }

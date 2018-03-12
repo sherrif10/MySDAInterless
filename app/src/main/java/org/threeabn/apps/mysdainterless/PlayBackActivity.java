@@ -11,10 +11,9 @@ import java.io.File;
 /**
  * Created by k-joseph on 23/10/2017.
  */
-
-public class PlayBackActivity extends MySDAActivity {
+public class PlayBackActivity extends VideoActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 

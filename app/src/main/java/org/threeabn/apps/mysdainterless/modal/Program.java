@@ -47,7 +47,7 @@ public class Program extends MySDAObject {
 	 * This is the program's unique identifier
 	 * */
 	@JsonProperty("code")
-	@DatabaseField(unique = true)
+	@DatabaseField(unique = true, canBeNull = false)
 	private String code;
 
 	//TODO appropriate datatype

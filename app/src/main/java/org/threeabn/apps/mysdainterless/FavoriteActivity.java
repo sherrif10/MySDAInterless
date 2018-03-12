@@ -13,15 +13,15 @@ import java.io.File;
  * Created by k-joseph on 10/10/2017.
  */
 
-public class FavoriteActivity extends MySDAActivity {
-
+public class FavoriteActivity extends VideoActivity {
+    String[] foundProgramsPaths = null;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
 
         final File programsFolder = new File(MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY);
-        String[] foundProgramsPaths = filterOutNonVideoFilesAndMatchSearchPhraseOrFavorited(programsFolder.list(), null, true);
+        foundProgramsPaths = filterPrograms(programsFolder.list(), null, true);
         ProgramsList listAdapter = new ProgramsList(FavoriteActivity.this, foundProgramsPaths, true);
         ListView list = (ListView) findViewById(R.id.favorite_programs_list);
 
@@ -29,14 +29,16 @@ public class FavoriteActivity extends MySDAActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                File selectedProgram = programsFolder.listFiles()[position];
+                if(foundProgramsPaths != null) {
+                    File selectedProgram = new File(programsFolder.getAbsolutePath() + File.separator + foundProgramsPaths[position]);
 
-                if(selectedProgram != null && selectedProgram.exists()) {
-                    Intent intent = new Intent(getApplicationContext(), PlayBackActivity.class);
+                    if (selectedProgram != null && selectedProgram.exists()) {
+                        Intent intent = new Intent(getApplicationContext(), PlayBackActivity.class);
 
-                    intent.putExtra("program", selectedProgram.getAbsolutePath());
-                    startActivity(intent);
-                    Toast.makeText(FavoriteActivity.this, "Opening: " + getFileDisplayName(selectedProgram.getPath()), Toast.LENGTH_SHORT).show();
+                        intent.putExtra("program", selectedProgram.getAbsolutePath());
+                        startActivity(intent);
+                        Toast.makeText(FavoriteActivity.this, "Opening: " + getFileDisplayName(selectedProgram.getPath()), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
