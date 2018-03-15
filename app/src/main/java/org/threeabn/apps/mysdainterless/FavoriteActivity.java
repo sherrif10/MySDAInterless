@@ -20,8 +20,7 @@ public class FavoriteActivity extends VideoActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
 
-        final File programsFolder = new File(MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY);
-        foundProgramsPaths = filterPrograms(programsFolder.list(), null, true);
+        foundProgramsPaths = MySDAInterlessApp.getInstance().getExistingProgramRefs();
         ProgramsList listAdapter = new ProgramsList(FavoriteActivity.this, foundProgramsPaths, true);
         ListView list = (ListView) findViewById(R.id.favorite_programs_list);
 
@@ -30,7 +29,7 @@ public class FavoriteActivity extends VideoActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(foundProgramsPaths != null) {
-                    File selectedProgram = new File(programsFolder.getAbsolutePath() + File.separator + foundProgramsPaths[position]);
+                    File selectedProgram = new File(MySDAInterlessApp.getInstance().PROGRAMS_DIRECTORY + File.separator + foundProgramsPaths[position]);
 
                     if (selectedProgram != null && selectedProgram.exists()) {
                         Intent intent = new Intent(getApplicationContext(), PlayBackActivity.class);

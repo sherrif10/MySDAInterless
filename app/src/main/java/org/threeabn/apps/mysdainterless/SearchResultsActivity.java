@@ -27,8 +27,7 @@ public class SearchResultsActivity extends VideoActivity {
             }
         });
         String searchText = getIntent().getExtras().get(SearchActivity.SEARCH_TEXT).toString();
-        final File programsFolder = new File(MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY);
-        String[] foundProgramsPaths = filterPrograms(programsFolder.list(), searchText, null);
+        String[] foundProgramsPaths = MySDAInterlessApp.getInstance().getExistingProgramRefs();
         ProgramsList listAdapter = new ProgramsList(SearchResultsActivity.this, foundProgramsPaths, true);
         ListView list = (ListView) findViewById(R.id.search_programs_list);
         TextView foundSearchResults = (TextView) findViewById(R.id.foundSearchResults);
@@ -39,7 +38,7 @@ public class SearchResultsActivity extends VideoActivity {
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    File selectedProgram = new File(programsFolder.getAbsolutePath() + File.separator + foundProgramsPaths[position]);
+                    File selectedProgram = new File(MySDAInterlessApp.getInstance().PROGRAMS_DIRECTORY + File.separator + foundProgramsPaths[position]);
 
                     if (selectedProgram != null && selectedProgram.exists()) {
                         Intent intent = new Intent(getApplicationContext(), PlayBackActivity.class);

@@ -26,5 +26,7 @@ This is MySDA app similarly to MySDA streaming app, this is rather meant to stor
 - [ ] Document process of importing programs and managment, this app is just a container,
 it should be versioned separately from the included programs
 - [ ] encrypt programs
+- [ ] support remote navigation on all screens
+- [ ] viewer should be able to resume a started on program when he/she returns to it
 - [ ] Apply included formatter onto the code and do final refactoring
 - [ ] Demo app

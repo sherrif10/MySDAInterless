@@ -65,7 +65,7 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
                     TextView desc = (TextView) rowView.findViewById(R.id.p_desc);
                     TextView dur = (TextView) rowView.findViewById(R.id.p_duration);
                     TextView parts = (TextView) rowView.findViewById(R.id.p_participants);
-                    Program program = ((MySDAInterlessApp)context.getApplication()).getService().getProgramByCode(prog.substring(0, prog.indexOf(".")));
+                    Program program = MySDAInterlessApp.getInstance().getService().getProgramByCode(prog.substring(0, prog.indexOf(".")));
 
                     if(program != null) {
                         desc.setText(program.getDescription());
@@ -131,7 +131,7 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
             ArrayList<Program> listResult = new ArrayList<Program>();
 
             try {
-                List<Program> allPrograms = ((MySDAInterlessApp)context.getApplication()).getService().getAllPrograms();
+                List<Program> allPrograms = MySDAInterlessApp.getInstance().getService().getAllPrograms();
                 if (constraint.length() == 0) {
                     return allPrograms;
                 }

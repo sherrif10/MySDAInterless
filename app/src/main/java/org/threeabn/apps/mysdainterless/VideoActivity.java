@@ -3,6 +3,7 @@ package org.threeabn.apps.mysdainterless;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.MediaController;
 import android.widget.VideoView;
 
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +33,7 @@ public class VideoActivity extends MySDAActivity {
         final VideoView videoView = (VideoView) findViewById(playerId);
 
         videoView.setVideoURI(program);
-        videoView.setMediaController(new CustomMediaController(this, VideoActivity.this));
+        videoView.setMediaController(new MediaController(this));
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
