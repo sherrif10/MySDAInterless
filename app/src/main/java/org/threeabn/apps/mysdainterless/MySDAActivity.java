@@ -60,6 +60,7 @@ public class MySDAActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //TODO restrict portrait after testing on the dongo
         //hideSoftKeyboard();
     }
 
