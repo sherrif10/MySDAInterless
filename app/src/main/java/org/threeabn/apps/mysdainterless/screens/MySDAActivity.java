@@ -1,14 +1,22 @@
-package org.threeabn.apps.mysdainterless;
+package org.threeabn.apps.mysdainterless.screens;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
+import org.threeabn.apps.mysdainterless.MySDAInterlessApp;
+import org.threeabn.apps.mysdainterless.R;
+import org.threeabn.apps.mysdainterless.modal.Program;
+
+import java.io.File;
 
 /**
  * Created by k-joseph on 10/10/2017.
@@ -30,7 +38,7 @@ public class MySDAActivity extends Activity {
         imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    public void loadActivityByView(final View view, final Context context) {
+    public void runBlockByByView(final View view, final Context context) {
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (R.id.image_search == v.getId()) {
@@ -44,6 +52,22 @@ public class MySDAActivity extends Activity {
 
                     intent.putExtra("program", (String) view.getTag());
                     startActivity(intent);
+                } else if(R.id.programPreviewFavorite == v.getId() && StringUtils.isNoneBlank((String) view.getTag())) {
+                    File p = new File((String) view.getTag());
+
+                    if(p != null && p.exists()) {
+                        try {
+                            String s = p.getName();
+                            Program program = TextUtils.isEmpty(s) ? null : MySDAInterlessApp.getInstance().getService().getProgramByCode(s.substring(0, s.indexOf(".")));
+                            if(program != null) {
+                                program.setFavourited(!program.isFavourited());
+                                MySDAInterlessApp.getInstance().getService().saveProgram(program);
+                                Toast.makeText(MySDAActivity.this, (program.isFavourited() ? "" : "Un-") + "Favorited: " + program.getName(), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e) {
+                            Log.e("program_favoriting_error", e.getMessage());
+                        }
+                    }
                 }
             }
         });
@@ -52,7 +76,7 @@ public class MySDAActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //TODO restrict portrait after testing on the dongo
+        //TODO restrict auto-rotate after testing on the dongo
         //hideSoftKeyboard();
     }
 

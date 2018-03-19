@@ -1,4 +1,4 @@
-package org.threeabn.apps.mysdainterless;
+package org.threeabn.apps.mysdainterless.screens;
 
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -7,7 +7,7 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 import org.apache.commons.lang3.StringUtils;
-import org.threeabn.apps.mysdainterless.video.CustomMediaController;
+import org.threeabn.apps.mysdainterless.CustomMediaController;
 
 import java.io.File;
 
@@ -33,7 +33,7 @@ public class VideoActivity extends MySDAActivity {
         final VideoView videoView = (VideoView) findViewById(playerId);
 
         videoView.setVideoURI(program);
-        videoView.setMediaController(new MediaController(this));
+        videoView.setMediaController(new CustomMediaController(this));
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {

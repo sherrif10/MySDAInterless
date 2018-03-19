@@ -149,8 +149,29 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
 
     public <T> Dao.CreateOrUpdateStatus createOrUpdate(T obj) throws SQLException {
         Dao<T, ?> dao = (Dao<T, ?>) getDao(obj.getClass());
-
         return dao.createOrUpdate(obj);
+    }
+
+    /**
+     * @param obj
+     * @param <T>
+     * @return number of created rows; 1
+     * @throws SQLException
+     */
+    public <T> int create(T obj) throws SQLException {
+        Dao<T, ?> dao = (Dao<T, ?>) getDao(obj.getClass());
+        return dao.create(obj);
+    }
+
+    /**
+     * @param obj
+     * @param <T>
+     * @return number of updated rows; 1
+     * @throws SQLException
+     */
+    public <T> int update(T obj) throws SQLException {
+        Dao<T, ?> dao = (Dao<T, ?>) getDao(obj.getClass());
+        return dao.update(obj);
     }
 
     public <T> int deleteById(Class<T> clazz, Object aId) throws SQLException {

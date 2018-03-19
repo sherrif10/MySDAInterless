@@ -1,4 +1,4 @@
-package org.threeabn.apps.mysdainterless;
+package org.threeabn.apps.mysdainterless.screens;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -6,6 +6,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import org.threeabn.apps.mysdainterless.MySDAInterlessApp;
+import org.threeabn.apps.mysdainterless.ProgramsList;
+import org.threeabn.apps.mysdainterless.R;
 
 import java.io.File;
 
@@ -34,13 +38,15 @@ public class ProgramsListActivity extends VideoActivity {
 
                     if(selectedProgram != null && selectedProgram.exists()) {
                         findViewById(R.id.programPreviewPlay).setTag(selectedProgram.getAbsolutePath());
+                        findViewById(R.id.programPreviewFavorite).setTag(selectedProgram.getAbsolutePath());
                         playProgram(R.id.programPreview, Uri.fromFile(selectedProgram));
                         Toast.makeText(ProgramsListActivity.this, "Opening: " + getFileDisplayName(selectedProgram.getPath()), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         }
-        loadActivityByView(findViewById(R.id.programPreviewPlay), ProgramsListActivity.this);
+        runBlockByByView(findViewById(R.id.programPreviewPlay), ProgramsListActivity.this);
+        runBlockByByView(findViewById(R.id.programPreviewFavorite), ProgramsListActivity.this);
     }
 
 

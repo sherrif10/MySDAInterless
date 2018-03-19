@@ -1,4 +1,4 @@
-package org.threeabn.apps.mysdainterless;
+package org.threeabn.apps.mysdainterless.screens;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.threeabn.apps.mysdainterless.MySDAInterlessApp;
+import org.threeabn.apps.mysdainterless.ProgramsList;
+import org.threeabn.apps.mysdainterless.R;
 
 import java.io.File;
 

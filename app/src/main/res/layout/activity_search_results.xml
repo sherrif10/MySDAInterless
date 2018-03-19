@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bluebase"
-    tools:context="org.threeabn.apps.mysdainterless.SearchResultsActivity">
+    tools:context="org.threeabn.apps.mysdainterless.screens.SearchResultsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

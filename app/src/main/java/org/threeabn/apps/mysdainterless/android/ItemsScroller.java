@@ -5,7 +5,7 @@ import android.widget.AbsListView;
 /**
  * Created by k-joseph on 11/03/2018.
  *
- * TODO not used
+ * TODO not currently used, idea is to use it up if listViews and improved and workable, else replace listViews with fragments
  */
 public class ItemsScroller implements AbsListView.OnScrollListener {
 

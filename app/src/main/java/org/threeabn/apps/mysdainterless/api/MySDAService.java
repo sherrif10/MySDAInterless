@@ -247,8 +247,17 @@ public class MySDAService {
         return new Dao.CreateOrUpdateStatus(false,  false, 0);
     }
 
-    public Dao.CreateOrUpdateStatus saveProgram(Program obj) throws SQLException {
-        return getDbSession().createOrUpdate(obj);
+    /**
+     * @param obj
+     * @return number of either created or updated rows; 1
+     * @throws SQLException
+     */
+    public int saveProgram(Program obj) throws SQLException {
+        if(getProgramByCode(obj.getCode()) == null) {
+            return getDbSession().create(obj);
+        } else {
+            return getDbSession().update(obj);
+        }
     }
 
     public Dao.CreateOrUpdateStatus saveChannel(Channel obj) throws SQLException {
@@ -262,7 +271,7 @@ public class MySDAService {
     public Period getPeriodByUuid(String uuid) throws SQLException {
         List<Period> list = getDbSession().getByField(Period.class, "uuid", uuid);
 
-        if(list != null)
+        if(list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -270,7 +279,7 @@ public class MySDAService {
     public Video getVideoByUuid(String uuid) throws SQLException {
         List<Video> list = getDbSession().getByField(Video.class, "uuid", uuid);
 
-        if(list != null)
+        if(list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -278,7 +287,7 @@ public class MySDAService {
     public Person getPersonByUuid(String uuid) throws SQLException {
         List<Person> list = getDbSession().getByField(Person.class, "uuid", uuid);
 
-        if(list != null)
+        if(list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -286,7 +295,7 @@ public class MySDAService {
     public User getUserByUuid(String uuid) throws SQLException {
         List<User> list = getDbSession().getByField(User.class, "uuid", uuid);
 
-        if(list != null)
+        if(list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -294,7 +303,7 @@ public class MySDAService {
     public User getUserByUsername(String username) throws SQLException {
         List<User> list = getDbSession().getByField(User.class, "username", username);
 
-        if(list != null)
+        if(list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -302,7 +311,7 @@ public class MySDAService {
     public Program getProgramByUuid(String uuid) throws SQLException {
         List<Program> list = getDbSession().getByField(Program.class, "uuid", uuid);
 
-        if(list != null)
+        if(list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -310,7 +319,7 @@ public class MySDAService {
     public Program getProgramByCode(String code) throws SQLException {
         List<Program> list = getDbSession().getByField(Program.class, "code", code);
 
-        if(list != null)
+        if(list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -322,7 +331,7 @@ public class MySDAService {
     public Favourite getFavouriteByUuid(String uuid) throws SQLException {
         List<Favourite> list = getDbSession().getByField(Favourite.class, "uuid", uuid);
 
-        if(list != null)
+        if(list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -343,7 +352,7 @@ public class MySDAService {
     public Channel getChannelByUuid(String uuid) throws SQLException {
         List<Channel> list = getDbSession().getByField(Channel.class, "uuid", uuid);
 
-        if(list != null)
+        if(list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -351,7 +360,7 @@ public class MySDAService {
     public Guest getGuestByUuid(String uuid) throws SQLException {
         List<Guest> list = getDbSession().getByField(Guest.class, "uuid", uuid);
 
-        if(list != null)
+        if(list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -359,7 +368,7 @@ public class MySDAService {
     public Host getHostByUuid(String uuid) throws SQLException {
         List<Host> list = getDbSession().getByField(Host.class, "uuid", uuid);
 
-        if(list != null)
+        if(list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -367,7 +376,7 @@ public class MySDAService {
     public ChannelProgram getChannelProgramByUuid(String uuid) throws SQLException {
         List<ChannelProgram> list = getDbSession().getByField(ChannelProgram.class, "uuid", uuid);
 
-        if(list != null)
+        if(list != null && list.size() > 0)
             return list.get(0);
         return null;
     }

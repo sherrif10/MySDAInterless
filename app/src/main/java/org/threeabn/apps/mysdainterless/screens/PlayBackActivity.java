@@ -1,10 +1,12 @@
-package org.threeabn.apps.mysdainterless;
+package org.threeabn.apps.mysdainterless.screens;
 
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import org.threeabn.apps.mysdainterless.R;
 
 import java.io.File;
 

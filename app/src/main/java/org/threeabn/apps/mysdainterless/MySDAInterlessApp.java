@@ -9,9 +9,12 @@ import org.threeabn.apps.mysdainterless.api.MySDAService;
 import org.threeabn.apps.mysdainterless.modal.Program;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.threeabn.apps.mysdainterless.MySDAInterlessConstantsAndEvaluations.checkIfFileNameBelongsToVideoType;
 
@@ -22,7 +25,7 @@ import static org.threeabn.apps.mysdainterless.MySDAInterlessConstantsAndEvaluat
 public class MySDAInterlessApp extends Application {
     private MySDAService service;
 
-    public String PROGRAMS_DIRECTORY = MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY;
+    public static String PROGRAMS_DIRECTORY = MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY;
 
     private String[] existingProgramRefs;
 
@@ -36,6 +39,7 @@ public class MySDAInterlessApp extends Application {
     public static MySDAInterlessApp getInstance() {
         return instance;
     }
+
     /**
      * DB initialised by default, just call this service
      *
@@ -113,36 +117,44 @@ public class MySDAInterlessApp extends Application {
      */
     public String[] filterPrograms(String[] codes, String searchText, Boolean favorited) {
         List<String> strs = new ArrayList<String>();
+        try {
+            Map<String, Program> programSet = getProgramSetByCodeFromList();
 
-        if (codes != null) {
-            for (String s : codes) {//TODO
-                Program p = null;
-                try {
-                    p = getService().getProgramByCode(s.substring(0, s.indexOf(".")));
-                } catch (Exception e) {
-                    Log.e("SQL_ERROR: ", e.getLocalizedMessage());
-                    continue;
-                }
-                if (checkIfFileNameBelongsToVideoType(s) && p != null) {
-                    if (TextUtils.isEmpty(searchText) || (!TextUtils.isEmpty(searchText) &&
-                            ((!TextUtils.isEmpty(p.getName()) && p.getName().toLowerCase().contains(searchText.toLowerCase()))
-                                    || (!TextUtils.isEmpty(p.getCategory()) && p.getCategory().toLowerCase().contains(searchText.toLowerCase()))
-                                    || (!TextUtils.isEmpty(p.getSeries()) && p.getSeries().toLowerCase().contains(searchText.toLowerCase()))
-                                    || (!TextUtils.isEmpty(p.getEpisode()) && p.getEpisode().toLowerCase().contains(searchText.toLowerCase()))
-                                    || (!TextUtils.isEmpty(p.getCode()) && p.getCode().toLowerCase().contains(searchText.toLowerCase()))
-                                    || (!TextUtils.isEmpty(p.getDescription()) && p.getDescription().toLowerCase().contains(searchText.toLowerCase()))
-                                    || (!TextUtils.isEmpty(p.getParticipants()) && p.getParticipants().toLowerCase().contains(searchText.toLowerCase()))
-                                    || (!TextUtils.isEmpty(p.getDuration()) && p.getDuration().toLowerCase().contains(searchText.toLowerCase()))))) {
+            if (codes != null && programSet != null) {
+                for (String s : codes) {//TODO
+                    Program p = programSet.get(s.substring(0, s.indexOf(".")));
 
-                        if (favorited == null || (favorited != null && favorited && p.isFavourited())) {
-                            strs.add(s);
+                    if (checkIfFileNameBelongsToVideoType(s) && p != null) {
+                        if (TextUtils.isEmpty(searchText) || (!TextUtils.isEmpty(searchText) &&
+                                ((!TextUtils.isEmpty(p.getName()) && p.getName().toLowerCase().contains(searchText.toLowerCase()))
+                                        || (!TextUtils.isEmpty(p.getCategory()) && p.getCategory().toLowerCase().contains(searchText.toLowerCase()))
+                                        || (!TextUtils.isEmpty(p.getSeries()) && p.getSeries().toLowerCase().contains(searchText.toLowerCase()))
+                                        || (!TextUtils.isEmpty(p.getEpisode()) && p.getEpisode().toLowerCase().contains(searchText.toLowerCase()))
+                                        || (!TextUtils.isEmpty(p.getCode()) && p.getCode().toLowerCase().contains(searchText.toLowerCase()))
+                                        || (!TextUtils.isEmpty(p.getDescription()) && p.getDescription().toLowerCase().contains(searchText.toLowerCase()))
+                                        || (!TextUtils.isEmpty(p.getParticipants()) && p.getParticipants().toLowerCase().contains(searchText.toLowerCase()))
+                                        || (!TextUtils.isEmpty(p.getDuration()) && p.getDuration().toLowerCase().contains(searchText.toLowerCase()))))) {
+
+                            if (favorited == null || (favorited != null && favorited && p.isFavourited())) {
+                                strs.add(s);
+                            }
                         }
                     }
                 }
-            }
 
+            }
+        } catch (Exception e) {
+            Log.e("SQL_ERROR: ", e.getLocalizedMessage());
         }
         return strs.size() > 0 ? strs.toArray(new String[strs.size()]) : new String[]{};
     }
 
+    public Map<String, Program> getProgramSetByCodeFromList() throws SQLException {
+        Map<String, Program> programSet = new HashMap<>();
+        for (Program p : getService().getAllPrograms()) {
+            programSet.put(p.getCode(), p);
+        }
+
+        return programSet;
+    }
 }

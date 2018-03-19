@@ -1,4 +1,4 @@
-package org.threeabn.apps.mysdainterless;
+package org.threeabn.apps.mysdainterless.screens;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import org.threeabn.apps.mysdainterless.MySDAInterlessApp;
+import org.threeabn.apps.mysdainterless.ProgramsList;
+import org.threeabn.apps.mysdainterless.R;
 
 import java.io.File;
 
@@ -20,7 +24,7 @@ public class FavoriteActivity extends VideoActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
 
-        foundProgramsPaths = MySDAInterlessApp.getInstance().getExistingProgramRefs();
+        foundProgramsPaths = MySDAInterlessApp.getInstance().filterPrograms(new File(MySDAInterlessApp.PROGRAMS_DIRECTORY).list(), null, true);
         ProgramsList listAdapter = new ProgramsList(FavoriteActivity.this, foundProgramsPaths, true);
         ListView list = (ListView) findViewById(R.id.favorite_programs_list);
 

@@ -22,7 +22,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <activity
-            android:name=".MainActivity"
+            android:name=".screens.MainActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,24 +30,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SearchActivity"
+            android:name=".screens.SearchActivity"
             android:theme="@style/AppTheme"
             android:label="@string/search"
             android:windowSoftInputMode="stateVisible|adjustResize"/>
         <activity
-            android:name=".SearchResultsActivity"
+            android:name=".screens.SearchResultsActivity"
             android:theme="@style/AppTheme"
             android:label="@string/search_results"/>
         <activity
-            android:name=".FavoriteActivity"
+            android:name=".screens.FavoriteActivity"
             android:theme="@style/AppTheme"
             android:label="@string/favorite" />
         <activity
-            android:name=".ProgramsListActivity"
+            android:name=".screens.ProgramsListActivity"
             android:theme="@style/AppTheme"
             android:label="@string/list" />
         <activity
-            android:name=".PlayBackActivity"
+            android:name=".screens.PlayBackActivity"
             android:theme="@style/AppTheme"
             android:label="@string/playback" />
     </application>
