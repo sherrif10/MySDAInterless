@@ -7,6 +7,7 @@ To setup the app, you need to to upload programs into it. to do this
 
 - Copy a CSV file containing details of your programs to: `/sdcard/.mysdainterless/programs/programs.csv`
 - Then copy your video files named after program codes into: `/sdcard/.mysdainterless/programs/`
+- On app installation, remember to go into your settings and enable 'Storage' permission for MySDAInterless app
 - The app will store the program details and delete the CSV file
 
 ## Done
