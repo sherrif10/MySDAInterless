@@ -18,12 +18,12 @@ To setup the app, you need to to upload programs into it. to do this
 - [x] Importing programs data from CSV
 - [x] Testing on mobile device
 - [x] Handle program duplication, probably ORMlite isn't good here
-
-## Pending
-
 - [x] Cache programs
 - [x] Create a better player for program screen
 - [x] Favorite program
+
+## Pending
+
 - [ ] encrypt programs
 - [ ] support control remote navigation on all screens
 - [ ] viewer should be able to resume a started on program when he/she returns to it
