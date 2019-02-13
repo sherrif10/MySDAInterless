@@ -26,14 +26,14 @@ public class FavoriteActivity extends VideoActivity {
 
         foundProgramsPaths = MySDAInterlessApp.getInstance().filterPrograms(new File(MySDAInterlessApp.PROGRAMS_DIRECTORY).list(), null, true);
         ProgramsList listAdapter = new ProgramsList(FavoriteActivity.this, foundProgramsPaths, true);
-        ListView list = (ListView) findViewById(R.id.favorite_programs_list);
+        ListView list = findViewById(R.id.favorite_programs_list);
 
         list.setAdapter(listAdapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(foundProgramsPaths != null) {
-                    File selectedProgram = new File(MySDAInterlessApp.getInstance().PROGRAMS_DIRECTORY + File.separator + foundProgramsPaths[position]);
+                    File selectedProgram = new File(MySDAInterlessApp.PROGRAMS_DIRECTORY + File.separator + foundProgramsPaths[position]);
 
                     if (selectedProgram != null && selectedProgram.exists()) {
                         Intent intent = new Intent(getApplicationContext(), PlayBackActivity.class);

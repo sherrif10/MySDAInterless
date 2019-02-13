@@ -229,21 +229,21 @@ public class MySDAService {
     }
 
     public Dao.CreateOrUpdateStatus savePeriod(Period obj) throws SQLException {
-        return getDbSession().createOrUpdate(obj);
+        return getDbSession().createOrUpdate(obj, Period.class);
     }
 
     public Dao.CreateOrUpdateStatus saveVideo(Video obj) throws SQLException {
-        return getDbSession().createOrUpdate(obj);
+        return getDbSession().createOrUpdate(obj, Video.class);
     }
 
     public Dao.CreateOrUpdateStatus savePerson(Person obj) throws SQLException {
-        return getDbSession().createOrUpdate(obj);
+        return getDbSession().createOrUpdate(obj, Person.class);
     }
 
     public Dao.CreateOrUpdateStatus saveUser(User obj) throws SQLException {
         //TODO looks like setting unique = true on this user field didn't work
         if(getUserByUsername(obj.getUsername()) == null)
-            return getDbSession().createOrUpdate(obj);
+            return getDbSession().createOrUpdate(obj, User.class);
         return new Dao.CreateOrUpdateStatus(false,  false, 0);
     }
 
@@ -254,18 +254,18 @@ public class MySDAService {
      */
     public int saveProgram(Program obj) throws SQLException {
         if(getProgramByCode(obj.getCode()) == null) {
-            return getDbSession().create(obj);
+            return getDbSession().create(obj, Program.class);
         } else {
-            return getDbSession().update(obj);
+            return getDbSession().update(obj, Program.class);
         }
     }
 
     public Dao.CreateOrUpdateStatus saveChannel(Channel obj) throws SQLException {
-        return getDbSession().createOrUpdate(obj);
+        return getDbSession().createOrUpdate(obj, Channel.class);
     }
 
     public Dao.CreateOrUpdateStatus saveFavourite(Favourite obj) throws SQLException {
-        return getDbSession().createOrUpdate(obj);
+        return getDbSession().createOrUpdate(obj, Favourite.class);
     }
 
     public Period getPeriodByUuid(String uuid) throws SQLException {
@@ -466,7 +466,7 @@ public class MySDAService {
                     //TODO fix this
                     //wire in the right video and transfcript; maybe excell should contains rather path to the files
                     return new Program(trimer(x[0]), trimer(x[1]), trimer(x[2]), trimer(x[3]), trimer(x[4])
-                            , null, null, !TextUtils.isEmpty(trimer(x[7])) ? BooleanUtils.toBoolean(trimer(x[7])) : false);
+                            , null, null, !TextUtils.isEmpty(trimer(x[7])) && BooleanUtils.toBoolean(trimer(x[7])));
                 }).collect(Collectors.toList());
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.enable(SerializationFeature.INDENT_OUTPUT);

@@ -15,7 +15,7 @@ import java.lang.reflect.Field;
  */
 public class CustomMediaController extends MediaController {
 
-    public static interface OnMediaControllerInteractionListener {
+    public interface OnMediaControllerInteractionListener {
         void onRequestFullScreen();
     }
 

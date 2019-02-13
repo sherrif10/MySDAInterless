@@ -20,8 +20,6 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
 	A TV Video is basically what it is, it can have properties such as name, file location/path, resume (last played time and time where it stopped)
 */

@@ -1,15 +1,5 @@
 package org.threeabn.apps.mysdainterless;
 
-import android.support.test.runner.AndroidJUnit4;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.threeabn.apps.mysdainterless.security.PassHashing;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by k-joseph on 13/10/2017.
  */

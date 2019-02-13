@@ -147,8 +147,8 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
             return null;
     }
 
-    public <T> Dao.CreateOrUpdateStatus createOrUpdate(T obj) throws SQLException {
-        Dao<T, ?> dao = (Dao<T, ?>) getDao(obj.getClass());
+    public <T> Dao.CreateOrUpdateStatus createOrUpdate(T obj, Class<T> objClass) throws SQLException {
+        Dao<T, ?> dao = getDao(objClass);
         return dao.createOrUpdate(obj);
     }
 
@@ -158,8 +158,8 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
      * @return number of created rows; 1
      * @throws SQLException
      */
-    public <T> int create(T obj) throws SQLException {
-        Dao<T, ?> dao = (Dao<T, ?>) getDao(obj.getClass());
+    public <T> int create(T obj, Class<T> objClass) throws SQLException {
+        Dao<T, ?> dao = getDao(objClass);
         return dao.create(obj);
     }
 
@@ -169,8 +169,8 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
      * @return number of updated rows; 1
      * @throws SQLException
      */
-    public <T> int update(T obj) throws SQLException {
-        Dao<T, ?> dao = (Dao<T, ?>) getDao(obj.getClass());
+    public <T> int update(T obj, Class<T> objClass) throws SQLException {
+        Dao<T, ?> dao = getDao(objClass);
         return dao.update(obj);
     }
 

@@ -27,14 +27,14 @@ public class ProgramsListActivity extends VideoActivity {
         programsPaths = MySDAInterlessApp.getInstance().getExistingProgramRefs();
         if(programsPaths != null) {
             ProgramsList listAdapter = new ProgramsList(ProgramsListActivity.this, programsPaths);
-            ListView list = (ListView) findViewById(R.id.list_programs_view);
+            ListView list = findViewById(R.id.list_programs_view);
 
             list.setAdapter(listAdapter);
             //list.setOnScrollListener(new ItemsScroller());
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    File selectedProgram = new File(MySDAInterlessApp.getInstance().PROGRAMS_DIRECTORY + File.separator + programsPaths[position]);
+                    File selectedProgram = new File(MySDAInterlessApp.PROGRAMS_DIRECTORY + File.separator + programsPaths[position]);
 
                     if(selectedProgram != null && selectedProgram.exists()) {
                         findViewById(R.id.programPreviewPlay).setTag(selectedProgram.getAbsolutePath());

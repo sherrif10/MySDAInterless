@@ -49,8 +49,8 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView = inflater.inflate(this.detailPrograms ? R.layout.list_programs_details : R.layout.list_programs, null, true);
-        TextView txtTitle = (TextView) rowView.findViewById(R.id.txt);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
+        TextView txtTitle = rowView.findViewById(R.id.txt);
+        ImageView imageView = rowView.findViewById(R.id.img);
         String path = programPaths[position];
         Bitmap img = getBitMapFromVideo(MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY + File.separator + path);
         String prog = programPaths[position];
@@ -62,9 +62,9 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
             if (this.detailPrograms) {
                 //TODO add all details
                 try {
-                    TextView desc = (TextView) rowView.findViewById(R.id.p_desc);
-                    TextView dur = (TextView) rowView.findViewById(R.id.p_duration);
-                    TextView parts = (TextView) rowView.findViewById(R.id.p_participants);
+                    TextView desc = rowView.findViewById(R.id.p_desc);
+                    TextView dur = rowView.findViewById(R.id.p_duration);
+                    TextView parts = rowView.findViewById(R.id.p_participants);
                     Program program = MySDAInterlessApp.getInstance().getService().getProgramByCode(prog.substring(0, prog.indexOf(".")));
 
                     if(program != null) {

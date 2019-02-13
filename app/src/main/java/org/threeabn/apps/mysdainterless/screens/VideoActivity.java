@@ -3,7 +3,6 @@ package org.threeabn.apps.mysdainterless.screens;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.MediaController;
 import android.widget.VideoView;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,12 +24,12 @@ public class VideoActivity extends MySDAActivity {
     //TODO this should rather load the program name from the api using this current returned file name/code
     public String getFileDisplayName(String path) {
         if (StringUtils.isNotBlank(path))
-            return path.substring(path.lastIndexOf(File.separator), path.length()).replace(File.separator, "");
+            return path.substring(path.lastIndexOf(File.separator)).replace(File.separator, "");
         return null;
     }
 
     public void playProgram(int playerId, Uri program) {
-        final VideoView videoView = (VideoView) findViewById(playerId);
+        final VideoView videoView = findViewById(playerId);
 
         videoView.setVideoURI(program);
         videoView.setMediaController(new CustomMediaController(this));

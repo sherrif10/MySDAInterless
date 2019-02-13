@@ -5,7 +5,6 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,14 +48,14 @@ public class MySDAServiceTest {
         kjose = new User("k-joseph", "test123", User.UserCategory.VIEWER, kjos);
 
         //TODO start
-        program1 = new Program("LittleRichardPromo", "3ABN Today - LittleRichard-Promo", null, "1:29:21", null, "/sdcard/MysDAInterless/.programs/LittleRichardPromo.mp4", null);
+        program1 = new Program("LittleRichardPromo", "3ABN Today - LittleRichard-Promo", null, "1:29:21", null, "/sdcard/MysDAInterless/.programs/LittleRichardPromo.mp4", null, false);
 
         //TODO recreate test DB rather perhaps, making use of DBSession#reCreateDatabase
         service.emptyDatabase();
     }
 
     @Ignore
-    public void useAppContext() throws Exception {
+    public void useAppContext() {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         Assert.assertEquals("org.threeabn.apps.mysdainterless", appContext.getPackageName());
@@ -75,8 +74,8 @@ public class MySDAServiceTest {
             service.savePeriod(p);
 
             Assert.assertEquals(1, service.getAllPeriods().size());
-            Assert.assertEquals(now.getTime(), ((Period) service.getAllPeriods().get(0)).getStart());
-            Assert.assertEquals(now.getTime(), ((Period) service.getAllPeriods().get(0)).getEnd());
+            Assert.assertEquals(now.getTime(), service.getAllPeriods().get(0).getStart());
+            Assert.assertEquals(now.getTime(), service.getAllPeriods().get(0).getEnd());
             Assert.assertEquals(p, service.getPeriodById(1));
         } catch (SQLException e) {
             e.printStackTrace();

@@ -82,7 +82,7 @@ public class MySDAInterlessApp extends Application {
     }
 
     private void installPrograms() {
-        if (StringUtils.isNoneBlank(PROGRAMS_DIRECTORY)) {
+        if (StringUtils.isNotBlank(PROGRAMS_DIRECTORY)) {
             File programsFolder = new File(PROGRAMS_DIRECTORY);
 
             if (programsFolder.list() != null && programsFolder.exists()
