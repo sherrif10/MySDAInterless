@@ -3,30 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/playback_empty_screen"
     android:scaleType="centerCrop"
-    tools:context="org.threeabn.apps.mysdainterless.screens.ProgramsListActivity"
-    android:background="@drawable/playback_empty_screen">
+    tools:context="org.threeabn.apps.mysdainterless.screens.ProgramsListActivity">
 
     <ListView
         android:id="@+id/list_programs_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/programPreviewPlay"
-        android:layout_marginTop="0dp"
+        android:layout_alignParentStart="true"
         android:layout_marginStart="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="340dp"></ListView>
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="340dp"
+        android:layout_marginBottom="10dp"></ListView>
 
     <VideoView
         android:id="@+id/programPreview"
-        android:layout_width="320dp"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="45dp"
-        android:layout_marginBottom="45dp"
-        android:layout_marginEnd="17dp" />
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="45dp" />
 
     <ImageView
         android:id="@+id/programPreviewPlay"
@@ -34,16 +34,16 @@
         android:layout_height="100dp"
         android:layout_alignEnd="@+id/programPreview"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="33dp"
         android:layout_marginTop="44dp"
+        android:layout_marginEnd="33dp"
         android:src="@drawable/icon_play" />
 
     <ImageView
         android:id="@+id/programPreviewFavorite"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_alignBottom="@+id/list_programs_view"
         android:layout_alignStart="@+id/programPreviewPlay"
+        android:layout_alignBottom="@+id/list_programs_view"
         android:src="@drawable/icon_favorites" />
 
 </RelativeLayout>

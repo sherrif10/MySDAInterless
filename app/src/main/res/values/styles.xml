@@ -15,4 +15,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="iconButton">
+        <!-- Customize your theme here. -->
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">120dp</item>
+        <item name="android:pointerIcon">hand</item>
+    </style>
+
 </resources>

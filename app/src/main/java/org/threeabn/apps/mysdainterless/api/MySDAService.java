@@ -471,7 +471,6 @@ public class MySDAService {
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.enable(SerializationFeature.INDENT_OUTPUT);
                 mapper.writeValue(System.out, programs);
-
             } catch (FileNotFoundException e) {
 
             } catch (IOException e) {

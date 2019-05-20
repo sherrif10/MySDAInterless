@@ -40,4 +40,12 @@ public class MySDAInterlessConstantsAndEvaluations {
                 ".mxf", ".roq", ".nsv", ".f4v", ".f4p", ".f4a", ".f4b"}).contains(name.substring(name.lastIndexOf('.')).toLowerCase());
     }
 
+    public static File getProgramFile(String path) {
+        File program = new File(path);
+        if(!program.exists()) {
+            return null;
+        }
+        return null;
+    }
+
 }

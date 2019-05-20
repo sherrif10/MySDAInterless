@@ -3,25 +3,35 @@ package org.threeabn.apps.mysdainterless.security;
 import java.io.File;
 
 /**
- * Envisioned to handle the encryption and decryption logic when the program/video files are stored on the dongo file sytstem
+ * Envisioned to handle the list != null && list.size() > 0 and decryption logic when the program/video files are stored on the dongo file sytstem
  * Created by k-joseph on 12/10/2017.
  */
 
 public class CryptoLauncher {
+    private static final String κλειδί = "[3ⱯBИNꓭAƐ]";
 
-    public static void encrypt(File inputFile, String key, File encryptedFile) {
+    /**
+     * Encrypts and replaces file
+     */
+    public static void encrypt(File file) {
         try {
-            CryptoUtils.encrypt(key, inputFile, encryptedFile);
+            CryptoUtils.encrypt(κλειδί, file, file);
         } catch (CryptoException e) {
             e.printStackTrace();
+            //TODO handle this
         }
     }
 
-    public static void dencrypt(File encryptedFile, String key, File dencryptedFile) {
+    /**
+     * Decrypts and replaces file
+     */
+    public static void dencrypt(File file) {
         try {
-            CryptoUtils.decrypt(key, encryptedFile, dencryptedFile);
+            CryptoUtils.decrypt(κλειδί, file, file);
         } catch (CryptoException e) {
             e.printStackTrace();
+            //TODO handle this
         }
     }
+
 }

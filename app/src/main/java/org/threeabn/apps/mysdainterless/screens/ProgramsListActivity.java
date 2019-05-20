@@ -1,6 +1,5 @@
 package org.threeabn.apps.mysdainterless.screens;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,19 +33,20 @@ public class ProgramsListActivity extends VideoActivity {
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //TODO fix, use code to retrieve program not position
                     File selectedProgram = new File(MySDAInterlessApp.PROGRAMS_DIRECTORY + File.separator + programsPaths[position]);
 
                     if(selectedProgram != null && selectedProgram.exists()) {
                         findViewById(R.id.programPreviewPlay).setTag(selectedProgram.getAbsolutePath());
                         findViewById(R.id.programPreviewFavorite).setTag(selectedProgram.getAbsolutePath());
-                        playProgram(R.id.programPreview, Uri.fromFile(selectedProgram));
+                        playProgram(R.id.programPreview, selectedProgram);
                         Toast.makeText(ProgramsListActivity.this, "Opening: " + getFileDisplayName(selectedProgram.getPath()), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         }
-        runBlockByByView(findViewById(R.id.programPreviewPlay), ProgramsListActivity.this);
-        runBlockByByView(findViewById(R.id.programPreviewFavorite), ProgramsListActivity.this);
+        runBlockByView(findViewById(R.id.programPreviewPlay), ProgramsListActivity.this);
+        runBlockByView(findViewById(R.id.programPreviewFavorite), ProgramsListActivity.this);
     }
 
 

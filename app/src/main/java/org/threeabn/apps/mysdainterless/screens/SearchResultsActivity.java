@@ -42,6 +42,7 @@ public class SearchResultsActivity extends VideoActivity {
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //TODO fix, use code not position
                     File selectedProgram = new File(MySDAInterlessApp.PROGRAMS_DIRECTORY + File.separator + foundProgramsPaths[position]);
 
                     if (selectedProgram != null && selectedProgram.exists()) {

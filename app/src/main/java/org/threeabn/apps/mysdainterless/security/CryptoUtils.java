@@ -23,11 +23,13 @@ public class CryptoUtils {
 	private static final String ALGORITHM = "AES";
 	private static final String TRANSFORMATION = "AES";
 
+	//key meant to be either 16, 24 or 32 bytes
 	public static void encrypt(String key, File inputFile, File outputFile)
 			throws CryptoException {
 		doCrypto(Cipher.ENCRYPT_MODE, key, inputFile, outputFile);
 	}
 
+	//key meant to be either 16, 24 or 32 bytes
 	public static void decrypt(String key, File inputFile, File outputFile)
 			throws CryptoException {
 		doCrypto(Cipher.DECRYPT_MODE, key, inputFile, outputFile);
@@ -51,7 +53,6 @@ public class CryptoUtils {
 			
 			inputStream.close();
 			outputStream.close();
-			
 		} catch (NoSuchPaddingException | NoSuchAlgorithmException
 				| InvalidKeyException | BadPaddingException
 				| IllegalBlockSizeException | IOException ex) {

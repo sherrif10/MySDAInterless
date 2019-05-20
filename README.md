@@ -25,6 +25,7 @@ To setup the app, you need to to upload programs into it. to do this
 
 ## Pending
 
+- [ ] add icon
 - [ ] encrypt programs
 - [ ] support control remote navigation on all screens
 - [ ] viewer should be able to resume a started on program when he/she returns to it

@@ -38,7 +38,7 @@ public class MySDAActivity extends Activity {
         imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    public void runBlockByByView(final View view, final Context context) {
+    public void runBlockByView(final View view, final Context context) {
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (R.id.image_search == v.getId()) {

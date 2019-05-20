@@ -11,8 +11,8 @@ public class MainActivity extends MySDAActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        runBlockByByView(findViewById(R.id.image_search), MainActivity.this);
-        runBlockByByView(findViewById(R.id.image_favorite), MainActivity.this);
-        runBlockByByView(findViewById(R.id.image_list), MainActivity.this);
+        runBlockByView(findViewById(R.id.image_search), MainActivity.this);
+        runBlockByView(findViewById(R.id.image_favorite), MainActivity.this);
+        runBlockByView(findViewById(R.id.image_list), MainActivity.this);
     }
 }

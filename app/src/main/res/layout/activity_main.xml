@@ -3,39 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scaleType="centerCrop"
     tools:context="org.threeabn.apps.mysdainterless.screens.MainActivity"
     android:background="@drawable/backgroundscreen">
 
-    <ImageView
-        android:id="@+id/image_search"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/image_favorite"
-        android:layout_marginStart="30dp"
-        android:background="@drawable/search_icon" />
-
-    <ImageView
-        android:id="@+id/image_favorite"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:pointerIcon="text"
-        android:background="@drawable/icon_favorites"
-        android:layout_alignTop="@+id/image_list"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp" />
-
-
-    <ImageView
-        android:id="@+id/image_list"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:pointerIcon="text"
-        android:background="@drawable/icon_program_list"
-        android:layout_marginBottom="50dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="30dp"
-        android:layout_alignParentEnd="true" />
+        android:layout_margin="@dimen/iconMargin"
+        >
+
+        <ImageView
+            android:id="@+id/image_search"
+            style="@style/iconButton"
+            android:background="@drawable/search_icon" />
+
+        <ImageView
+            android:id="@+id/image_favorite"
+            style="@style/iconButton"
+            android:background="@drawable/icon_favorites" />
+
+        <ImageView
+            android:id="@+id/image_list"
+            style="@style/iconButton"
+            android:background="@drawable/icon_program_list" />
+    </LinearLayout>
 
 </RelativeLayout>

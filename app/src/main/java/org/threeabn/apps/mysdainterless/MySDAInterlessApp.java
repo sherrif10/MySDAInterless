@@ -85,12 +85,13 @@ public class MySDAInterlessApp extends Application {
         if (StringUtils.isNotBlank(PROGRAMS_DIRECTORY)) {
             File programsFolder = new File(PROGRAMS_DIRECTORY);
 
-            if (programsFolder.list() != null && programsFolder.exists()
+            if (programsFolder.exists() && programsFolder.list() != null
                     && Arrays.asList(programsFolder.list()).contains(MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME)) {
                 File programsCSV = new File(programsFolder.getAbsolutePath() + File.separator + MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME);
 
                 if (programsCSV.exists() && programsCSV.length() > 0) {
                     //TODO reset db with programs
+                    // TODO support importing using other loaders besides csv
                     //getService().emptyDatabase();
                     List<Program> programs = getService().loadProgramsFromCSV(programsCSV);
 
@@ -104,6 +105,7 @@ public class MySDAInterlessApp extends Application {
                         }
                     }
                     programsCSV.delete();
+                    //encrypt existing programs
                 }
             }
         }

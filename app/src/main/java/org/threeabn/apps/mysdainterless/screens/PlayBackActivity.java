@@ -22,7 +22,7 @@ public class PlayBackActivity extends VideoActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playback);
 
-        playProgram(R.id.videoView_playback, Uri.fromFile(new File(getIntent().getStringExtra("program"))));
+        playProgram(R.id.videoView_playback, new File(getIntent().getStringExtra("program")));
         Toast.makeText(PlayBackActivity.this, "Playing: " + getFileDisplayName(getIntent().getStringExtra("program")), Toast.LENGTH_SHORT).show();
     }
 }

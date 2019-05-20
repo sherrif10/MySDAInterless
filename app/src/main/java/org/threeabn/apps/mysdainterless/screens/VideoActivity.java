@@ -7,6 +7,7 @@ import android.widget.VideoView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.CustomMediaController;
+import org.threeabn.apps.mysdainterless.security.CryptoLauncher;
 
 import java.io.File;
 
@@ -28,10 +29,12 @@ public class VideoActivity extends MySDAActivity {
         return null;
     }
 
-    public void playProgram(int playerId, Uri program) {
+    public void playProgram(int playerId, File program) {
         final VideoView videoView = findViewById(playerId);
 
-        videoView.setVideoURI(program);
+        //todo decrypt and encrypt back when stopped
+        CryptoLauncher.dencrypt(program);
+        videoView.setVideoURI(Uri.fromFile(program));
         videoView.setMediaController(new CustomMediaController(this));
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -39,6 +42,7 @@ public class VideoActivity extends MySDAActivity {
                 mp.setLooping(true);
                 videoView.start();
                 videoView.requestFocus();
+                CryptoLauncher.encrypt(program);
             }
         });
     }
