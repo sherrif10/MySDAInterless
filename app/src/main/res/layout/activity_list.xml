@@ -4,46 +4,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/playback_empty_screen"
-    android:scaleType="centerCrop"
     tools:context="org.threeabn.apps.mysdainterless.screens.ProgramsListActivity">
 
-    <ListView
-        android:id="@+id/list_programs_view"
-        android:layout_width="match_parent"
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_below="@+id/programPreviewPlay"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="340dp"
-        android:layout_marginBottom="10dp"></ListView>
+        android:layout_marginTop="@dimen/backgroundMarginTop"
+        >
+        <ListView
+            android:id="@+id/list_programs_view"
+            android:layout_width="600dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/iconMargin"></ListView>
 
-    <VideoView
-        android:id="@+id/programPreview"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="45dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginBottom="45dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginRight="@dimen/iconMargin">
+            <Spinner
+                android:id="@+id/programCategorySpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </Spinner>
+            <VideoView
+                android:id="@+id/programPreview"
+                android:layout_width="360dp"
+                android:layout_height="180dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/iconPadding">
+                <ImageView
+                    android:id="@+id/programPreviewPlay"
+                    style="@style/iconButton"
+                    android:src="@drawable/icon_play" />
 
-    <ImageView
-        android:id="@+id/programPreviewPlay"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignEnd="@+id/programPreview"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="33dp"
-        android:src="@drawable/icon_play" />
+                <ImageView
+                    android:id="@+id/programPreviewFavorite"
+                    style="@style/iconButton"
+                    android:src="@drawable/icon_favorites" />
 
-    <ImageView
-        android:id="@+id/programPreviewFavorite"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignStart="@+id/programPreviewPlay"
-        android:layout_alignBottom="@+id/list_programs_view"
-        android:src="@drawable/icon_favorites" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
 
 </RelativeLayout>

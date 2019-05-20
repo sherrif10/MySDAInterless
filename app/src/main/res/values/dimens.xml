@@ -2,4 +2,5 @@
 <resources>
     <dimen name="iconMargin">24dp</dimen>
     <dimen name="iconPadding">12dp</dimen>
+    <dimen name="backgroundMarginTop">150dp</dimen>
 </resources>
