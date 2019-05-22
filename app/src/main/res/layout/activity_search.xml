@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,22 +9,35 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingTop="100dp"
-            android:gravity="center_horizontal">
-
-            <EditText
-                android:id="@+id/searchText"
-                android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/backgroundMarginTop"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Program code/name/description..."
-                android:inputType="textPersonName"
-                android:padding="10dp" />
-            <Button
-                android:id="@+id/searchEnter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/enter"/>
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
 
+                <EditText
+                    android:id="@+id/searchText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Program code/name/description..."
+                    android:inputType="text" />
+                <Spinner
+                    android:id="@+id/programCategorySpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </Spinner>
+                <Button
+                    android:id="@+id/searchEnter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enter"/>
+
+            </LinearLayout>
+            <ListView
+                android:id="@+id/search_programs_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

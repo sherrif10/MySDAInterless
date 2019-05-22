@@ -10,10 +10,6 @@
     <VideoView
         android:id="@+id/videoView_playback"
         android:layout_width="fill_parent"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
         android:layout_height="fill_parent"/>
 
 </RelativeLayout>
