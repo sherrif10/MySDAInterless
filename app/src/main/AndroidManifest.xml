@@ -5,6 +5,13 @@
     android:installLocation="preferExternal"
     android:clearTaskOnLaunch="true"
     android:finishOnTaskLaunch="true">
+    <supports-screens
+        android:resizeable="true"
+        android:anyDensity="true"
+        android:smallScreens="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:xlargeScreens="true"/>
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
