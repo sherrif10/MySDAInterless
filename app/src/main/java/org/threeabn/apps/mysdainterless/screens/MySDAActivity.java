@@ -1,9 +1,13 @@
 package org.threeabn.apps.mysdainterless.screens;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +21,8 @@ import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.Program;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by k-joseph on 10/10/2017.
@@ -38,7 +44,7 @@ public class MySDAActivity extends Activity {
         imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    public void runBlockByView(final View view, final Context context) {
+    public void runActivityByView(final View view, final Context context) {
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (R.id.image_search == v.getId()) {
@@ -76,6 +82,10 @@ public class MySDAActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        List<String> allPermissions = allPermissions();
+        for(int i = 0; i < allPermissions.size(); i++) {
+            askForPermissions(allPermissions.get(i), i);
+        }
         //TODO restrict auto-rotate after testing on the dongo
         //hideSoftKeyboard();
     }
@@ -90,4 +100,13 @@ public class MySDAActivity extends Activity {
         super.onStop();
     }
 
+    private List<String>  allPermissions() {
+        return Arrays.asList(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    }
+
+    private void askForPermissions(String permission, Integer requestCode) {
+        if (ContextCompat.checkSelfPermission(MySDAActivity.this, permission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MySDAActivity.this, new String[]{permission}, requestCode);
+        }
+    }
 }

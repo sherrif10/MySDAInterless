@@ -95,15 +95,15 @@ public class Program extends MySDAObject {
 		setCode(code);
 	}
 
-	public Program(String code, String name, String description, String duration, String participants, String video, String transcript, Boolean favourited) {
+	public Program(String code, String name, String description, String duration, String participants, String transcript, Boolean favourited, ProgramCategory category) {
 		setName(name);
         setDescription(description);
 		setCode(code);
 		setDuration(duration);
 		setParticipants(participants);
-		setPresentation(video);
 		setTranscript(transcript);
 		setFavourited(favourited);
+		setCategory(category);
 	}
 
 	public String getPresentation() {
@@ -171,12 +171,12 @@ public class Program extends MySDAObject {
 		this.series = series;
 	}
 
-	public String getCategory() {
-		return category;
-	}
-
 	public void setCategory(ProgramCategory category) {
 		this.category = category.name();
+	}
+
+	public ProgramCategory getCategory() {
+		return ProgramCategory.valueOf(category);
 	}
 
     public String getDuration() {
@@ -195,10 +195,6 @@ public class Program extends MySDAObject {
         this.participants = participants;
     }
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
 	public boolean isFavourited() {
 		return favourited;
 	}
@@ -216,15 +212,13 @@ public class Program extends MySDAObject {
 	}
 
 	public enum ProgramCategory {
-		THREEABN_TODAY("3ABN Today"),
-		PREACHING("Preaching"),
-		HEALTH("Cooking, Exercise (Health)"),
-		SABBATH_SCHOOL("Sabbath School"),
-		CAMP_MEETING("Camp Meeting"),
-		COUNSELLING("Counselling"),
+		ALL("All"),
+		NONE("None"),
+		PREACHING_AND_TEACHING("Preaching & Teaching"),
+		HEALTH_AND_COOKING("Health & Cooking"),
 		MUSIC("Music"),
-        NEWS("3ABN News"),
-		MISC("Miscellaneous");
+        FAMILY_ISSUES_AND_INTERCITY("Family issues & Intercity"),
+		KIDS("Kids");
 
 		private String displayName;
 
@@ -232,17 +226,34 @@ public class Program extends MySDAObject {
 			this.displayName = displayName;
 		}
 
-		public String displayName() {
+		public String getDisplayName() {
 			return displayName;
 		}
 
-		public static List<String> getNames(List<ProgramCategory> cats) {
+		public static List<String> getNames(List<ProgramCategory> categories) {
             List<String> names = new ArrayList<String>();
 
-            for(ProgramCategory c : (cats != null ? cats : Arrays.asList(ProgramCategory.values()))) {
+            for(ProgramCategory c : (categories != null ? categories : Arrays.asList(ProgramCategory.values()))) {
                 names.add(c.name());
             }
             return names;
         }
+
+        public static List<String> displayNames() {
+			List<String> names = new ArrayList<>();
+			for(ProgramCategory category: values()) {
+				names.add(category.getDisplayName());
+			}
+			return names;
+		}
+
+		public static ProgramCategory valueOfFromDisplayName(String displayName) {
+			for(ProgramCategory category: values()) {
+				if(category.getDisplayName().equals(displayName)) {
+					return category;
+				}
+			}
+			return null;
+		}
 	}
 }

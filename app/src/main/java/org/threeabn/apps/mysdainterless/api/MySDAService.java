@@ -3,14 +3,12 @@ package org.threeabn.apps.mysdainterless.api;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.text.TextUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.j256.ormlite.dao.Dao;
 
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.modal.Channel;
 import org.threeabn.apps.mysdainterless.modal.ChannelProgram;
@@ -260,6 +258,10 @@ public class MySDAService {
         }
     }
 
+    public int saveProgramCategory(Program.ProgramCategory obj) throws SQLException {
+        return getDbSession().create(obj, Program.ProgramCategory.class);
+    }
+
     public Dao.CreateOrUpdateStatus saveChannel(Channel obj) throws SQLException {
         return getDbSession().createOrUpdate(obj, Channel.class);
     }
@@ -453,8 +455,10 @@ public class MySDAService {
         return (cursor != null && cursor.moveToFirst());
     }
 
-    //TODO add getallfavouritesbyUser
-
+    /**
+     * TODO add getallfavouritesbyUser
+     * TODO add other csv basing on the latest received exported files from 3ABN
+     */
     public List<Program> loadProgramsFromCSV(File csvFile) {
         Pattern pattern = Pattern.compile(",(?=([^\\\"]*\\\"[^\\\"]*\\\")*(?![^\\\"]*\\\"))");
         List <Program> programs = null;
@@ -465,16 +469,13 @@ public class MySDAService {
                     String[] x = pattern.split(line, -1);
                     //TODO fix this
                     //wire in the right video and transfcript; maybe excell should contains rather path to the files
-                    return new Program(trimer(x[0]), trimer(x[1]), trimer(x[2]), trimer(x[3]), trimer(x[4])
-                            , null, null, !TextUtils.isEmpty(trimer(x[7])) && BooleanUtils.toBoolean(trimer(x[7])));
+                    return new Program(trimer(x[0]), trimer(x[1]), trimer(x[2]), trimer(x[3]), trimer(x[4]), trimer(x[5]), getBoolean(trimer(x[6])), getProgramCategory(trimer(x[7])));
                 }).collect(Collectors.toList());
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.enable(SerializationFeature.INDENT_OUTPUT);
                 mapper.writeValue(System.out, programs);
             } catch (FileNotFoundException e) {
-
             } catch (IOException e) {
-
             }
         }
         return programs;
@@ -482,5 +483,19 @@ public class MySDAService {
 
     private String trimer(String str) {
         return StringUtils.isNotBlank(str) ? str.replaceAll("\"", "") : str;
+    }
+
+    private boolean getBoolean(String bool) {
+        if(StringUtils.isNotBlank(bool)) {
+            return Boolean.getBoolean(bool);
+        }
+        return false;
+    }
+
+    private Program.ProgramCategory getProgramCategory(String cat) {
+        if(StringUtils.isNotBlank(cat)) {
+            return Program.ProgramCategory.valueOf(cat);
+        }
+        return Program.ProgramCategory.NONE;
     }
 }

@@ -16,9 +16,9 @@ public class MySDAInterlessConstantsAndEvaluations {
 
     private static String getMySDAVideosFolderPath() {
         File mySdaStorageLocation = new File(getDataDirectory().getAbsolutePath() + File.separator + "programs");
-
-        if(!mySdaStorageLocation.exists())
+        if(!mySdaStorageLocation.exists()) {
             mySdaStorageLocation.mkdirs();
+        }
         return mySdaStorageLocation.getAbsolutePath();
     }
 
@@ -26,7 +26,8 @@ public class MySDAInterlessConstantsAndEvaluations {
      * TODO improve hard cording here
      */
     public static File getDataDirectory() {
-        return new File("/sdcard/.mysdainterless");
+        //TODO change back to "/sdcard/.mysdainterless"
+        return new File("/sdcard/mysdainterless");
     }
     /**
      * Supports all video file formats at https://en.wikipedia.org/wiki/Video_file_format by this file creation date

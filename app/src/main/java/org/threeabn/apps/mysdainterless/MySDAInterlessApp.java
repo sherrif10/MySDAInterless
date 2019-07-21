@@ -58,17 +58,46 @@ public class MySDAInterlessApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+    }
 
+    /**
+     * TODO initially this is meant to be run in onCreate in this class
+     */
+    public void initialiseAllPrograms() {
         if (StringUtils.isNotBlank(PROGRAMS_DIRECTORY)) {
             File programsFolder = new File(PROGRAMS_DIRECTORY);
 
             if (!programsFolder.exists()) {
                 programsFolder.mkdirs();
             }
-            installPrograms();
+            installPrograms(programsFolder);
             // TODO can the dongo handle millions of program refs in memory
-            existingProgramRefs = filterPrograms(programsFolder.list(), null, null);
+            existingProgramRefs = filterPrograms(existingProgramNames(), null, null);
         }
+    }
+
+    /**
+     * @return programsFolder.list();
+     */
+    public String[] existingProgramNames() {
+        if (StringUtils.isNotBlank(PROGRAMS_DIRECTORY)) {
+            File programsFolder = new File(PROGRAMS_DIRECTORY);
+
+            if (programsFolder.exists()) {
+               return programsFolder.list();
+            }
+        }
+        return new String[0];
+    }
+
+    public String[] getExistingProgramRefsFromPrograms(List<Program> programs, String searchText, Boolean favorited) {
+        List<String> refs = new ArrayList<>();
+        for(Program p: programs) {
+            if(Arrays.asList(existingProgramNames()).contains(p.getName())) {
+                refs.add(p.getName());
+            }
+        }
+        return filterPrograms(refs.toArray(new String[refs.size()]), searchText, favorited);
     }
 
     @Override
@@ -81,32 +110,28 @@ public class MySDAInterlessApp extends Application {
         super.onLowMemory();
     }
 
-    private void installPrograms() {
-        if (StringUtils.isNotBlank(PROGRAMS_DIRECTORY)) {
-            File programsFolder = new File(PROGRAMS_DIRECTORY);
+    private void installPrograms(File programsFolder) {
+        if (programsFolder.exists() && programsFolder.list() != null
+                && Arrays.asList(programsFolder.list()).contains(MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME)) {
+            File programsCSV = new File(programsFolder.getAbsolutePath() + File.separator + MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME);
 
-            if (programsFolder.exists() && programsFolder.list() != null
-                    && Arrays.asList(programsFolder.list()).contains(MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME)) {
-                File programsCSV = new File(programsFolder.getAbsolutePath() + File.separator + MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME);
+            if (programsCSV.exists() && programsCSV.length() > 0) {
+                //TODO reset db with programs
+                // TODO support importing using other loaders besides csv
+                //getService().emptyDatabase();
+                List<Program> programs = getService().loadProgramsFromCSV(programsCSV);
 
-                if (programsCSV.exists() && programsCSV.length() > 0) {
-                    //TODO reset db with programs
-                    // TODO support importing using other loaders besides csv
-                    //getService().emptyDatabase();
-                    List<Program> programs = getService().loadProgramsFromCSV(programsCSV);
-
-                    if (programs != null) {
-                        for (Program p : programs) {
-                            try {
-                                getService().saveProgram(p);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                if (programs != null) {
+                    for (Program p : programs) {
+                        try {
+                            getService().saveProgram(p);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
-                    programsCSV.delete();
-                    //encrypt existing programs
                 }
+                programsCSV.delete();
+                //encrypt existing programs
             }
         }
     }
@@ -122,21 +147,12 @@ public class MySDAInterlessApp extends Application {
         try {
             Map<String, Program> programSet = getProgramSetByCodeFromList();
 
-            if (codes != null && programSet != null) {
+            if (codes.length > 0 && programSet != null) {
                 for (String s : codes) {//TODO
                     Program p = programSet.get(s.substring(0, s.indexOf(".")));
 
                     if (checkIfFileNameBelongsToVideoType(s) && p != null) {
-                        if (TextUtils.isEmpty(searchText) || (!TextUtils.isEmpty(searchText) &&
-                                ((!TextUtils.isEmpty(p.getName()) && p.getName().toLowerCase().contains(searchText.toLowerCase()))
-                                        || (!TextUtils.isEmpty(p.getCategory()) && p.getCategory().toLowerCase().contains(searchText.toLowerCase()))
-                                        || (!TextUtils.isEmpty(p.getSeries()) && p.getSeries().toLowerCase().contains(searchText.toLowerCase()))
-                                        || (!TextUtils.isEmpty(p.getEpisode()) && p.getEpisode().toLowerCase().contains(searchText.toLowerCase()))
-                                        || (!TextUtils.isEmpty(p.getCode()) && p.getCode().toLowerCase().contains(searchText.toLowerCase()))
-                                        || (!TextUtils.isEmpty(p.getDescription()) && p.getDescription().toLowerCase().contains(searchText.toLowerCase()))
-                                        || (!TextUtils.isEmpty(p.getParticipants()) && p.getParticipants().toLowerCase().contains(searchText.toLowerCase()))
-                                        || (!TextUtils.isEmpty(p.getDuration()) && p.getDuration().toLowerCase().contains(searchText.toLowerCase()))))) {
-
+                        if (MySDAInterlessUtils.programsMatcher(p, searchText)) {
                             if (favorited == null || (favorited != null && favorited && p.isFavourited())) {
                                 strs.add(s);
                             }

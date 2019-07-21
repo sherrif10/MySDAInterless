@@ -26,7 +26,7 @@ import java.util.Map;
 public class DBSession extends OrmLiteSqliteOpenHelper  {
 
     //TODO pull these 2 into the manifest file
-    public static final String DB_NAME = ".mysda_interless.db";
+    public static final String DB_NAME = ".mysdainterless.db";
     private static final int DB_VERSION = 2;
 
     //TODO TEST: if db file on device is accessible and editable, encrypt it

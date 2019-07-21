@@ -19,7 +19,6 @@ public class VideoActivity extends MySDAActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     //TODO this should rather load the program name from the api using this current returned file name/code
@@ -33,7 +32,7 @@ public class VideoActivity extends MySDAActivity {
         final VideoView videoView = findViewById(playerId);
 
         //todo decrypt and encrypt back when stopped
-        CryptoLauncher.dencrypt(program);
+        //CryptoLauncher.dencrypt(program);
         videoView.setVideoURI(Uri.fromFile(program));
         videoView.setMediaController(new CustomMediaController(this));
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -42,7 +41,7 @@ public class VideoActivity extends MySDAActivity {
                 mp.setLooping(true);
                 videoView.start();
                 videoView.requestFocus();
-                CryptoLauncher.encrypt(program);
+                //CryptoLauncher.encrypt(program);
             }
         });
     }
