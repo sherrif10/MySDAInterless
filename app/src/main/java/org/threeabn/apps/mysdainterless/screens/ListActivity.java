@@ -21,9 +21,12 @@ public abstract class ListActivity extends VideoActivity {
     private int categoriesInitialization = 0;
     protected abstract String[] defineInitialProgramsPaths();
     protected abstract ProgramSearchCriteria defineProgramCategoriesSearchCriteria(Program.ProgramCategory programCategory);
+    private ListActivity currentScreen;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        currentScreen = this;
+
         super.onCreate(savedInstanceState);
         ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_item, Program.ProgramCategory.displayNames());
@@ -44,6 +47,11 @@ public abstract class ListActivity extends VideoActivity {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
         updateProgramItems(defineInitialProgramsPaths());
+
+        runActivityByView(findViewById(R.id.programPreviewPlay), ListActivity.this);
+        if(currentScreen instanceof ProgramsListActivity) {
+            runActivityByView(findViewById(R.id.programPreviewFavorite), ListActivity.this);
+        }
     }
 
     private void updateProgramItems(String[] programsPaths) {
@@ -60,7 +68,9 @@ public abstract class ListActivity extends VideoActivity {
 
                     if(selectedProgram != null && selectedProgram.exists()) {
                         findViewById(R.id.programPreviewPlay).setTag(selectedProgram.getAbsolutePath());
-                        findViewById(R.id.programPreviewFavorite).setTag(selectedProgram.getAbsolutePath());
+                        if(currentScreen instanceof ProgramsListActivity) {
+                            findViewById(R.id.programPreviewFavorite).setTag(selectedProgram.getAbsolutePath());
+                        }
                         playProgram(R.id.programPreview, selectedProgram);
                         Toast.makeText(ListActivity.this, "Opening: " + getFileDisplayName(selectedProgram.getPath()), Toast.LENGTH_SHORT).show();
                     }

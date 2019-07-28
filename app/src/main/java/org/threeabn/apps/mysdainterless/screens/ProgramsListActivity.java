@@ -35,8 +35,6 @@ public class ProgramsListActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_list);
         super.onCreate(savedInstanceState);
-        runActivityByView(findViewById(R.id.programPreviewPlay), ProgramsListActivity.this);
-        runActivityByView(findViewById(R.id.programPreviewFavorite), ProgramsListActivity.this);
     }
 
 }
