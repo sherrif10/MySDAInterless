@@ -211,6 +211,36 @@ public class Program extends MySDAObject {
 		this.transcript = transcript;
 	}
 
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Program program = (Program) o;
+
+		if (isFavourited() != program.isFavourited()) return false;
+		if (getName() != null ? !getName().equals(program.getName()) : program.getName() != null)
+			return false;
+		if (getDescription() != null ? !getDescription().equals(program.getDescription()) : program.getDescription() != null)
+			return false;
+		if (getCode() != null ? !getCode().equals(program.getCode()) : program.getCode() != null)
+			return false;
+		if (getEpisode() != null ? !getEpisode().equals(program.getEpisode()) : program.getEpisode() != null)
+			return false;
+		if (getSeries() != null ? !getSeries().equals(program.getSeries()) : program.getSeries() != null)
+			return false;
+		if (getDuration() != null ? !getDuration().equals(program.getDuration()) : program.getDuration() != null)
+			return false;
+		if (getParticipants() != null ? !getParticipants().equals(program.getParticipants()) : program.getParticipants() != null)
+			return false;
+		if (getPresentation() != null ? !getPresentation().equals(program.getPresentation()) : program.getPresentation() != null)
+			return false;
+		if (getCategory() != null ? !getCategory().equals(program.getCategory()) : program.getCategory() != null)
+			return false;
+		return getTranscript() != null ? getTranscript().equals(program.getTranscript()) : program.getTranscript() == null;
+	}
+
 	public enum ProgramCategory {
 		ALL("All"),
 		NONE("None"),

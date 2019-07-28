@@ -26,7 +26,6 @@ import java.util.Map;
 /**
  * Created by k-joseph on 29/10/2017.
  */
-
 public class ProgramsList extends ArrayAdapter<String> implements Filterable {
     private Activity context;
     // TODO fix track programs by name not position
@@ -101,41 +100,45 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
 
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            List<Program> filteredResult = getFilteredResults(charSequence);
-
-            FilterResults results = new FilterResults();
-            results.values = filteredResult;
-            results.count = filteredResult.size();
-
-            return results;
+            return null;
         }
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            clear();
-            addAll(MySDAInterlessApp.getInstance().getExistingProgramRefsFromPrograms((List<Program>)filterResults.values, null, null));
         }
 
-        public String[] customFilter(CharSequence charSequence) {
-            List<Program> filteredResult = getFilteredResults(charSequence);
+        /**
+         * I use this instead of the default filter that fails to update the list appropriately and the quick fix being rebuilding the list
+         */
+        public String[] customFilter(ProgramSearchCriteria criteria) {
+            List<Program> filteredResult = getFilteredResults(criteria);
             return MySDAInterlessApp.getInstance().getExistingProgramRefsFromPrograms((List<Program>)filteredResult, null, null);
         }
 
-        // charSequence looks like: categoriesInitialization;termCategory[Category/name/code/any];term
-        private List<Program> getFilteredResults(CharSequence constraint) {
-            String [] cons = constraint.toString().split(";");
+        private List<Program> getFilteredResults(ProgramSearchCriteria criteria) {
             ArrayList<Program> listResult = new ArrayList<Program>();
             try {
                 Map<String, Program> programs = MySDAInterlessApp.getInstance().getProgramSetByCodeFromList();
-                if(cons.length == 3 && "category".equals(cons[1])) {//wrong constraint structure
-                    if(Program.ProgramCategory.ALL.name().equals(cons[2])){
+                List<Program> programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList((Program.ProgramCategory) criteria.getTerm()));
+                List<Program> favouritedPrograms = MySDAInterlessApp.getInstance().getService().getFavouritedPrograms();
+
+                if(ProgramSearchCriteria.TermCategory.CATEGORY.equals(criteria.getCategory())) {//wrong constraint structure
+                    if(Program.ProgramCategory.ALL.equals(criteria.getTerm())) {
                         listResult.addAll(programs.values());
                     } else {
-                        listResult.addAll(MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList(Program.ProgramCategory.valueOf(cons[2]))));
+                        listResult.addAll(programsByCategories);
                     }
+                } else if(ProgramSearchCriteria.TermCategory.CATEGORY_FAVOURITE.equals(criteria.getCategory())) {// TODO fix
+                    if(Program.ProgramCategory.ALL.equals(criteria.getTerm())) {
+                        listResult.addAll(intersectTwoProgramLists(new ArrayList(programs.values()), favouritedPrograms));
+                    } else {
+                        listResult.addAll(intersectTwoProgramLists(programsByCategories, favouritedPrograms));
+                    }
+                } else if(ProgramSearchCriteria.TermCategory.FAVOURITE.equals(criteria.getCategory())) {
+                    listResult.addAll(favouritedPrograms);
                 }  else {
                     for (Program p : programs.values()) {
-                        if (MySDAInterlessUtils.programsMatcher(p, constraint.toString())) {
+                        if (MySDAInterlessUtils.programsMatcher(p, (String) criteria.getTerm())) {
                             listResult.add(p);
                         }
                     }
@@ -145,5 +148,11 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
             }
             return listResult;
         }
+    }
+
+    // get all in programs1 and are in programs2
+    private List<Program> intersectTwoProgramLists(List<Program> programs1, List<Program> programs2) {
+        programs1.retainAll(programs2);
+        return programs1;
     }
 }

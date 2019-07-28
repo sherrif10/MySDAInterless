@@ -346,6 +346,10 @@ public class MySDAService {
         return getDbSession().containedIn("category", Program.ProgramCategory.getNames(categories), Program.class);
     }
 
+    public List<Program> getFavouritedPrograms() throws SQLException {
+        return getDbSession().getByField(Program.class, "favourited", true);
+    }
+
     public List<Program> getProgramsBySeries(List<String> seriesCodes) throws SQLException {
         return getDbSession().containedIn("series", seriesCodes, Program.class);
     }

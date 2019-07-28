@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- TODO Retire this and rather re-use activity_list.xml-->
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,25 +9,34 @@
     android:background="@drawable/backgroundscreen">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <Spinner
-            android:id="@+id/programCategorySpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_margin="4dp">
-
-        </Spinner>
+        android:layout_marginTop="220dp"
+        >
         <ListView
-            android:id="@+id/favorite_programs_list"
+            android:id="@+id/list_programs_view"
             android:cacheColorHint="#00000000"
             android:listSelector="@color/black"
-            android:layout_width="match_parent"
+            android:layout_width="600dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/iconMargin"></ListView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_weight="1"/>
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginRight="@dimen/iconMargin">
+            <Spinner
+                android:id="@+id/programCategorySpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </Spinner>
+            <VideoView
+                android:id="@+id/programPreview"
+                android:layout_width="360dp"
+                android:layout_height="180dp"/>
+
+        </LinearLayout>
     </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

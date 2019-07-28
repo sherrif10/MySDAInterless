@@ -121,7 +121,7 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
         return dao.queryForId(aId);
     }
 
-    public <T> List<T> getByField(Class<T> clazz, String fieldName, String fieldValue) throws SQLException {
+    public <T> List<T> getByField(Class<T> clazz, String fieldName, Object fieldValue) throws SQLException {
         Dao<T, Object> dao = getDao(clazz);
         return dao.queryForEq(fieldName, fieldValue);
     }
