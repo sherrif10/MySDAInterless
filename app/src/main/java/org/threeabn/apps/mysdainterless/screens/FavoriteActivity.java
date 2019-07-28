@@ -27,7 +27,7 @@ public class FavoriteActivity extends ListActivity {
     }
 
     @Override
-    protected ProgramSearchCriteria defineProgramCategoriesSearchCriteria(Program.ProgramCategory programCategory) {
+    protected ProgramSearchCriteria defineProgramCategoriesSearchCriteria(Program.ProgramCategory programCategory, String term) {
         return new ProgramSearchCriteria(programCategory, ProgramSearchCriteria.TermCategory.CATEGORY_FAVOURITE, true);
     }
 

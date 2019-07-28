@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_search"
     tools:context="org.threeabn.apps.mysdainterless.screens.SearchActivity">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -16,7 +15,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_horizontal">
-
                 <EditText
                     android:id="@+id/searchText"
                     android:layout_width="wrap_content"
@@ -33,15 +31,39 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/enter"/>
-
             </LinearLayout>
-            <ListView
-                android:id="@+id/list_programs_view"
-                android:cacheColorHint="#00000000"
-                android:listSelector="@color/black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/iconMargin"
-                android:layout_marginRight="@dimen/iconMargin"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <ListView
+                    android:id="@+id/list_programs_view"
+                    android:layout_width="600dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/iconMargin"
+                    android:layout_marginRight="@dimen/iconMargin"
+                    android:cacheColorHint="#00000000"
+                    android:listSelector="@color/black" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/iconPadding"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <VideoView
+                        android:id="@+id/programPreview"
+                        android:layout_width="360dp"
+                        android:layout_height="180dp" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/iconPadding">
+                        <ImageView
+                            android:id="@+id/programPreviewPlay"
+                            style="@style/iconButton"
+                            android:src="@drawable/icon_play" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 </RelativeLayout>
