@@ -6,32 +6,31 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
+import org.threeabn.apps.mysdainterless.MySDAInterlessApp;
+import org.threeabn.apps.mysdainterless.ProgramSearchCriteria;
+import org.threeabn.apps.mysdainterless.ProgramsList;
 import org.threeabn.apps.mysdainterless.R;
+import org.threeabn.apps.mysdainterless.modal.Program;
 
 /**
  * Created by k-joseph on 10/10/2017.
  */
 
-public class SearchActivity extends MySDAActivity {
-    public static String SEARCH_TEXT = "searchText";
+public class SearchActivity extends ListActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
-        EditText inputSearch = findViewById(R.id.searchText);
+    protected String[] defineInitialProgramsPaths() {
+        return MySDAInterlessApp.getInstance().getExistingProgramRefs();
+    }
 
-        inputSearch.requestFocus();
-        showSoftKeyboard(this, inputSearch);
-        findViewById(R.id.searchEnter).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!TextUtils.isEmpty(inputSearch.getText()) && inputSearch.getText().length() >= 3) {
-                    Intent i = new Intent(getApplicationContext(), SearchResultsActivity.class);
-                    i.putExtra(SEARCH_TEXT, inputSearch.getText());
-                    getApplicationContext().startActivity(i);
-                }
-            }
-        });
+    @Override
+    protected ProgramSearchCriteria defineProgramCategoriesSearchCriteria(Program.ProgramCategory programCategory, String term) {
+        return new ProgramSearchCriteria(programCategory.name() + ProgramsList.SEPARATOR + term, ProgramSearchCriteria.TermCategory.SEARCH, null);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_search);
+        super.onCreate(savedInstanceState);
     }
 }

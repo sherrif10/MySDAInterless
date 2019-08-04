@@ -38,7 +38,7 @@ public abstract class ListActivity extends VideoActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Program.ProgramCategory selectedCategory = Program.ProgramCategory.valueOfFromDisplayName(parent.getItemAtPosition(position).toString());
-                if (++categoriesInitialization > 1 && selectedCategory != null && listAdapter != null && !(currentScreen instanceof SearchResultsActivity)) {
+                if (++categoriesInitialization > 1 && selectedCategory != null && listAdapter != null && !(currentScreen instanceof SearchActivity)) {
                     updateProgramItems(((ProgramsList.ProgramFilter) listAdapter.getFilter()).customFilter(defineProgramCategoriesSearchCriteria(selectedCategory, null)));
                 }
             }
@@ -54,7 +54,7 @@ public abstract class ListActivity extends VideoActivity {
         if(currentScreen instanceof ProgramsListActivity) {
             runActivityByView(findViewById(R.id.programPreviewFavorite), ListActivity.this);
         }
-        if(currentScreen instanceof SearchResultsActivity) {
+        if(currentScreen instanceof SearchActivity) {
             findViewById(R.id.searchEnter).setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Program.ProgramCategory selectedCategory = Program.ProgramCategory.valueOfFromDisplayName(categories.getSelectedItem().toString());

@@ -38,11 +38,12 @@
                 android:orientation="horizontal">
                 <ListView
                     android:id="@+id/list_programs_view"
+                    android:cacheColorHint="#00000000"
+                    android:divider="@null"
                     android:layout_width="600dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/iconMargin"
                     android:layout_marginRight="@dimen/iconMargin"
-                    android:cacheColorHint="#00000000"
                     android:listSelector="@color/black" />
                 <LinearLayout
                     android:layout_width="wrap_content"

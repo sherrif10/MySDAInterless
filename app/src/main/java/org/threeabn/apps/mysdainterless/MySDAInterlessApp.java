@@ -162,7 +162,7 @@ public class MySDAInterlessApp extends Application {
 
             }
         } catch (Exception e) {
-            Log.e("SQL_ERROR: ", e.getLocalizedMessage());
+            Log.e("ERROR: ", e.getLocalizedMessage());
         }
         return strs.size() > 0 ? strs.toArray(new String[strs.size()]) : new String[]{};
     }

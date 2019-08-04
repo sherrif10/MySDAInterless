@@ -113,8 +113,7 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
          * I use this instead of the default filter that fails to update the list appropriately and the quick fix being rebuilding the list
          */
         public String[] customFilter(ProgramSearchCriteria criteria) {
-            List<Program> filteredResult = getFilteredResults(criteria);
-            return MySDAInterlessApp.getInstance().getExistingProgramRefsFromPrograms((List<Program>)filteredResult, null, null);
+            return MySDAInterlessApp.getInstance().getExistingProgramRefsFromPrograms(getFilteredResults(criteria), null, null);
         }
 
         private List<Program> getFilteredResults(ProgramSearchCriteria criteria) {
@@ -145,9 +144,14 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
                     listResult.addAll(favouritedPrograms);
                 } else if(ProgramSearchCriteria.TermCategory.SEARCH.equals(criteria.getCategory())) {
                     String[] terms = ((String) criteria.getTerm()).split(SEPARATOR);
-                    programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList(Program.ProgramCategory.valueOf(terms[0])));
+                    Program.ProgramCategory selectedCategory = Program.ProgramCategory.valueOf(terms[0]);
                     searchedPrograms = searchPrograms(terms[1], programs.values());
-                    listResult.addAll(intersectTwoProgramLists(searchedPrograms, programsByCategories));
+                    if(Program.ProgramCategory.ALL.equals(selectedCategory)) {
+                        listResult.addAll(intersectTwoProgramLists(searchedPrograms, new ArrayList<>(programs.values())));
+                    } else {
+                        programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList(selectedCategory));
+                        listResult.addAll(intersectTwoProgramLists(searchedPrograms, programsByCategories));
+                    }
                 }  else {
                     listResult.addAll(searchPrograms((String) criteria.getTerm(), programs.values()));
                 }
@@ -170,7 +174,8 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
 
     // get all in programs1 and are in programs2
     private List<Program> intersectTwoProgramLists(List<Program> programs1, List<Program> programs2) {
-        programs1.retainAll(programs2);
-        return programs1;
+        List<Program> intersected = new ArrayList<>(programs1);
+        intersected.retainAll(programs2);
+        return intersected;
     }
 }
