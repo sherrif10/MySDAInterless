@@ -15,6 +15,7 @@ import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.Program;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by k-joseph on 10/10/2017.
@@ -22,8 +23,8 @@ import java.io.File;
 public class FavoriteActivity extends ListActivity {
 
     @Override
-    protected String[] defineInitialProgramsPaths() {
-        return MySDAInterlessApp.getInstance().filterPrograms(new File(MySDAInterlessApp.PROGRAMS_DIRECTORY).list(), null, true);
+    protected List<Program> defineInitialPrograms() {
+        return MySDAInterlessApp.getInstance().filterPrograms(null, true);
     }
 
     @Override

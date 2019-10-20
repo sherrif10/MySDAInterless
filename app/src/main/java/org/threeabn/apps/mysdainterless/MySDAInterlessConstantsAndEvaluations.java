@@ -14,6 +14,8 @@ public class MySDAInterlessConstantsAndEvaluations {
 
     public static String PROGRAMS_CSV_FILENAME = "programs.csv";
 
+    public static String INSTALL = "install.txt";
+
     private static String getMySDAVideosFolderPath() {
         File mySdaStorageLocation = new File(getDataDirectory().getAbsolutePath() + File.separator + "programs");
         if(!mySdaStorageLocation.exists()) {
@@ -27,7 +29,7 @@ public class MySDAInterlessConstantsAndEvaluations {
      */
     public static File getDataDirectory() {
         //TODO change back to "/sdcard/.mysdainterless"
-        return new File("/sdcard/mysdainterless");
+        return new File("/mnt/ext_sdcard/mysdainterless");
     }
     /**
      * Supports all video file formats at https://en.wikipedia.org/wiki/Video_file_format by this file creation date

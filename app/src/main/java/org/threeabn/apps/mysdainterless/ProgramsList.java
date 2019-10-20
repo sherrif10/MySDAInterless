@@ -29,57 +29,32 @@ import java.util.Map;
  */
 public class ProgramsList extends ArrayAdapter<String> implements Filterable {
     private Activity context;
-    // TODO fix track programs by name not position
-    private String[] programPaths;
-    private boolean detailPrograms;
     public static String SEPARATOR = "<-:->";
+    private  Map<String, String> programRefs;
 
-
-    public ProgramsList(Activity context, String[] programPaths) {
-        super(context, R.layout.list_programs, programPaths);// TODO fetch and rather pass in program name here instead of programPaths
+    public ProgramsList(Activity context, String[] programDisplays, Map<String, String> programRefs) {
+        super(context, R.layout.list_programs, programDisplays);//TODO fetch and rather pass in program name here instead of programPaths
         this.context = context;
-        this.programPaths = programPaths;
+        this.programRefs = programRefs;
     }
 
-    public ProgramsList(Activity context, String[] programPaths, boolean detailPrograms) {
-        super(context, detailPrograms ? R.layout.list_programs_details : R.layout.list_programs, programPaths);//TODO fetch and rather pass in program name here instead of programPaths
-        this.context = context;
-        this.programPaths = programPaths;
-        this.detailPrograms = detailPrograms;
-    }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView = inflater.inflate(this.detailPrograms ? R.layout.list_programs_details : R.layout.list_programs, null, true);
+        View rowView = inflater.inflate(R.layout.list_programs, null, true);
         TextView txtTitle = rowView.findViewById(R.id.txt);
         ImageView imageView = rowView.findViewById(R.id.img);
-        if(position + 1 > programPaths.length) {
+
+        if(position + 1 > programRefs.size()) {
             // remove(getItem(position));
         } else {
-            String path = programPaths[position];
-            Bitmap img = retrieveBitmap(MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY + File.separator + path);
             // TODO fix to by name not position
-            if (StringUtils.isNotBlank(path)) {
-                txtTitle.setText(path);
+            String display = (String) new ArrayList(programRefs.keySet()).get(position);
+            if (StringUtils.isNotBlank(display)) {
+                txtTitle.setText(display);
+                Bitmap img = retrieveBitmap(MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY + File.separator + programRefs.get(display));
                 imageView.setImageBitmap(img);
-
-                if (this.detailPrograms) {
-                    //TODO add all details
-                    try {
-                        TextView desc = rowView.findViewById(R.id.p_desc);
-                        TextView dur = rowView.findViewById(R.id.p_duration);
-                        TextView parts = rowView.findViewById(R.id.p_participants);
-                        Program program = MySDAInterlessApp.getInstance().getService().getProgramByCode(path.substring(0, path.indexOf(".")));
-                        if (program != null) {
-                            desc.setText(program.getDescription());
-                            dur.setText(program.getDuration());
-                            parts.setText(program.getParticipants());
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
             }
         }
         return rowView;
@@ -112,14 +87,14 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
         /**
          * I use this instead of the default filter that fails to update the list appropriately and the quick fix being rebuilding the list
          */
-        public String[] customFilter(ProgramSearchCriteria criteria) {
-            return MySDAInterlessApp.getInstance().getExistingProgramRefsFromPrograms(getFilteredResults(criteria), null, null);
+        public List<Program> customFilter(ProgramSearchCriteria criteria) {
+            return getFilteredResults(criteria);
         }
 
         private List<Program> getFilteredResults(ProgramSearchCriteria criteria) {
             ArrayList<Program> listResult = new ArrayList<Program>();
             try {
-                Map<String, Program> programs = MySDAInterlessApp.getInstance().getProgramSetByCodeFromList();
+                List< Program> programs = MySDAInterlessApp.getInstance().getService().getAllPrograms();
                 List<Program> programsByCategories;
                 List<Program> favouritedPrograms;
                 List<Program> searchedPrograms;
@@ -127,7 +102,7 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
                 if(ProgramSearchCriteria.TermCategory.CATEGORY.equals(criteria.getCategory())) {//wrong constraint structure
                     programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList((Program.ProgramCategory) criteria.getTerm()));
                     if(Program.ProgramCategory.ALL.equals(criteria.getTerm())) {
-                        listResult.addAll(programs.values());
+                        listResult.addAll(programs);
                     } else {
                         listResult.addAll(programsByCategories);
                     }
@@ -135,7 +110,7 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
                     programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList((Program.ProgramCategory) criteria.getTerm()));
                     favouritedPrograms = MySDAInterlessApp.getInstance().getService().getFavouritedPrograms();
                     if(Program.ProgramCategory.ALL.equals(criteria.getTerm())) {
-                        listResult.addAll(intersectTwoProgramLists(new ArrayList(programs.values()), favouritedPrograms));
+                        listResult.addAll(intersectTwoProgramLists(programs, favouritedPrograms));
                     } else {
                         listResult.addAll(intersectTwoProgramLists(programsByCategories, favouritedPrograms));
                     }
@@ -145,15 +120,15 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
                 } else if(ProgramSearchCriteria.TermCategory.SEARCH.equals(criteria.getCategory())) {
                     String[] terms = ((String) criteria.getTerm()).split(SEPARATOR);
                     Program.ProgramCategory selectedCategory = Program.ProgramCategory.valueOf(terms[0]);
-                    searchedPrograms = searchPrograms(terms[1], programs.values());
+                    searchedPrograms = searchPrograms(terms[1], programs);
                     if(Program.ProgramCategory.ALL.equals(selectedCategory)) {
-                        listResult.addAll(intersectTwoProgramLists(searchedPrograms, new ArrayList<>(programs.values())));
+                        listResult.addAll(intersectTwoProgramLists(searchedPrograms, new ArrayList<>(programs)));
                     } else {
                         programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList(selectedCategory));
                         listResult.addAll(intersectTwoProgramLists(searchedPrograms, programsByCategories));
                     }
                 }  else {
-                    listResult.addAll(searchPrograms((String) criteria.getTerm(), programs.values()));
+                    listResult.addAll(searchPrograms((String) criteria.getTerm(), programs));
                 }
             } catch (Exception e) {
                 e.printStackTrace();

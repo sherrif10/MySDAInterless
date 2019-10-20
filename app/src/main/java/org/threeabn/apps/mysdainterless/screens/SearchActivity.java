@@ -12,6 +12,8 @@ import org.threeabn.apps.mysdainterless.ProgramsList;
 import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.Program;
 
+import java.util.List;
+
 /**
  * Created by k-joseph on 10/10/2017.
  */
@@ -19,8 +21,8 @@ import org.threeabn.apps.mysdainterless.modal.Program;
 public class SearchActivity extends ListActivity {
 
     @Override
-    protected String[] defineInitialProgramsPaths() {
-        return MySDAInterlessApp.getInstance().getExistingProgramRefs();
+    protected List<Program> defineInitialPrograms() {
+        return MySDAInterlessApp.getInstance().filterPrograms(null, null);
     }
 
     @Override
@@ -32,5 +34,6 @@ public class SearchActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_search);
         super.onCreate(savedInstanceState);
+        hideSoftKeyboard(R.id.searchText);
     }
 }

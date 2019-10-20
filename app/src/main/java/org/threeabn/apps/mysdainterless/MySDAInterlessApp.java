@@ -1,7 +1,6 @@
 package org.threeabn.apps.mysdainterless;
 
 import android.app.Application;
-import android.text.TextUtils;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
@@ -27,8 +26,6 @@ public class MySDAInterlessApp extends Application {
 
     public static String PROGRAMS_DIRECTORY = MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY;
 
-    private String[] existingProgramRefs;
-
     private static MySDAInterlessApp instance;
 
     public MySDAInterlessApp() {
@@ -51,10 +48,6 @@ public class MySDAInterlessApp extends Application {
         return service;
     }
 
-    public String[] getExistingProgramRefs() {
-        return existingProgramRefs;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -64,16 +57,7 @@ public class MySDAInterlessApp extends Application {
      * TODO initially this is meant to be run in onCreate in this class
      */
     public void initialiseAllPrograms() {
-        if (StringUtils.isNotBlank(PROGRAMS_DIRECTORY)) {
-            File programsFolder = new File(PROGRAMS_DIRECTORY);
-
-            if (!programsFolder.exists()) {
-                programsFolder.mkdirs();
-            }
-            installPrograms(programsFolder);
-            // TODO can the dongo handle millions of program refs in memory
-            existingProgramRefs = filterPrograms(existingProgramNames(), null, null);
-        }
+        installPrograms();
     }
 
     /**
@@ -90,16 +74,6 @@ public class MySDAInterlessApp extends Application {
         return new String[0];
     }
 
-    public String[] getExistingProgramRefsFromPrograms(List<Program> programs, String searchText, Boolean favorited) {
-        List<String> refs = new ArrayList<>();
-        for(Program p: programs) {
-            if(Arrays.asList(existingProgramNames()).contains(p.getName())) {
-                refs.add(p.getName());
-            }
-        }
-        return filterPrograms(refs.toArray(new String[refs.size()]), searchText, favorited);
-    }
-
     @Override
     public void onTerminate() {
         super.onTerminate();
@@ -110,6 +84,7 @@ public class MySDAInterlessApp extends Application {
         super.onLowMemory();
     }
 
+    @Deprecated
     private void installPrograms(File programsFolder) {
         if (programsFolder.exists() && programsFolder.list() != null
                 && Arrays.asList(programsFolder.list()).contains(MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME)) {
@@ -125,54 +100,78 @@ public class MySDAInterlessApp extends Application {
                     for (Program p : programs) {
                         try {
                             getService().saveProgram(p);
+                            //encrypt existing programs
+                            //CryptoLauncher.encrypt(new File(programsFolder.getAbsolutePath() + File.separator + p.getName()));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }
                 programsCSV.delete();
-                //encrypt existing programs
             }
         }
     }
 
+    private void installPrograms()  {
+        if (StringUtils.isNotBlank(PROGRAMS_DIRECTORY)) {
+            File programsFolder = new File(PROGRAMS_DIRECTORY);
+            if (programsFolder.exists() & programsFolder.isDirectory()) {
+                File install = new File(programsFolder.getAbsolutePath() + File.separator + MySDAInterlessConstantsAndEvaluations.INSTALL);
+                if(install.exists() && programsFolder.listFiles() != null) {//null without permission
+                    for (File categoryFolder : programsFolder.listFiles()) {
+                        if(categoryFolder.isDirectory() && Arrays.asList(categoryFolder.list()).contains(MySDAInterlessConstantsAndEvaluations.INSTALL)) {
+                            String category = categoryFolder.getName();
+                            for (File programFile : categoryFolder.listFiles()) {
+                                String programFileName = programFile.getName();
+                                if (!programFileName.startsWith(".") && checkIfFileNameBelongsToVideoType(programFileName)) {
+                                    String[] programProps = getFileNameWithOutExtension(programFile).split("-");
+                                    String code = programProps.length == 1 ? programProps[0] : programProps[1];
+                                    String name = programProps.length == 1 ? "" : programProps[0].replaceAll("_", " ");
+                                    Program program = new Program(code, name, Program.ProgramCategory.valueOfFromDisplayName(category), programFileName);
+                                    try {
+                                        getService().saveProgram(program);
+                                        //encrypt existing programs
+                                        //CryptoLauncher.encrypt(programFile);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    install.delete();
+                }
+            }
+        }
+    }
+
+    private String getFileNameWithOutExtension(File file) {
+        String name = file.getName();
+        int pos = name.lastIndexOf(".");
+        if (pos > 0) {
+            name = name.substring(0, pos);
+        }
+        return name;
+    }
+
     /**
-     * @param codes
      * @param searchText, can be null or applied one or with favorited
      * @param favorited,  can be null or applied one or with searchText
      * @return
      */
-    public String[] filterPrograms(String[] codes, String searchText, Boolean favorited) {
-        List<String> strs = new ArrayList<String>();
+    public List<Program> filterPrograms(String searchText, Boolean favorited) {
+        List<Program> programs = new ArrayList<Program>();
         try {
-            Map<String, Program> programSet = getProgramSetByCodeFromList();
-
-            if (codes.length > 0 && programSet != null) {
-                for (String s : codes) {//TODO
-                    Program p = programSet.get(s.substring(0, s.indexOf(".")));
-
-                    if (checkIfFileNameBelongsToVideoType(s) && p != null) {
-                        if (MySDAInterlessUtils.programsMatcher(p, searchText)) {
-                            if (favorited == null || (favorited != null && favorited && p.isFavourited())) {
-                                strs.add(s);
-                            }
-                        }
+            for (Program p : getService().getAllPrograms()) {//TODO
+                if (MySDAInterlessUtils.programsMatcher(p, searchText)) {
+                    if (favorited == null || (favorited != null && favorited && p.isFavourited())) {
+                        programs.add(p);
                     }
                 }
-
             }
         } catch (Exception e) {
             Log.e("ERROR: ", e.getLocalizedMessage());
         }
-        return strs.size() > 0 ? strs.toArray(new String[strs.size()]) : new String[]{};
-    }
-
-    public Map<String, Program> getProgramSetByCodeFromList() throws SQLException {
-        Map<String, Program> programSet = new HashMap<>();
-        for (Program p : getService().getAllPrograms()) {
-            programSet.put(p.getCode(), p);
-        }
-
-        return programSet;
+        return programs;
     }
 }

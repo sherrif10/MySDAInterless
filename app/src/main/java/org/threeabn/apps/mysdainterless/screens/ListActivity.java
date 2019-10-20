@@ -16,11 +16,17 @@ import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.Program;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public abstract class ListActivity extends VideoActivity {
     private ProgramsList listAdapter;
     private int categoriesInitialization = 0;
-    protected abstract String[] defineInitialProgramsPaths();
+    protected abstract List<Program> defineInitialPrograms();
     protected abstract ProgramSearchCriteria defineProgramCategoriesSearchCriteria(Program.ProgramCategory programCategory, String term);
     private ListActivity currentScreen;
 
@@ -47,7 +53,7 @@ public abstract class ListActivity extends VideoActivity {
             }
         });
 
-        updateProgramItems(defineInitialProgramsPaths());
+        updateProgramItems(defineInitialPrograms());
 
         runActivityByView(findViewById(R.id.programPreviewPlay), ListActivity.this);
 
@@ -59,22 +65,27 @@ public abstract class ListActivity extends VideoActivity {
                 public void onClick(View v) {
                     Program.ProgramCategory selectedCategory = Program.ProgramCategory.valueOfFromDisplayName(categories.getSelectedItem().toString());
                     String term = ((EditText) currentScreen.findViewById(R.id.searchText)).getText().toString();
+
                     updateProgramItems(((ProgramsList.ProgramFilter) listAdapter.getFilter()).customFilter(defineProgramCategoriesSearchCriteria(selectedCategory, term)));
                 }
             });
         }
     }
 
-    private void updateProgramItems(String[] programsPaths) {
-        if(programsPaths != null) {
-            listAdapter = new ProgramsList(ListActivity.this, programsPaths);
+    private void updateProgramItems(List<Program> programs) {
+        if(programs != null) {
+            Map<String, String> programRefs = new HashMap<>();
+            programs.stream().forEach(p -> programRefs.put(p.getDisplayName(), p.getCategory().getDisplayName() + File.separator + p.getFileName()));
+            String[] programDisplays = programRefs.keySet().toArray(new String[programRefs.size()]);
+            listAdapter = new ProgramsList(ListActivity.this, programDisplays, programRefs);
             ListView list = findViewById(R.id.list_programs_view);
+            //list.setFriction(ViewConfiguration.getScrollFriction() * 100);
 
             list.setAdapter(listAdapter);
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    File selectedProgram = new File(MySDAInterlessApp.PROGRAMS_DIRECTORY + File.separator + programsPaths[position]);
+                    File selectedProgram = new File(MySDAInterlessApp.PROGRAMS_DIRECTORY + File.separator + programRefs.get(parent.getItemAtPosition(position)));
 
                     if(selectedProgram != null && selectedProgram.exists()) {
                         findViewById(R.id.programPreviewPlay).setTag(selectedProgram.getAbsolutePath());

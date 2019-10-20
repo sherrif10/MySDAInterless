@@ -32,10 +32,11 @@ public class MySDAActivity extends Activity {
     /**
      * Hides the soft keyboard
      */
-    public void hideSoftKeyboard() {
-        if (getCurrentFocus() != null) {
+    public void hideSoftKeyboard(int viewId) {
+        View view = findViewById(viewId);
+        if (view != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
@@ -87,7 +88,9 @@ public class MySDAActivity extends Activity {
             askForPermissions(allPermissions.get(i), i);
         }
         //TODO restrict auto-rotate after testing on the dongo
-        //hideSoftKeyboard();
+
+        //Move to MySDAInterlessApp#oncreate
+        MySDAInterlessApp.getInstance().initialiseAllPrograms();
     }
 
     @Override

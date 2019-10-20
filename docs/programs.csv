@@ -1,9 +1,12 @@
-code,name,description,duration,participants,video,transcript
-10HC000003,The Red Heifer,,00:58:45,John Dinzey,,
-10HC000006,The Red Heifer,,00:58:00,"John Lomacang (Host), Shelley Quinn",,
-10HC000004,The Latter Rain,,00:58:00,John Lomacang,,
-THL000001,THL000001.wmv,Talking Stones,00:29:29,"Charles Byrd (Host), Stephen Fowler, Levi Longoria, Andrea Endries",,
-THL000002,THL000002.wmv,Battle With An Angel,00:28:29,"Charles Byrd (Host), Steve Haley, Stephen Fowler, Levi Longoria, Andrea Endries",,
-THL000003,THL000003.wmv,The Great Controversy,00:28:29,"Charles Byrd (Host), Stephen Fowler, Andrea Endries, Levi Longoria",,
-THL000004,THL000004.wmv,Seeing The Invisible,00:28:29,"Charles Byrd (Host), Andrea Endries, Levi Longoria, Stephen Fowler",,
-THL000005,THL000005.wmv,The Emmanuel Factor,00:28:29,"Charles Byrd (Host), Andrea Endries, Stephen Fowler, Levi Longoria",,
+code,name,description,duration,participants,transcript,favourited,category
+10HC000003,The Red Heifer,,00:58:45,John Dinzey,,,PREACHING_AND_TEACHING
+10HC000006,The Red Heifer,,00:58:00,"John Lomacang (Host), Shelley Quinn",,,HEALTH_AND_COOKING
+MUSIC,MUSIC.3gp,,00:58:00,John Lomacang,,TRUE,MUSIC
+THL000001,THL000001.wmv,Talking Stones,00:29:29,"Charles Byrd (Host), Stephen Fowler, Levi Longoria, Andrea Endries",,TRUE,FAMILY_ISSUES_AND_INTERCITY
+THL000002,THL000002.wmv,Battle With An Angel,00:28:29,"Charles Byrd (Host), Steve Haley, Stephen Fowler, Levi Longoria, Andrea Endries",,,KIDS
+THL000003,THL000003.wmv,The Great Controversy,00:28:29,"Charles Byrd (Host), Stephen Fowler, Andrea Endries, Levi Longoria",,,NONE
+THL000004,THL000004.wmv,Seeing The Invisible,00:28:29,"Charles Byrd (Host), Andrea Endries, Levi Longoria, Stephen Fowler",,,
+THL000005,THL000005.wmv,The Emmanuel Factor,00:28:29,"Charles Byrd (Host), Andrea Endries, Stephen Fowler, Levi Longoria",,,
+Guitar2,Guitar2.mp4,,,,,,MUSIC
+evenAtTheDoor-DavidGates,evenAtTheDoor-DavidGates.3gp,,,,,,PREACHING_AND_TEACHING
+Temple Made of Time w- Lyrics- Fountainview Academy,Temple Made of Time w- Lyrics- Fountainview Academy.webm,,,,,,MUSIC

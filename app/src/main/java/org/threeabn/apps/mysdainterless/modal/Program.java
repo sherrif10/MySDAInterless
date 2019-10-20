@@ -19,6 +19,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -73,13 +75,17 @@ public class Program extends MySDAObject {
 	@DatabaseField()
 	private String presentation;
 
+	@JsonProperty("fileName")
+	@DatabaseField()
+	private String fileName;
+
 	@JsonProperty("category")
 	@DatabaseField()
 	private String category;
 
 	@JsonProperty("favourited")
 	@DatabaseField()
-	private boolean favourited;
+	private boolean favourited = false;
 
 	/**
 	 * path file location of transcript
@@ -106,12 +112,26 @@ public class Program extends MySDAObject {
 		setCategory(category);
 	}
 
+	public Program(String code, String name, ProgramCategory category, String fileName) {
+		setName(name);
+		setCode(code);
+		setCategory(category);
+		setFileName(fileName);
+	}
 	public String getPresentation() {
 		return presentation;
 	}
 
 	public void setPresentation(String presentation) {
 		this.presentation = presentation;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getFileName() {
+		return fileName;
 	}
 
 	public String getName() {
@@ -248,7 +268,8 @@ public class Program extends MySDAObject {
 		HEALTH_AND_COOKING("Health & Cooking"),
 		MUSIC("Music"),
         FAMILY_ISSUES_AND_INTERCITY("Family issues & Intercity"),
-		KIDS("Kids");
+		KIDS("Kids"),
+		INTERCITY_D2D("Intercity D2D");
 
 		private String displayName;
 
@@ -285,5 +306,19 @@ public class Program extends MySDAObject {
 			}
 			return null;
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "Program {" +
+				"name='" + getName() + '\'' +
+				", code='" + getCode() + '\'' +
+				", category='" + getCategory().getDisplayName() + '\'' +
+				", favourited=" + isFavourited() +
+				'}';
+	}
+
+	public String getDisplayName() {
+		return (StringUtils.isBlank(getName()) ? "" : getName() + " : ") + getCode();
 	}
 }
