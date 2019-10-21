@@ -85,7 +85,7 @@ public abstract class ListActivity extends VideoActivity {
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    File selectedProgram = new File(MySDAInterlessApp.PROGRAMS_DIRECTORY + File.separator + programRefs.get(parent.getItemAtPosition(position)));
+                    File selectedProgram = new File(MySDAInterlessApp.getInstance().getProgramsDirectory() + File.separator + programRefs.get(parent.getItemAtPosition(position)));
 
                     if(selectedProgram != null && selectedProgram.exists()) {
                         findViewById(R.id.programPreviewPlay).setTag(selectedProgram.getAbsolutePath());

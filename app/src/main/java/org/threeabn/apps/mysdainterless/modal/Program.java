@@ -262,7 +262,7 @@ public class Program extends MySDAObject {
 	}
 
 	public enum ProgramCategory {
-		ALL("All"),
+		ALL("Categories: All"),
 		NONE("None"),
 		PREACHING_AND_TEACHING("Preaching & Teaching"),
 		HEALTH_AND_COOKING("Health & Cooking"),

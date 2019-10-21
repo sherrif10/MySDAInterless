@@ -1,6 +1,8 @@
 package org.threeabn.apps.mysdainterless;
 
 import android.app.Application;
+import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
@@ -8,6 +10,8 @@ import org.threeabn.apps.mysdainterless.api.MySDAService;
 import org.threeabn.apps.mysdainterless.modal.Program;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,8 +28,6 @@ import static org.threeabn.apps.mysdainterless.MySDAInterlessConstantsAndEvaluat
 public class MySDAInterlessApp extends Application {
     private MySDAService service;
 
-    public static String PROGRAMS_DIRECTORY = MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY;
-
     private static MySDAInterlessApp instance;
 
     public MySDAInterlessApp() {
@@ -35,6 +37,17 @@ public class MySDAInterlessApp extends Application {
 
     public static MySDAInterlessApp getInstance() {
         return instance;
+    }
+
+    public String getProgramsDirectory() {
+        String postfix = "/.mysdainterless/programs";
+        File[] storages = ContextCompat.getExternalFilesDirs(this, null);
+        if(storages.length <= 1) {// use internal storage
+            return Environment.getExternalStorageDirectory().getAbsolutePath() + postfix;
+        }
+        String path = storages[1].getAbsolutePath();
+        // use external sdcard
+        return path.substring(0, StringUtils.ordinalIndexOf(path, "/", 3)) + postfix;
     }
 
     /**
@@ -60,20 +73,6 @@ public class MySDAInterlessApp extends Application {
         installPrograms();
     }
 
-    /**
-     * @return programsFolder.list();
-     */
-    public String[] existingProgramNames() {
-        if (StringUtils.isNotBlank(PROGRAMS_DIRECTORY)) {
-            File programsFolder = new File(PROGRAMS_DIRECTORY);
-
-            if (programsFolder.exists()) {
-               return programsFolder.list();
-            }
-        }
-        return new String[0];
-    }
-
     @Override
     public void onTerminate() {
         super.onTerminate();
@@ -84,37 +83,10 @@ public class MySDAInterlessApp extends Application {
         super.onLowMemory();
     }
 
-    @Deprecated
-    private void installPrograms(File programsFolder) {
-        if (programsFolder.exists() && programsFolder.list() != null
-                && Arrays.asList(programsFolder.list()).contains(MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME)) {
-            File programsCSV = new File(programsFolder.getAbsolutePath() + File.separator + MySDAInterlessConstantsAndEvaluations.PROGRAMS_CSV_FILENAME);
-
-            if (programsCSV.exists() && programsCSV.length() > 0) {
-                //TODO reset db with programs
-                // TODO support importing using other loaders besides csv
-                //getService().emptyDatabase();
-                List<Program> programs = getService().loadProgramsFromCSV(programsCSV);
-
-                if (programs != null) {
-                    for (Program p : programs) {
-                        try {
-                            getService().saveProgram(p);
-                            //encrypt existing programs
-                            //CryptoLauncher.encrypt(new File(programsFolder.getAbsolutePath() + File.separator + p.getName()));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                programsCSV.delete();
-            }
-        }
-    }
-
-    private void installPrograms()  {
-        if (StringUtils.isNotBlank(PROGRAMS_DIRECTORY)) {
-            File programsFolder = new File(PROGRAMS_DIRECTORY);
+    private void installPrograms() {
+        String programsDirectory = getProgramsDirectory();
+        if (StringUtils.isNotBlank(programsDirectory)) {
+            File programsFolder = new File(programsDirectory);
             if (programsFolder.exists() & programsFolder.isDirectory()) {
                 File install = new File(programsFolder.getAbsolutePath() + File.separator + MySDAInterlessConstantsAndEvaluations.INSTALL);
                 if(install.exists() && programsFolder.listFiles() != null) {//null without permission

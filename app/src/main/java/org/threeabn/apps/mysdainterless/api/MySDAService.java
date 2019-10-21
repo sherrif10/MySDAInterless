@@ -251,11 +251,7 @@ public class MySDAService {
      * @throws SQLException
      */
     public int saveProgram(Program obj) throws SQLException {
-        if(getProgramByCode(obj.getCode()) == null) {
-            return getDbSession().create(obj, Program.class);
-        } else {
-            return getDbSession().update(obj, Program.class);
-        }
+        return getDbSession().create(obj, Program.class);
     }
 
     public int saveProgramCategory(Program.ProgramCategory obj) throws SQLException {

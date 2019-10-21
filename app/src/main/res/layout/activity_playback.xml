@@ -5,11 +5,14 @@
     android:layout_height="match_parent"
     android:scaleType="centerCrop"
     tools:context="org.threeabn.apps.mysdainterless.screens.MainActivity"
-    android:background="@drawable/playback_empty_screen">
+    android:background="@color/black">
 
     <VideoView
         android:id="@+id/videoView_playback"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/iconMargin"/>
 
 </RelativeLayout>

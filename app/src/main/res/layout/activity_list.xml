@@ -7,10 +7,31 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/playback_empty_screen"
+        android:background="@drawable/bluebase"
         tools:context="org.threeabn.apps.mysdainterless.screens.ProgramsListActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo"
+            android:layout_marginLeft="@dimen/iconMargin"
+            />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/iconMargin"
+            android:clickable="false"
+            android:gravity="center|right"
+            android:text="@string/PLAYBACK"
+            android:textColor="@color/white"
+            android:textFontWeight="100dp"
+            android:textSize="80dp" />
+    </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -24,7 +45,11 @@
             android:layout_width="wrap_content"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/iconMargin"></ListView>
+            android:layout_marginLeft="@dimen/iconMargin"
+            android:nextFocusRight="@+id/programCategorySpinner"
+            android:focusable="true">
+            <requestFocus />
+        </ListView>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -35,7 +60,9 @@
             <Spinner
                 android:id="@+id/programCategorySpinner"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:nextFocusDown="@+id/programPreviewPlay"
+                android:nextFocusLeft="@+id/list_programs_view">
             </Spinner>
             <VideoView
                 android:id="@+id/programPreview"
@@ -48,12 +75,16 @@
                 <ImageView
                     android:id="@+id/programPreviewPlay"
                     style="@style/iconButton"
-                    android:src="@drawable/icon_play" />
+                    android:src="@drawable/icon_play"
+                    android:nextFocusRight="@+id/programPreviewFavorite"
+                    android:nextFocusUp="@+id/programCategorySpinner"/>
 
                 <ImageView
                     android:id="@+id/programPreviewFavorite"
                     style="@style/iconButton"
-                    android:src="@drawable/icon_favorites" />
+                    android:src="@drawable/icon_favorites"
+                    android:nextFocusLeft="@+id/programPreviewPlay"
+                    android:nextFocusUp="@+id/programCategorySpinner"/>
 
             </LinearLayout>
         </LinearLayout>

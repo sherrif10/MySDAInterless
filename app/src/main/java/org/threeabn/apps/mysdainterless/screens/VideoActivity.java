@@ -40,7 +40,6 @@ public class VideoActivity extends MySDAActivity {
             public void onPrepared(MediaPlayer mp) {
                 mp.setLooping(true);
                 videoView.start();
-                videoView.requestFocus();
                 //CryptoLauncher.encrypt(program);
             }
         });

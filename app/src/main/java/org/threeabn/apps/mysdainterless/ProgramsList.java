@@ -53,7 +53,7 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
             String display = (String) new ArrayList(programRefs.keySet()).get(position);
             if (StringUtils.isNotBlank(display)) {
                 txtTitle.setText(display);
-                Bitmap img = retrieveBitmap(MySDAInterlessConstantsAndEvaluations.PROGRAMS_DIRECTORY + File.separator + programRefs.get(display));
+                Bitmap img = retrieveBitmap(MySDAInterlessApp.getInstance().getProgramsDirectory() + File.separator + programRefs.get(display));
                 imageView.setImageBitmap(img);
             }
         }

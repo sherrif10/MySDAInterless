@@ -29,7 +29,8 @@
         android:supportsRtl="true">
         <activity
             android:name=".screens.MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -39,19 +40,23 @@
             android:name=".screens.SearchActivity"
             android:theme="@style/AppTheme"
             android:label="@string/search"
-            android:windowSoftInputMode="stateVisible|adjustResize"/>
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".screens.FavoriteActivity"
             android:theme="@style/AppTheme"
-            android:label="@string/favorite" />
+            android:label="@string/favorite"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".screens.ProgramsListActivity"
             android:theme="@style/AppTheme"
-            android:label="@string/list" />
+            android:label="@string/list"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".screens.PlayBackActivity"
             android:theme="@style/AppTheme"
-            android:label="@string/playback" />
+            android:label="@string/playback"
+            android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>
