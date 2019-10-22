@@ -254,6 +254,10 @@ public class MySDAService {
         return getDbSession().create(obj, Program.class);
     }
 
+    public int updateProgram(Program obj) throws SQLException {
+        return getDbSession().update(obj, Program.class);
+    }
+
     public int saveProgramCategory(Program.ProgramCategory obj) throws SQLException {
         return getDbSession().create(obj, Program.ProgramCategory.class);
     }
@@ -316,6 +320,14 @@ public class MySDAService {
 
     public Program getProgramByCode(String code) throws SQLException {
         List<Program> list = getDbSession().getByField(Program.class, "code", code);
+
+        if(list != null && list.size() > 0)
+            return list.get(0);
+        return null;
+    }
+
+    public Program getProgramByFileName(String fileName) throws SQLException {
+        List<Program> list = getDbSession().getByField(Program.class, "fileName", fileName);
 
         if(list != null && list.size() > 0)
             return list.get(0);

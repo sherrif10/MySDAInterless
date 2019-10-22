@@ -3,4 +3,9 @@
     <dimen name="iconMargin">24dp</dimen>
     <dimen name="iconPadding">12dp</dimen>
     <dimen name="backgroundMarginTop">200dp</dimen>
+    <dimen name="headerFontSize">80dp</dimen>
+    <dimen name="headerFontWeight">100dp</dimen>
+    <dimen name="fontSize">20dp</dimen>
+    <dimen name="videoPreviewHeight">220dp</dimen>
+    <dimen name="videoPreviewWidth">400dp</dimen>
 </resources>

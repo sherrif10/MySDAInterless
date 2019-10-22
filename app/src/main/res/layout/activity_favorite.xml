@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- TODO Retire this and rather re-use activity_list.xml-->
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="org.threeabn.apps.mysdainterless.screens.MainActivity"
@@ -14,76 +16,84 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/logo"
                 android:layout_marginLeft="@dimen/iconMargin"
                 />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/iconMargin"
-                android:clickable="false"
-                android:gravity="center|right"
-                android:text="@string/FAVOURITE"
-                android:textColor="@color/white"
-                android:textFontWeight="100dp"
-                android:textSize="80dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/iconMargin"
+                    android:clickable="false"
+                    android:text="@string/FAVOURITE"
+                    android:textColor="@color/white"
+                    android:textFontWeight="@dimen/headerFontWeight"
+                    android:textSize="@dimen/headerFontSize" />
+            </LinearLayout>
         </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="200dp"
-        >
-        <ListView
-            android:id="@+id/list_programs_view"
-            android:cacheColorHint="#00000000"
-            android:divider="@null"
-            android:listSelector="@color/black"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/iconMargin"
-            android:nextFocusRight="@+id/programCategorySpinner"
-            android:focusable="true">
-            <requestFocus />
-        </ListView>
-
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginRight="@dimen/iconMargin">
-            <Spinner
-                android:id="@+id/programCategorySpinner"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/backgroundMarginTop"
+            >
+            <ListView
+                android:id="@+id/list_programs_view"
+                android:cacheColorHint="#00000000"
+                android:divider="@null"
+                android:listSelector="@color/black"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:nextFocusDown="@+id/programPreviewPlay"
-                android:nextFocusLeft="@+id/list_programs_view"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/iconMargin"
+                android:nextFocusRight="@+id/programCategorySpinner"
                 android:focusable="true">
-            </Spinner>
-            <VideoView
-                android:id="@+id/programPreview"
-                android:layout_width="360dp"
-                android:layout_height="180dp"/>
+                <requestFocus />
+            </ListView>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/iconPadding">
-                <ImageView
-                    android:id="@+id/programPreviewPlay"
-                    style="@style/iconButton"
-                    android:src="@drawable/play"
-                    android:nextFocusUp="@+id/programCategorySpinner"
-                    android:focusable="true"/>
-
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/iconMargin">
+                <Spinner
+                    android:id="@+id/programCategorySpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:nextFocusDown="@+id/programPreviewPlay"
+                    android:nextFocusLeft="@+id/list_programs_view"
+                    android:focusable="true"></Spinner>
+                <VideoView
+                    android:id="@+id/programPreview"
+                    android:layout_width="@dimen/videoPreviewWidth"
+                    android:layout_height="@dimen/videoPreviewHeight"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/iconPadding">
+                    <ImageView
+                        android:id="@+id/programPreviewPlay"
+                        style="@style/iconButton"
+                        android:src="@drawable/play"
+                        android:nextFocusUp="@+id/programCategorySpinner"
+                        android:nextFocusRight="@+id/programPreviewFavorite"
+                        android:focusable="true"/>
+                    <ImageView
+                        android:id="@+id/programPreviewFavorite"
+                        style="@style/iconButton"
+                        android:src="@drawable/favorite"
+                        android:nextFocusLeft="@+id/programPreviewPlay"
+                        android:nextFocusUp="@+id/programCategorySpinner"
+                        android:focusable="true"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
-    </LinearLayout>
-</RelativeLayout>
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

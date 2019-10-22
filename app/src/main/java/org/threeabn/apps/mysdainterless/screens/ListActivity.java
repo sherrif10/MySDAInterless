@@ -57,10 +57,9 @@ public abstract class ListActivity extends VideoActivity {
 
         runActivityByView(findViewById(R.id.programPreviewPlay), ListActivity.this);
 
-        if(currentScreen instanceof ProgramsListActivity) {
+        if(currentScreen instanceof ProgramsListActivity || currentScreen instanceof FavoriteActivity ) {
             runActivityByView(findViewById(R.id.programPreviewFavorite), ListActivity.this);
-        }
-        if(currentScreen instanceof SearchActivity) {
+        } else if(currentScreen instanceof SearchActivity) {
             findViewById(R.id.searchEnter).setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Program.ProgramCategory selectedCategory = Program.ProgramCategory.valueOfFromDisplayName(categories.getSelectedItem().toString());
@@ -87,11 +86,9 @@ public abstract class ListActivity extends VideoActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     File selectedProgram = new File(MySDAInterlessApp.getInstance().getProgramsDirectory() + File.separator + programRefs.get(parent.getItemAtPosition(position)));
 
-                    if(selectedProgram != null && selectedProgram.exists()) {
+                    if(selectedProgram != null && selectedProgram.exists() && (currentScreen instanceof ProgramsListActivity || currentScreen instanceof FavoriteActivity)) {
                         findViewById(R.id.programPreviewPlay).setTag(selectedProgram.getAbsolutePath());
-                        if(currentScreen instanceof ProgramsListActivity) {
-                            findViewById(R.id.programPreviewFavorite).setTag(selectedProgram.getAbsolutePath());
-                        }
+                        findViewById(R.id.programPreviewFavorite).setTag(selectedProgram.getAbsolutePath());
                         playProgram(R.id.programPreview, selectedProgram);
                         Toast.makeText(ListActivity.this, "Opening: " + getFileDisplayName(selectedProgram.getPath()), Toast.LENGTH_SHORT).show();
                     }

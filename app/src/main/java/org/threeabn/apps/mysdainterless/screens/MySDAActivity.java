@@ -65,11 +65,11 @@ public class MySDAActivity extends Activity {
                     if(p != null && p.exists()) {
                         try {
                             String s = p.getName();
-                            Program program = TextUtils.isEmpty(s) ? null : MySDAInterlessApp.getInstance().getService().getProgramByCode(s.substring(0, s.indexOf(".")));
+                            Program program = TextUtils.isEmpty(s) ? null : MySDAInterlessApp.getInstance().getService().getProgramByFileName(s);
                             if(program != null) {
                                 program.setFavourited(!program.isFavourited());
-                                MySDAInterlessApp.getInstance().getService().saveProgram(program);
-                                Toast.makeText(MySDAActivity.this, (program.isFavourited() ? "" : "Un-") + "Favorited: " + program.getName(), Toast.LENGTH_SHORT).show();
+                                MySDAInterlessApp.getInstance().getService().updateProgram(program);
+                                Toast.makeText(MySDAActivity.this, (program.isFavourited() ? "" : "Un-") + "Favorited: " + program.getDisplayName(), Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
                             Log.e("program_favoriting_error", e.getMessage());
