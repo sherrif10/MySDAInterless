@@ -32,9 +32,8 @@
         <ImageView
             android:id="@+id/image_search"
             style="@style/iconButton"
-            android:background="@drawable/search_icon"
+            android:background="@drawable/search"
             android:focusable="true"
-            android:nextFocusRight="@+id/image_favorite"
             >
             <requestFocus/>
         </ImageView>
@@ -42,14 +41,16 @@
         <ImageView
             android:id="@+id/image_favorite"
             style="@style/iconButton"
-            android:background="@drawable/icon_favorites"
+            android:background="@drawable/favorite"
+            android:focusable="true"
             android:nextFocusLeft="@+id/image_search"
             android:nextFocusRight="@+id/image_list"/>
 
         <ImageView
             android:id="@+id/image_list"
             style="@style/iconButton"
-            android:background="@drawable/icon_program_list"
+            android:background="@drawable/programs"
+            android:focusable="true"
             android:nextFocusLeft="@+id/image_favorite"/>
     </LinearLayout>
 

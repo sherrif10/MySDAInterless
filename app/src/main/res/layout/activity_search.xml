@@ -54,7 +54,8 @@
                     android:layout_height="wrap_content"
                     android:nextFocusRight="@+id/searchEnter"
                     android:nextFocusLeft="@+id/searchText"
-                    android:nextFocusDown="@+id/list_programs_view">
+                    android:nextFocusDown="@+id/list_programs_view"
+                    android:focusable="true">
                 </Spinner>
                 <Button
                     android:id="@+id/searchEnter"
@@ -62,7 +63,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/enter"
                     android:nextFocusLeft="@+id/programCategorySpinner"
-                    android:nextFocusDown="@+id/list_programs_view"/>
+                    android:nextFocusDown="@+id/list_programs_view"
+                    android:focusable="true"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -79,7 +81,8 @@
                     android:layout_marginRight="@dimen/iconMargin"
                     android:listSelector="@color/black"
                     android:nextFocusRight="@+id/programPreviewPlay"
-                    android:nextFocusUp="@+id/searchText"/>
+                    android:nextFocusUp="@+id/searchText"
+                    android:focusable="true"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -97,9 +100,10 @@
                         <ImageView
                             android:id="@+id/programPreviewPlay"
                             style="@style/iconButton"
-                            android:src="@drawable/icon_play"
+                            android:src="@drawable/play"
                             android:nextFocusLeft="@+id/list_programs_view"
-                            android:nextFocusUp="@+id/searchText"/>
+                            android:nextFocusUp="@+id/searchText"
+                            android:focusable="true"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

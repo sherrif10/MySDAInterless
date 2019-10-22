@@ -62,7 +62,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:nextFocusDown="@+id/programPreviewPlay"
-                android:nextFocusLeft="@+id/list_programs_view">
+                android:nextFocusLeft="@+id/list_programs_view"
+                android:focusable="true">
             </Spinner>
             <VideoView
                 android:id="@+id/programPreview"
@@ -75,16 +76,18 @@
                 <ImageView
                     android:id="@+id/programPreviewPlay"
                     style="@style/iconButton"
-                    android:src="@drawable/icon_play"
+                    android:src="@drawable/play"
                     android:nextFocusRight="@+id/programPreviewFavorite"
-                    android:nextFocusUp="@+id/programCategorySpinner"/>
+                    android:nextFocusUp="@+id/programCategorySpinner"
+                    android:focusable="true"/>
 
                 <ImageView
                     android:id="@+id/programPreviewFavorite"
                     style="@style/iconButton"
-                    android:src="@drawable/icon_favorites"
+                    android:src="@drawable/favorite"
                     android:nextFocusLeft="@+id/programPreviewPlay"
-                    android:nextFocusUp="@+id/programCategorySpinner"/>
+                    android:nextFocusUp="@+id/programCategorySpinner"
+                    android:focusable="true"/>
 
             </LinearLayout>
         </LinearLayout>
