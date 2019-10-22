@@ -37,7 +37,7 @@ public class CustomMediaController extends MediaController {
 
         FrameLayout.LayoutParams frameParams = new FrameLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        frameParams.gravity = Gravity.RIGHT|Gravity.TOP;
+        frameParams.gravity = Gravity.RIGHT | Gravity.TOP;
 
     }
 
@@ -50,22 +50,22 @@ public class CustomMediaController extends MediaController {
             try {
                 Field field1 = MediaController.class.getDeclaredField("mAnchor");
                 field1.setAccessible(true);
-                View mAnchor = (View)field1.get(this);
+                View mAnchor = (View) field1.get(this);
 
                 Field field2 = MediaController.class.getDeclaredField("mDecor");
                 field2.setAccessible(true);
-                View mDecor = (View)field2.get(this);
+                View mDecor = (View) field2.get(this);
 
                 Field field3 = MediaController.class.getDeclaredField("mDecorLayoutParams");
                 field3.setAccessible(true);
-                WindowManager.LayoutParams mDecorLayoutParams = (WindowManager.LayoutParams)field3.get(this);
+                WindowManager.LayoutParams mDecorLayoutParams = (WindowManager.LayoutParams) field3.get(this);
 
                 Field field4 = MediaController.class.getDeclaredField("mWindowManager");
                 field4.setAccessible(true);
-                WindowManager mWindowManager = (WindowManager)field4.get(this);
+                WindowManager mWindowManager = (WindowManager) field4.get(this);
 
                 // NOTE: this appears in its own Window so co-ordinates are screen co-ordinates
-                int [] anchorPos = new int[2];
+                int[] anchorPos = new int[2];
                 mAnchor.getLocationOnScreen(anchorPos);
 
                 // we need to know the size of the controller so we can properly position it
@@ -73,13 +73,13 @@ public class CustomMediaController extends MediaController {
                 mDecor.measure(MeasureSpec.makeMeasureSpec(mAnchor.getWidth(), MeasureSpec.AT_MOST),
                         MeasureSpec.makeMeasureSpec(mAnchor.getHeight(), MeasureSpec.AT_MOST));
 
-                mDecor.setPadding(0,0,0,0);
+                mDecor.setPadding(0, 0, 0, 0);
 
                 WindowManager.LayoutParams p = mDecorLayoutParams;
                 p.verticalMargin = 0;
                 p.horizontalMargin = 0;
                 p.width = mAnchor.getWidth();
-                p.gravity = Gravity.LEFT|Gravity.TOP;
+                p.gravity = Gravity.LEFT | Gravity.TOP;
                 p.x = anchorPos[0];// + (mAnchor.getWidth() - p.width) / 2;
                 p.y = anchorPos[1] + mAnchor.getHeight() - mDecor.getMeasuredHeight();
                 mWindowManager.updateViewLayout(mDecor, mDecorLayoutParams);

@@ -25,141 +25,142 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Date;
 
 /**
- * any person, such as a guest, host, 
- * @author k-joseph
+ * any person, such as a guest, host,
  *
+ * @author k-joseph
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @DatabaseTable(tableName = "person")
 public class Person extends MySDAObject {
 
-	public Person() {}
+    public Person() {
+    }
 
-	public Person(String firstName, String lastName, PersonCategory category) {
-		setFirstName(firstName);
-		setLastName(lastName);
-		setCategory(category);
-	}
+    public Person(String firstName, String lastName, PersonCategory category) {
+        setFirstName(firstName);
+        setLastName(lastName);
+        setCategory(category);
+    }
 
-	@JsonProperty("firstName")
-	@DatabaseField(columnName = "first_name", canBeNull = false)
-	private String firstName;
+    @JsonProperty("firstName")
+    @DatabaseField(columnName = "first_name", canBeNull = false)
+    private String firstName;
 
-	@JsonProperty("lastName")
-	@DatabaseField(columnName = "last_name", canBeNull = false)
-	private String lastName;
+    @JsonProperty("lastName")
+    @DatabaseField(columnName = "last_name", canBeNull = false)
+    private String lastName;
 
-	@JsonProperty("otherNames")
-	@DatabaseField(columnName = "other_names")
-	private String otherNames;
+    @JsonProperty("otherNames")
+    @DatabaseField(columnName = "other_names")
+    private String otherNames;
 
-	@JsonProperty("phoneNumber")
-	@DatabaseField(columnName = "phone_number")
-	private String phoneNumber;
+    @JsonProperty("phoneNumber")
+    @DatabaseField(columnName = "phone_number")
+    private String phoneNumber;
 
-	@JsonProperty("emailAddress")
-	@DatabaseField(columnName = "email_address")
-	private String emailAddress;
+    @JsonProperty("emailAddress")
+    @DatabaseField(columnName = "email_address")
+    private String emailAddress;
 
-	@JsonProperty("address")
-	@DatabaseField(columnName = "address")
-	private String address;
+    @JsonProperty("address")
+    @DatabaseField(columnName = "address")
+    private String address;
 
-	@JsonProperty("dateOfBirth")
-	@DatabaseField(columnName = "date_of_birth", dataType = DataType.DATE)
-	private Date dateOfBirth;
+    @JsonProperty("dateOfBirth")
+    @DatabaseField(columnName = "date_of_birth", dataType = DataType.DATE)
+    private Date dateOfBirth;
 
-	@JsonProperty("category")
-	@DatabaseField(columnName = "category", canBeNull = false)
-	private String category;
+    @JsonProperty("category")
+    @DatabaseField(columnName = "category", canBeNull = false)
+    private String category;
 
-	@JsonProperty("firstName")
-	public String getFirstName() {
-		return firstName;
-	}
+    @JsonProperty("firstName")
+    public String getFirstName() {
+        return firstName;
+    }
 
-	@JsonProperty("firstName")
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    @JsonProperty("firstName")
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	@JsonProperty("lastName")
-	public String getLastName() {
-		return lastName;
-	}
+    @JsonProperty("lastName")
+    public String getLastName() {
+        return lastName;
+    }
 
-	@JsonProperty("lastName")
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    @JsonProperty("lastName")
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	@JsonProperty("otherNames")
-	public String getOtherNames() {
-		return otherNames;
-	}
+    @JsonProperty("otherNames")
+    public String getOtherNames() {
+        return otherNames;
+    }
 
-	@JsonProperty("otherNames")
-	public void setOtherNames(String otherNames) {
-		this.otherNames = otherNames;
-	}
+    @JsonProperty("otherNames")
+    public void setOtherNames(String otherNames) {
+        this.otherNames = otherNames;
+    }
 
-	@JsonProperty("phoneNumber")
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    @JsonProperty("phoneNumber")
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	@JsonProperty("phoneNumber")
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    @JsonProperty("phoneNumber")
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	@JsonProperty("emailAddress")
-	public String getEmailAddress() {
-		return emailAddress;
-	}
+    @JsonProperty("emailAddress")
+    public String getEmailAddress() {
+        return emailAddress;
+    }
 
-	@JsonProperty("emailAddress")
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
+    @JsonProperty("emailAddress")
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
 
-	@JsonProperty("address")
-	public String getAddress() {
-		return address;
-	}
+    @JsonProperty("address")
+    public String getAddress() {
+        return address;
+    }
 
-	@JsonProperty("address")
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    @JsonProperty("address")
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public String getDisplayName() {
-		return (StringUtils.isNotBlank(getFirstName()) ? getFirstName() + " " : "") + (StringUtils.isNotBlank(getLastName()) ? getLastName() : "");
-	}
+    public String getDisplayName() {
+        return (StringUtils.isNotBlank(getFirstName()) ? getFirstName() + " " : "") + (StringUtils.isNotBlank(getLastName()) ? getLastName() : "");
+    }
 
-	@JsonProperty("category")
-	public String getCategory() {
-		return category;
-	}
+    @JsonProperty("category")
+    public String getCategory() {
+        return category;
+    }
 
-	@JsonProperty("category")
-	public void setCategory(PersonCategory category) {
-		this.category = category.name();
-	}
+    @JsonProperty("category")
+    public void setCategory(PersonCategory category) {
+        this.category = category.name();
+    }
 
-	@JsonProperty("dateOfBirth")
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
+    @JsonProperty("dateOfBirth")
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
 
-	@JsonProperty("dateOfBirth")
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
+    @JsonProperty("dateOfBirth")
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
 
-	public enum PersonCategory {
-		GUEST, HOST, OTHER
-	}
+    public enum PersonCategory {
+        GUEST, HOST, OTHER
+    }
 }

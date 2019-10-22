@@ -5,15 +5,16 @@
     android:installLocation="preferExternal"
     android:clearTaskOnLaunch="true"
     android:finishOnTaskLaunch="true">
+
     <supports-screens
         android:resizeable="true"
         android:anyDensity="true"
         android:smallScreens="true"
         android:largeScreens="true"
         android:normalScreens="true"
-        android:xlargeScreens="true"/>
+        android:xlargeScreens="true" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"  />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature
@@ -41,22 +42,22 @@
             android:theme="@style/AppTheme"
             android:label="@string/search"
             android:windowSoftInputMode="stateVisible|adjustResize"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".screens.FavoriteActivity"
             android:theme="@style/AppTheme"
             android:label="@string/favorite"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".screens.ProgramsListActivity"
             android:theme="@style/AppTheme"
             android:label="@string/list"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".screens.PlayBackActivity"
             android:theme="@style/AppTheme"
             android:label="@string/playback"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

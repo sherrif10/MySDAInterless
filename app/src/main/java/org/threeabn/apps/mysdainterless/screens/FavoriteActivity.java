@@ -1,20 +1,12 @@
 package org.threeabn.apps.mysdainterless.screens;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import org.threeabn.apps.mysdainterless.MySDAInterlessApp;
 import org.threeabn.apps.mysdainterless.ProgramSearchCriteria;
-import org.threeabn.apps.mysdainterless.ProgramsList;
 import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.Program;
 
-import java.io.File;
 import java.util.List;
 
 /**

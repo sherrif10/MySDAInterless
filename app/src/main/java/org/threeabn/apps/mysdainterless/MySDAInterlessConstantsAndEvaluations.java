@@ -1,7 +1,5 @@
 package org.threeabn.apps.mysdainterless;
 
-import android.support.v4.content.ContextCompat;
-
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -12,7 +10,7 @@ import java.util.Arrays;
  */
 
 public class MySDAInterlessConstantsAndEvaluations {
-    
+
     public static String PROGRAMS_CSV_FILENAME = "programs.csv";
 
     public static String INSTALL = "install.txt";
@@ -24,8 +22,10 @@ public class MySDAInterlessConstantsAndEvaluations {
         //TODO change back to "/sdcard/.mysdainterless"
         return new File("/mnt/ext_sdcard/.mysdainterless");
     }
+
     /**
      * Supports all video file formats at https://en.wikipedia.org/wiki/Video_file_format by this file creation date
+     *
      * @param name
      * @return
      */
@@ -38,7 +38,7 @@ public class MySDAInterlessConstantsAndEvaluations {
 
     public static File getProgramFile(String path) {
         File program = new File(path);
-        if(!program.exists()) {
+        if (!program.exists()) {
             return null;
         }
         return null;

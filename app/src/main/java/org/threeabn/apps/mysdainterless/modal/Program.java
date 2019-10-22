@@ -26,42 +26,42 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
-	A TV program is basically what it is, a program can have properties such as name, time range (use joda api???), description, video, Series, code, episode, hosts/guests and functionalities such as favorite, set alert
-*/
+ * A TV program is basically what it is, a program can have properties such as name, time range (use joda api???), description, video, Series, code, episode, hosts/guests and functionalities such as favorite, set alert
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @DatabaseTable(tableName = "program")
 public class Program extends MySDAObject {
 
-	@JsonProperty("name")
-	@DatabaseField()
-	private String name = "";
+    @JsonProperty("name")
+    @DatabaseField()
+    private String name = "";
 
-	@JsonProperty("description")
-	@DatabaseField()
-	private String description = "";
+    @JsonProperty("description")
+    @DatabaseField()
+    private String description = "";
 
-	/**
-	 * Series code, contains a code from the serie and number string; such as; WOE000001. It must match the video file name
-	 * //TODO should i have this as a object with name and code?
-	 * This is the program's unique identifier
-	 * */
-	@JsonProperty("code")
-	@DatabaseField(unique = true, canBeNull = false)
-	private String code;
+    /**
+     * Series code, contains a code from the serie and number string; such as; WOE000001. It must match the video file name
+     * //TODO should i have this as a object with name and code?
+     * This is the program's unique identifier
+     */
+    @JsonProperty("code")
+    @DatabaseField(unique = true, canBeNull = false)
+    private String code;
 
-	//TODO appropriate datatype
-	@JsonProperty("episode")
-	@DatabaseField()
-	private String episode;
+    //TODO appropriate datatype
+    @JsonProperty("episode")
+    @DatabaseField()
+    private String episode;
 
-	//TODO appropriate datatype
+    //TODO appropriate datatype
     /**
      * E.g. series code e.g. WOE
      */
-	@JsonProperty("series")
-	@DatabaseField()
-	private String series;
+    @JsonProperty("series")
+    @DatabaseField()
+    private String series;
 
     @JsonProperty("duration")
     @DatabaseField()
@@ -71,133 +71,136 @@ public class Program extends MySDAObject {
     @DatabaseField()
     private String participants;
 
-	@JsonProperty("presentation")
-	@DatabaseField()
-	private String presentation;
+    @JsonProperty("presentation")
+    @DatabaseField()
+    private String presentation;
 
-	@JsonProperty("fileName")
-	@DatabaseField()
-	private String fileName;
+    @JsonProperty("fileName")
+    @DatabaseField()
+    private String fileName;
 
-	@JsonProperty("category")
-	@DatabaseField()
-	private String category;
+    @JsonProperty("category")
+    @DatabaseField()
+    private String category;
 
-	@JsonProperty("favourited")
-	@DatabaseField()
-	private boolean favourited = false;
+    @JsonProperty("favourited")
+    @DatabaseField()
+    private boolean favourited = false;
 
-	/**
-	 * path file location of transcript
-	 */
-	@JsonProperty("transcript")
-	@DatabaseField()
-	private String transcript;
+    /**
+     * path file location of transcript
+     */
+    @JsonProperty("transcript")
+    @DatabaseField()
+    private String transcript;
 
-	public Program() {
-	}
+    public Program() {
+    }
 
-	public Program(String code) {
-		setCode(code);
-	}
+    public Program(String code) {
+        setCode(code);
+    }
 
-	public Program(String code, String name, String description, String duration, String participants, String transcript, Boolean favourited, ProgramCategory category) {
-		setName(name);
+    public Program(String code, String name, String description, String duration, String participants, String transcript, Boolean favourited, ProgramCategory category) {
+        setName(name);
         setDescription(description);
-		setCode(code);
-		setDuration(duration);
-		setParticipants(participants);
-		setTranscript(transcript);
-		setFavourited(favourited);
-		setCategory(category);
-	}
+        setCode(code);
+        setDuration(duration);
+        setParticipants(participants);
+        setTranscript(transcript);
+        setFavourited(favourited);
+        setCategory(category);
+    }
 
-	public Program(String code, String name, ProgramCategory category, String fileName) {
-		setName(name);
-		setCode(code);
-		setCategory(category);
-		setFileName(fileName);
-	}
-	public String getPresentation() {
-		return presentation;
-	}
+    public Program(String code, String name, ProgramCategory category, String fileName) {
+        setName(name);
+        setCode(code);
+        setCategory(category);
+        setFileName(fileName);
+    }
 
-	public void setPresentation(String presentation) {
-		this.presentation = presentation;
-	}
+    public String getPresentation() {
+        return presentation;
+    }
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    public void setPresentation(String presentation) {
+        this.presentation = presentation;
+    }
 
-	public String getFileName() {
-		return fileName;
-	}
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getFileName() {
+        return fileName;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-    /**
-     * Series code, contains a code from the serie and number string; such as; WOE000001
-     * //TODO should i have this as a object with name and code?
-     * */
-	@JsonProperty("code")
-	public String getCode() {
-		return code;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     /**
      * Series code, contains a code from the serie and number string; such as; WOE000001
      * //TODO should i have this as a object with name and code?
-     * */
-	public void setCode(String code) {
-		this.code = code;
-	}
+     */
+    @JsonProperty("code")
+    public String getCode() {
+        return code;
+    }
 
-	public String getEpisode() {
-		return episode;
-	}
+    /**
+     * Series code, contains a code from the serie and number string; such as; WOE000001
+     * //TODO should i have this as a object with name and code?
+     */
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setEpisode(String episode) {
-		this.episode = episode;
-	}
+    public String getEpisode() {
+        return episode;
+    }
+
+    public void setEpisode(String episode) {
+        this.episode = episode;
+    }
 
     //TODO appropriate datatype
+
     /**
      * E.g. series code e.g. WOE
      */
-	public String getSeries() {
-		return series;
-	}
+    public String getSeries() {
+        return series;
+    }
 
     //TODO appropriate datatype
+
     /**
      * E.g. series code e.g. WOE
      */
-	public void setSeries(String series) {
-		this.series = series;
-	}
+    public void setSeries(String series) {
+        this.series = series;
+    }
 
-	public void setCategory(ProgramCategory category) {
-		this.category = category.name();
-	}
+    public void setCategory(ProgramCategory category) {
+        this.category = category.name();
+    }
 
-	public ProgramCategory getCategory() {
-		return ProgramCategory.valueOf(category);
-	}
+    public ProgramCategory getCategory() {
+        return ProgramCategory.valueOf(category);
+    }
 
     public String getDuration() {
         return duration;
@@ -215,110 +218,110 @@ public class Program extends MySDAObject {
         this.participants = participants;
     }
 
-	public boolean isFavourited() {
-		return favourited;
-	}
+    public boolean isFavourited() {
+        return favourited;
+    }
 
-	public void setFavourited(boolean favourited) {
-		this.favourited = favourited;
-	}
+    public void setFavourited(boolean favourited) {
+        this.favourited = favourited;
+    }
 
-	public String getTranscript() {
-		return transcript;
-	}
+    public String getTranscript() {
+        return transcript;
+    }
 
-	public void setTranscript(String transcript) {
-		this.transcript = transcript;
-	}
+    public void setTranscript(String transcript) {
+        this.transcript = transcript;
+    }
 
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-		Program program = (Program) o;
+        Program program = (Program) o;
 
-		if (isFavourited() != program.isFavourited()) return false;
-		if (getName() != null ? !getName().equals(program.getName()) : program.getName() != null)
-			return false;
-		if (getDescription() != null ? !getDescription().equals(program.getDescription()) : program.getDescription() != null)
-			return false;
-		if (getCode() != null ? !getCode().equals(program.getCode()) : program.getCode() != null)
-			return false;
-		if (getEpisode() != null ? !getEpisode().equals(program.getEpisode()) : program.getEpisode() != null)
-			return false;
-		if (getSeries() != null ? !getSeries().equals(program.getSeries()) : program.getSeries() != null)
-			return false;
-		if (getDuration() != null ? !getDuration().equals(program.getDuration()) : program.getDuration() != null)
-			return false;
-		if (getParticipants() != null ? !getParticipants().equals(program.getParticipants()) : program.getParticipants() != null)
-			return false;
-		if (getPresentation() != null ? !getPresentation().equals(program.getPresentation()) : program.getPresentation() != null)
-			return false;
-		if (getCategory() != null ? !getCategory().equals(program.getCategory()) : program.getCategory() != null)
-			return false;
-		return getTranscript() != null ? getTranscript().equals(program.getTranscript()) : program.getTranscript() == null;
-	}
+        if (isFavourited() != program.isFavourited()) return false;
+        if (getName() != null ? !getName().equals(program.getName()) : program.getName() != null)
+            return false;
+        if (getDescription() != null ? !getDescription().equals(program.getDescription()) : program.getDescription() != null)
+            return false;
+        if (getCode() != null ? !getCode().equals(program.getCode()) : program.getCode() != null)
+            return false;
+        if (getEpisode() != null ? !getEpisode().equals(program.getEpisode()) : program.getEpisode() != null)
+            return false;
+        if (getSeries() != null ? !getSeries().equals(program.getSeries()) : program.getSeries() != null)
+            return false;
+        if (getDuration() != null ? !getDuration().equals(program.getDuration()) : program.getDuration() != null)
+            return false;
+        if (getParticipants() != null ? !getParticipants().equals(program.getParticipants()) : program.getParticipants() != null)
+            return false;
+        if (getPresentation() != null ? !getPresentation().equals(program.getPresentation()) : program.getPresentation() != null)
+            return false;
+        if (getCategory() != null ? !getCategory().equals(program.getCategory()) : program.getCategory() != null)
+            return false;
+        return getTranscript() != null ? getTranscript().equals(program.getTranscript()) : program.getTranscript() == null;
+    }
 
-	public enum ProgramCategory {
-		ALL("Categories: All"),
-		NONE("None"),
-		PREACHING_AND_TEACHING("Preaching & Teaching"),
-		HEALTH_AND_COOKING("Health & Cooking"),
-		MUSIC("Music"),
+    public enum ProgramCategory {
+        ALL("Categories: All"),
+        NONE("None"),
+        PREACHING_AND_TEACHING("Preaching & Teaching"),
+        HEALTH_AND_COOKING("Health & Cooking"),
+        MUSIC("Music"),
         FAMILY_ISSUES_AND_INTERCITY("Family issues & Intercity"),
-		KIDS("Kids"),
-		INTERCITY_D2D("Intercity D2D");
+        KIDS("Kids"),
+        INTERCITY_D2D("Intercity D2D");
 
-		private String displayName;
+        private String displayName;
 
-		ProgramCategory(String displayName) {
-			this.displayName = displayName;
-		}
+        ProgramCategory(String displayName) {
+            this.displayName = displayName;
+        }
 
-		public String getDisplayName() {
-			return displayName;
-		}
+        public String getDisplayName() {
+            return displayName;
+        }
 
-		public static List<String> getNames(List<ProgramCategory> categories) {
+        public static List<String> getNames(List<ProgramCategory> categories) {
             List<String> names = new ArrayList<String>();
 
-            for(ProgramCategory c : (categories != null ? categories : Arrays.asList(ProgramCategory.values()))) {
+            for (ProgramCategory c : (categories != null ? categories : Arrays.asList(ProgramCategory.values()))) {
                 names.add(c.name());
             }
             return names;
         }
 
         public static List<String> displayNames() {
-			List<String> names = new ArrayList<>();
-			for(ProgramCategory category: values()) {
-				names.add(category.getDisplayName());
-			}
-			return names;
-		}
+            List<String> names = new ArrayList<>();
+            for (ProgramCategory category : values()) {
+                names.add(category.getDisplayName());
+            }
+            return names;
+        }
 
-		public static ProgramCategory valueOfFromDisplayName(String displayName) {
-			for(ProgramCategory category: values()) {
-				if(category.getDisplayName().equals(displayName)) {
-					return category;
-				}
-			}
-			return null;
-		}
-	}
+        public static ProgramCategory valueOfFromDisplayName(String displayName) {
+            for (ProgramCategory category : values()) {
+                if (category.getDisplayName().equals(displayName)) {
+                    return category;
+                }
+            }
+            return null;
+        }
+    }
 
-	@Override
-	public String toString() {
-		return "Program {" +
-				"name='" + getName() + '\'' +
-				", code='" + getCode() + '\'' +
-				", category='" + getCategory().getDisplayName() + '\'' +
-				", favourited=" + isFavourited() +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "Program {" +
+                "name='" + getName() + '\'' +
+                ", code='" + getCode() + '\'' +
+                ", category='" + getCategory().getDisplayName() + '\'' +
+                ", favourited=" + isFavourited() +
+                '}';
+    }
 
-	public String getDisplayName() {
-		return (StringUtils.isBlank(getName()) ? "" : getName() + " : ") + getCode();
-	}
+    public String getDisplayName() {
+        return (StringUtils.isBlank(getName()) ? "" : getName() + " : ") + getCode();
+    }
 }

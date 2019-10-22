@@ -1,10 +1,6 @@
 package org.threeabn.apps.mysdainterless.screens;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.EditText;
 
 import org.threeabn.apps.mysdainterless.MySDAInterlessApp;
 import org.threeabn.apps.mysdainterless.ProgramSearchCriteria;

@@ -23,7 +23,7 @@ import java.util.Map;
  * All foreign key on modal objects are required to be persisted first to be looked up, otherwise ormlite doesn't check these foreign existances
  */
 
-public class DBSession extends OrmLiteSqliteOpenHelper  {
+public class DBSession extends OrmLiteSqliteOpenHelper {
 
     //TODO pull these 2 into the manifest file
     public static final String DB_NAME = ".mysdainterless.db";
@@ -80,7 +80,7 @@ public class DBSession extends OrmLiteSqliteOpenHelper  {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource cs, int oldVersion, int newVersion) {
-        if(oldVersion == 1 && newVersion == 2) {
+        if (oldVersion == 1 && newVersion == 2) {
             reCreateDatabase(cs);
         }
     }

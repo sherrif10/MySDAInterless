@@ -10,14 +10,9 @@ import org.threeabn.apps.mysdainterless.api.MySDAService;
 import org.threeabn.apps.mysdainterless.modal.Program;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.threeabn.apps.mysdainterless.MySDAInterlessConstantsAndEvaluations.checkIfFileNameBelongsToVideoType;
 
@@ -42,7 +37,7 @@ public class MySDAInterlessApp extends Application {
     public String getProgramsDirectory() {
         String postfix = "/.mysdainterless/programs";
         File[] storages = ContextCompat.getExternalFilesDirs(this, null);
-        if(storages.length <= 1) {// use internal storage
+        if (storages.length <= 1) {// use internal storage
             return Environment.getExternalStorageDirectory().getAbsolutePath() + postfix;
         }
         String path = storages[1].getAbsolutePath();
@@ -89,9 +84,9 @@ public class MySDAInterlessApp extends Application {
             File programsFolder = new File(programsDirectory);
             if (programsFolder.exists() & programsFolder.isDirectory()) {
                 File install = new File(programsFolder.getAbsolutePath() + File.separator + MySDAInterlessConstantsAndEvaluations.INSTALL);
-                if(install.exists() && programsFolder.listFiles() != null) {//null without permission
+                if (install.exists() && programsFolder.listFiles() != null) {//null without permission
                     for (File categoryFolder : programsFolder.listFiles()) {
-                        if(categoryFolder.isDirectory() && Arrays.asList(categoryFolder.list()).contains(MySDAInterlessConstantsAndEvaluations.INSTALL)) {
+                        if (categoryFolder.isDirectory() && Arrays.asList(categoryFolder.list()).contains(MySDAInterlessConstantsAndEvaluations.INSTALL)) {
                             String category = categoryFolder.getName();
                             for (File programFile : categoryFolder.listFiles()) {
                                 String programFileName = programFile.getName();

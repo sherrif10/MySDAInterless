@@ -7,7 +7,6 @@ import android.widget.VideoView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.CustomMediaController;
-import org.threeabn.apps.mysdainterless.security.CryptoLauncher;
 
 import java.io.File;
 

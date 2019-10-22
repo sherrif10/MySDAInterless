@@ -4,7 +4,7 @@ import android.widget.AbsListView;
 
 /**
  * Created by k-joseph on 11/03/2018.
- *
+ * <p>
  * TODO not currently used, idea is to use it up if listViews and improved and workable, else replace listViews with fragments
  */
 public class ItemsScroller implements AbsListView.OnScrollListener {
@@ -17,6 +17,7 @@ public class ItemsScroller implements AbsListView.OnScrollListener {
 
     public ItemsScroller() {
     }
+
     public ItemsScroller(Integer visibleThreshold, String[] programs) {
         this.visibleThreshold = visibleThreshold;
         this.programs = programs;

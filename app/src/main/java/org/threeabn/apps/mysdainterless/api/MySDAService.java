@@ -48,6 +48,7 @@ public class MySDAService {
     public MySDAService(Context context) {
         this.context = context;
     }
+
     /**
      * Checks if there's an active user session besides the default which is guest
      * TODO never use until supported
@@ -59,7 +60,7 @@ public class MySDAService {
     }
 
     public DBSession getDbSession() {
-        if(this.dbSession == null && this.context != null)
+        if (this.dbSession == null && this.context != null)
             return new DBSession(this.context);
         else
             return this.dbSession;//TODO initialise in inbuilt context pointing to mainactivity perhaps so as this never returns null
@@ -240,9 +241,9 @@ public class MySDAService {
 
     public Dao.CreateOrUpdateStatus saveUser(User obj) throws SQLException {
         //TODO looks like setting unique = true on this user field didn't work
-        if(getUserByUsername(obj.getUsername()) == null)
+        if (getUserByUsername(obj.getUsername()) == null)
             return getDbSession().createOrUpdate(obj, User.class);
-        return new Dao.CreateOrUpdateStatus(false,  false, 0);
+        return new Dao.CreateOrUpdateStatus(false, false, 0);
     }
 
     /**
@@ -273,7 +274,7 @@ public class MySDAService {
     public Period getPeriodByUuid(String uuid) throws SQLException {
         List<Period> list = getDbSession().getByField(Period.class, "uuid", uuid);
 
-        if(list != null && list.size() > 0)
+        if (list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -281,7 +282,7 @@ public class MySDAService {
     public Video getVideoByUuid(String uuid) throws SQLException {
         List<Video> list = getDbSession().getByField(Video.class, "uuid", uuid);
 
-        if(list != null && list.size() > 0)
+        if (list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -289,7 +290,7 @@ public class MySDAService {
     public Person getPersonByUuid(String uuid) throws SQLException {
         List<Person> list = getDbSession().getByField(Person.class, "uuid", uuid);
 
-        if(list != null && list.size() > 0)
+        if (list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -297,7 +298,7 @@ public class MySDAService {
     public User getUserByUuid(String uuid) throws SQLException {
         List<User> list = getDbSession().getByField(User.class, "uuid", uuid);
 
-        if(list != null && list.size() > 0)
+        if (list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -305,7 +306,7 @@ public class MySDAService {
     public User getUserByUsername(String username) throws SQLException {
         List<User> list = getDbSession().getByField(User.class, "username", username);
 
-        if(list != null && list.size() > 0)
+        if (list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -313,7 +314,7 @@ public class MySDAService {
     public Program getProgramByUuid(String uuid) throws SQLException {
         List<Program> list = getDbSession().getByField(Program.class, "uuid", uuid);
 
-        if(list != null && list.size() > 0)
+        if (list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -321,7 +322,7 @@ public class MySDAService {
     public Program getProgramByCode(String code) throws SQLException {
         List<Program> list = getDbSession().getByField(Program.class, "code", code);
 
-        if(list != null && list.size() > 0)
+        if (list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -329,7 +330,7 @@ public class MySDAService {
     public Program getProgramByFileName(String fileName) throws SQLException {
         List<Program> list = getDbSession().getByField(Program.class, "fileName", fileName);
 
-        if(list != null && list.size() > 0)
+        if (list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -341,7 +342,7 @@ public class MySDAService {
     public Favourite getFavouriteByUuid(String uuid) throws SQLException {
         List<Favourite> list = getDbSession().getByField(Favourite.class, "uuid", uuid);
 
-        if(list != null && list.size() > 0)
+        if (list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -366,7 +367,7 @@ public class MySDAService {
     public Channel getChannelByUuid(String uuid) throws SQLException {
         List<Channel> list = getDbSession().getByField(Channel.class, "uuid", uuid);
 
-        if(list != null && list.size() > 0)
+        if (list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -374,7 +375,7 @@ public class MySDAService {
     public Guest getGuestByUuid(String uuid) throws SQLException {
         List<Guest> list = getDbSession().getByField(Guest.class, "uuid", uuid);
 
-        if(list != null && list.size() > 0)
+        if (list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -382,7 +383,7 @@ public class MySDAService {
     public Host getHostByUuid(String uuid) throws SQLException {
         List<Host> list = getDbSession().getByField(Host.class, "uuid", uuid);
 
-        if(list != null && list.size() > 0)
+        if (list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
@@ -390,14 +391,14 @@ public class MySDAService {
     public ChannelProgram getChannelProgramByUuid(String uuid) throws SQLException {
         List<ChannelProgram> list = getDbSession().getByField(ChannelProgram.class, "uuid", uuid);
 
-        if(list != null && list.size() > 0)
+        if (list != null && list.size() > 0)
             return list.get(0);
         return null;
     }
 
     public User authenticateUser(String username, String password) throws SQLException {
         password = new PassHashing(password).generateHash();
-        if(StringUtils.isNotBlank(username)) {
+        if (StringUtils.isNotBlank(username)) {
             for (User u : getAllUsers()) {
                 if (username.equals(u.getUsername()) && (StringUtils.isBlank(password) ? StringUtils.isBlank(u.getPassword()) : password.equals(u.getPassword()))) {
                     return u;
@@ -458,7 +459,6 @@ public class MySDAService {
     }
 
     /**
-     *
      * @param uri
      * @return, returns if resource exists or not
      */
@@ -473,9 +473,9 @@ public class MySDAService {
      */
     public List<Program> loadProgramsFromCSV(File csvFile) {
         Pattern pattern = Pattern.compile(",(?=([^\\\"]*\\\"[^\\\"]*\\\")*(?![^\\\"]*\\\"))");
-        List <Program> programs = null;
+        List<Program> programs = null;
 
-        if(csvFile != null && csvFile.exists()) {
+        if (csvFile != null && csvFile.exists()) {
             try (BufferedReader in = new BufferedReader(new FileReader(csvFile))) {
                 programs = in.lines().skip(1).map(line -> {
                     String[] x = pattern.split(line, -1);
@@ -498,14 +498,14 @@ public class MySDAService {
     }
 
     private boolean getBoolean(String bool) {
-        if(StringUtils.isNotBlank(bool)) {
+        if (StringUtils.isNotBlank(bool)) {
             return Boolean.getBoolean(bool);
         }
         return false;
     }
 
     private Program.ProgramCategory getProgramCategory(String cat) {
-        if(StringUtils.isNotBlank(cat)) {
+        if (StringUtils.isNotBlank(cat)) {
             return Program.ProgramCategory.valueOf(cat);
         }
         return Program.ProgramCategory.NONE;

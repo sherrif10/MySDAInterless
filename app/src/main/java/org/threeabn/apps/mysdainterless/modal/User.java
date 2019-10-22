@@ -34,7 +34,8 @@ public class User extends MySDAObject {
     @DatabaseField(columnName = "person", foreign = true, foreignAutoRefresh = true)
     private Person person;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String username, String password, UserCategory category, Person person) {
         setUsername(username);

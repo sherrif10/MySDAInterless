@@ -22,9 +22,10 @@ public class ChannelProgram extends MySDAObject {
 
     @JsonProperty("program")
     @DatabaseField(columnName = "program", foreign = true, foreignAutoRefresh = true)
-    private  Program program;
+    private Program program;
 
-    public ChannelProgram() {}
+    public ChannelProgram() {
+    }
 
     public ChannelProgram(Channel channel, Program program) {
         setChannel(channel);

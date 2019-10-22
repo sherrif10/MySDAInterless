@@ -23,7 +23,7 @@ public class Guest extends MySDAObject {
 
     @JsonProperty("program")
     @DatabaseField(columnName = "program", foreign = true, foreignAutoRefresh = true)
-    private  Program program;
+    private Program program;
 
     public Guest() {
 

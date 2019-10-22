@@ -59,14 +59,14 @@ public class MySDAActivity extends Activity {
 
                     intent.putExtra("program", (String) view.getTag());
                     startActivity(intent);
-                } else if(R.id.programPreviewFavorite == v.getId() && StringUtils.isNoneBlank((String) view.getTag())) {
+                } else if (R.id.programPreviewFavorite == v.getId() && StringUtils.isNoneBlank((String) view.getTag())) {
                     File p = new File((String) view.getTag());
 
-                    if(p != null && p.exists()) {
+                    if (p != null && p.exists()) {
                         try {
                             String s = p.getName();
                             Program program = TextUtils.isEmpty(s) ? null : MySDAInterlessApp.getInstance().getService().getProgramByFileName(s);
-                            if(program != null) {
+                            if (program != null) {
                                 program.setFavourited(!program.isFavourited());
                                 MySDAInterlessApp.getInstance().getService().updateProgram(program);
                                 Toast.makeText(MySDAActivity.this, (program.isFavourited() ? "" : "Un-") + "Favorited: " + program.getDisplayName(), Toast.LENGTH_SHORT).show();
@@ -84,7 +84,7 @@ public class MySDAActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         List<String> allPermissions = allPermissions();
-        for(int i = 0; i < allPermissions.size(); i++) {
+        for (int i = 0; i < allPermissions.size(); i++) {
             askForPermissions(allPermissions.get(i), i);
         }
         //TODO restrict auto-rotate after testing on the dongo
@@ -103,7 +103,7 @@ public class MySDAActivity extends Activity {
         super.onStop();
     }
 
-    private List<String>  allPermissions() {
+    private List<String> allPermissions() {
         return Arrays.asList(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 

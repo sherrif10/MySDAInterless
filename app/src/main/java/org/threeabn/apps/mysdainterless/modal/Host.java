@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * NOT YET USED, used property named participants on program
- *
+ * <p>
  * Created by k-joseph on 17/10/2017.
  * TODO ormlite @{@link com.j256.ormlite.dao.ForeignCollection} still requires a fake foreign key i hate:
  * https://stackoverflow.com/questions/10287578/create-table-with-foreign-collection-field
@@ -24,7 +24,7 @@ public class Host extends MySDAObject {
 
     @JsonProperty("program")
     @DatabaseField(columnName = "program", foreign = true, foreignAutoRefresh = true)
-    private  Program program;
+    private Program program;
 
     public Host() {
 

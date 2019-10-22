@@ -30,7 +30,7 @@ import java.util.Map;
 public class ProgramsList extends ArrayAdapter<String> implements Filterable {
     private Activity context;
     public static String SEPARATOR = "<-:->";
-    private  Map<String, String> programRefs;
+    private Map<String, String> programRefs;
 
     public ProgramsList(Activity context, String[] programDisplays, Map<String, String> programRefs) {
         super(context, R.layout.list_programs, programDisplays);//TODO fetch and rather pass in program name here instead of programPaths
@@ -46,7 +46,7 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
         TextView txtTitle = rowView.findViewById(R.id.txt);
         ImageView imageView = rowView.findViewById(R.id.img);
 
-        if(position + 1 > programRefs.size()) {
+        if (position + 1 > programRefs.size()) {
             // remove(getItem(position));
         } else {
             // TODO fix to by name not position
@@ -94,40 +94,40 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
         private List<Program> getFilteredResults(ProgramSearchCriteria criteria) {
             ArrayList<Program> listResult = new ArrayList<Program>();
             try {
-                List< Program> programs = MySDAInterlessApp.getInstance().getService().getAllPrograms();
+                List<Program> programs = MySDAInterlessApp.getInstance().getService().getAllPrograms();
                 List<Program> programsByCategories;
                 List<Program> favouritedPrograms;
                 List<Program> searchedPrograms;
 
-                if(ProgramSearchCriteria.TermCategory.CATEGORY.equals(criteria.getCategory())) {//wrong constraint structure
+                if (ProgramSearchCriteria.TermCategory.CATEGORY.equals(criteria.getCategory())) {//wrong constraint structure
                     programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList((Program.ProgramCategory) criteria.getTerm()));
-                    if(Program.ProgramCategory.ALL.equals(criteria.getTerm())) {
+                    if (Program.ProgramCategory.ALL.equals(criteria.getTerm())) {
                         listResult.addAll(programs);
                     } else {
                         listResult.addAll(programsByCategories);
                     }
-                } else if(ProgramSearchCriteria.TermCategory.CATEGORY_FAVOURITE.equals(criteria.getCategory())) {
+                } else if (ProgramSearchCriteria.TermCategory.CATEGORY_FAVOURITE.equals(criteria.getCategory())) {
                     programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList((Program.ProgramCategory) criteria.getTerm()));
                     favouritedPrograms = MySDAInterlessApp.getInstance().getService().getFavouritedPrograms();
-                    if(Program.ProgramCategory.ALL.equals(criteria.getTerm())) {
+                    if (Program.ProgramCategory.ALL.equals(criteria.getTerm())) {
                         listResult.addAll(intersectTwoProgramLists(programs, favouritedPrograms));
                     } else {
                         listResult.addAll(intersectTwoProgramLists(programsByCategories, favouritedPrograms));
                     }
-                } else if(ProgramSearchCriteria.TermCategory.FAVOURITE.equals(criteria.getCategory())) {
+                } else if (ProgramSearchCriteria.TermCategory.FAVOURITE.equals(criteria.getCategory())) {
                     favouritedPrograms = MySDAInterlessApp.getInstance().getService().getFavouritedPrograms();
                     listResult.addAll(favouritedPrograms);
-                } else if(ProgramSearchCriteria.TermCategory.SEARCH.equals(criteria.getCategory())) {
+                } else if (ProgramSearchCriteria.TermCategory.SEARCH.equals(criteria.getCategory())) {
                     String[] terms = ((String) criteria.getTerm()).split(SEPARATOR);
                     Program.ProgramCategory selectedCategory = Program.ProgramCategory.valueOf(terms[0]);
                     searchedPrograms = searchPrograms(terms[1], programs);
-                    if(Program.ProgramCategory.ALL.equals(selectedCategory)) {
+                    if (Program.ProgramCategory.ALL.equals(selectedCategory)) {
                         listResult.addAll(intersectTwoProgramLists(searchedPrograms, new ArrayList<>(programs)));
                     } else {
                         programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList(selectedCategory));
                         listResult.addAll(intersectTwoProgramLists(searchedPrograms, programsByCategories));
                     }
-                }  else {
+                } else {
                     listResult.addAll(searchPrograms((String) criteria.getTerm(), programs));
                 }
             } catch (Exception e) {

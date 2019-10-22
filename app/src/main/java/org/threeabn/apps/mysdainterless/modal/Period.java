@@ -30,7 +30,8 @@ import java.util.Date;
 @DatabaseTable(tableName = "period")
 public class Period extends MySDAObject {
 
-    public Period() {}
+    public Period() {
+    }
 
     public Period(Date start, Date end) {
         setStart(start);

@@ -15,7 +15,7 @@ public class PassHashing {
     String password;
 
     public PassHashing(String pass) {
-        if(StringUtils.isNotBlank(pass))
+        if (StringUtils.isNotBlank(pass))
             this.password = pass;
     }
 
@@ -26,7 +26,7 @@ public class PassHashing {
         StringBuilder hash = new StringBuilder();
         String p = StringUtils.isNotBlank(this.password) ? getPass(this.password) : null;
 
-        if(StringUtils.isNoneBlank(p)) {
+        if (StringUtils.isNoneBlank(p)) {
             try {
                 MessageDigest sha = MessageDigest.getInstance("SHA-1");
                 byte[] hashedBytes = sha.digest(p.getBytes());
@@ -48,7 +48,7 @@ public class PassHashing {
     }
 
     private String getPass(String pass) {
-        if(StringUtils.isNotBlank(pass))
+        if (StringUtils.isNotBlank(pass))
             return SALT + pass;
         return null;
     }
