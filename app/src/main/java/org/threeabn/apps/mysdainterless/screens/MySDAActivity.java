@@ -21,6 +21,7 @@ import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.Program;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -90,7 +91,9 @@ public class MySDAActivity extends Activity {
         //TODO restrict auto-rotate after testing on the dongo
 
         //Move to MySDAInterlessApp#oncreate
-        MySDAInterlessApp.getInstance().initialiseAllPrograms();
+        try {
+            MySDAInterlessApp.getInstance().initialiseAllPrograms();
+        } catch (IOException e) {}
     }
 
     @Override

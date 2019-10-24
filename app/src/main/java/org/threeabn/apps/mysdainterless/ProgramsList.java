@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.modal.Program;
+import org.threeabn.apps.mysdainterless.modal.ProgramCategory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -100,16 +101,16 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
                 List<Program> searchedPrograms;
 
                 if (ProgramSearchCriteria.TermCategory.CATEGORY.equals(criteria.getCategory())) {//wrong constraint structure
-                    programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList((Program.ProgramCategory) criteria.getTerm()));
-                    if (Program.ProgramCategory.ALL.equals(criteria.getTerm())) {
+                    programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList((ProgramCategory) criteria.getTerm()));
+                    if (ProgramCategory.ALL.equals(criteria.getTerm())) {
                         listResult.addAll(programs);
                     } else {
                         listResult.addAll(programsByCategories);
                     }
                 } else if (ProgramSearchCriteria.TermCategory.CATEGORY_FAVOURITE.equals(criteria.getCategory())) {
-                    programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList((Program.ProgramCategory) criteria.getTerm()));
+                    programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList((ProgramCategory) criteria.getTerm()));
                     favouritedPrograms = MySDAInterlessApp.getInstance().getService().getFavouritedPrograms();
-                    if (Program.ProgramCategory.ALL.equals(criteria.getTerm())) {
+                    if (ProgramCategory.ALL.equals(criteria.getTerm())) {
                         listResult.addAll(intersectTwoProgramLists(programs, favouritedPrograms));
                     } else {
                         listResult.addAll(intersectTwoProgramLists(programsByCategories, favouritedPrograms));
@@ -119,9 +120,9 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
                     listResult.addAll(favouritedPrograms);
                 } else if (ProgramSearchCriteria.TermCategory.SEARCH.equals(criteria.getCategory())) {
                     String[] terms = ((String) criteria.getTerm()).split(SEPARATOR);
-                    Program.ProgramCategory selectedCategory = Program.ProgramCategory.valueOf(terms[0]);
+                    ProgramCategory selectedCategory = ProgramCategory.valueOf(terms[0]);
                     searchedPrograms = searchPrograms(terms[1], programs);
-                    if (Program.ProgramCategory.ALL.equals(selectedCategory)) {
+                    if (ProgramCategory.ALL.equals(selectedCategory)) {
                         listResult.addAll(intersectTwoProgramLists(searchedPrograms, new ArrayList<>(programs)));
                     } else {
                         programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList(selectedCategory));

@@ -53,7 +53,14 @@
                 style="@style/iconButton"
                 android:background="@drawable/programs"
                 android:focusable="true"
-                android:nextFocusLeft="@+id/image_favorite" />
+                android:nextFocusLeft="@+id/image_favorite"
+                android:nextFocusRight="@+id/settings"/>
+            <ImageView
+                android:id="@+id/settings"
+                style="@style/iconButton"
+                android:background="@drawable/settings"
+                android:focusable="true"
+                android:nextFocusLeft="@+id/image_list" />
         </LinearLayout>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

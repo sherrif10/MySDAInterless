@@ -18,6 +18,7 @@ import org.threeabn.apps.mysdainterless.modal.Host;
 import org.threeabn.apps.mysdainterless.modal.Period;
 import org.threeabn.apps.mysdainterless.modal.Person;
 import org.threeabn.apps.mysdainterless.modal.Program;
+import org.threeabn.apps.mysdainterless.modal.ProgramCategory;
 import org.threeabn.apps.mysdainterless.modal.User;
 import org.threeabn.apps.mysdainterless.modal.Video;
 import org.threeabn.apps.mysdainterless.orm.DBSession;
@@ -42,6 +43,15 @@ public class MySDAService {
 
     Context context = null;
 
+    private static volatile MySDAService mySDAService = new MySDAService();
+
+    //private constructor.
+    private MySDAService(){}
+
+    public static MySDAService getInstance() {
+        return mySDAService;
+    }
+
     /*
      * TODO how to make the context parameter require an aurgment to release the intance!!!
      */
@@ -60,10 +70,7 @@ public class MySDAService {
     }
 
     public DBSession getDbSession() {
-        if (this.dbSession == null && this.context != null)
-            return new DBSession(this.context);
-        else
-            return this.dbSession;//TODO initialise in inbuilt context pointing to mainactivity perhaps so as this never returns null
+        return DBSession.getInstance(this.context);
     }
 
     public List<Period> getAllPeriods() throws SQLException {
@@ -259,8 +266,8 @@ public class MySDAService {
         return getDbSession().update(obj, Program.class);
     }
 
-    public int saveProgramCategory(Program.ProgramCategory obj) throws SQLException {
-        return getDbSession().create(obj, Program.ProgramCategory.class);
+    public int saveProgramCategory(ProgramCategory obj) throws SQLException {
+        return getDbSession().create(obj, ProgramCategory.class);
     }
 
     public Dao.CreateOrUpdateStatus saveChannel(Channel obj) throws SQLException {
@@ -351,8 +358,8 @@ public class MySDAService {
         return getDbSession().getByField(Program.class, "series", seriesCode);
     }
 
-    public List<Program> getProgramsByCategories(List<Program.ProgramCategory> categories) throws SQLException {
-        return getDbSession().containedIn("category", Program.ProgramCategory.getNames(categories), Program.class);
+    public List<Program> getProgramsByCategories(List<ProgramCategory> categories) throws SQLException {
+        return getDbSession().containedIn("category", ProgramCategory.getNames(categories), Program.class);
     }
 
     public List<Program> getFavouritedPrograms() throws SQLException {
@@ -504,10 +511,10 @@ public class MySDAService {
         return false;
     }
 
-    private Program.ProgramCategory getProgramCategory(String cat) {
+    private ProgramCategory getProgramCategory(String cat) {
         if (StringUtils.isNotBlank(cat)) {
-            return Program.ProgramCategory.valueOf(cat);
+            return ProgramCategory.valueOf(cat);
         }
-        return Program.ProgramCategory.NONE;
+        return ProgramCategory.NONE;
     }
 }

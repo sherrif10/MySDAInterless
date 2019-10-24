@@ -7,6 +7,7 @@ import org.threeabn.apps.mysdainterless.ProgramSearchCriteria;
 import org.threeabn.apps.mysdainterless.ProgramsList;
 import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.Program;
+import org.threeabn.apps.mysdainterless.modal.ProgramCategory;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class SearchActivity extends ListActivity {
     }
 
     @Override
-    protected ProgramSearchCriteria defineProgramCategoriesSearchCriteria(Program.ProgramCategory programCategory, String term) {
+    protected ProgramSearchCriteria defineProgramCategoriesSearchCriteria(ProgramCategory programCategory, String term) {
         return new ProgramSearchCriteria(programCategory.name() + ProgramsList.SEPARATOR + term, ProgramSearchCriteria.TermCategory.SEARCH, null);
     }
 

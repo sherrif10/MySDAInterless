@@ -24,6 +24,7 @@ import java.util.Map;
  */
 
 public class DBSession extends OrmLiteSqliteOpenHelper {
+    private static DBSession instance;
 
     //TODO pull these 2 into the manifest file
     public static final String DB_NAME = ".mysdainterless.db";
@@ -33,6 +34,17 @@ public class DBSession extends OrmLiteSqliteOpenHelper {
     public DBSession(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         getWritableDatabase();
+    }
+
+    public static synchronized DBSession getInstance(Context context) {
+        if (instance == null) {
+            synchronized (DBSession.class) {
+                if (instance == null) {
+                    instance = new DBSession(context);
+                }
+            }
+        }
+        return instance;
     }
 
     @Override

@@ -8,10 +8,19 @@ import android.util.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.api.MySDAService;
 import org.threeabn.apps.mysdainterless.modal.Program;
+import org.threeabn.apps.mysdainterless.modal.ProgramCategory;
+import org.threeabn.apps.mysdainterless.settings.NextRun;
+import org.threeabn.apps.mysdainterless.settings.OrderBy;
+import org.threeabn.apps.mysdainterless.settings.PlayBack;
+import org.threeabn.apps.mysdainterless.settings.Settings;
+import org.threeabn.apps.mysdainterless.settings.Status;
+import org.threeabn.apps.mysdainterless.utils.FilesUtils;
+import org.threeabn.apps.mysdainterless.utils.SettingsUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static org.threeabn.apps.mysdainterless.MySDAInterlessConstantsAndEvaluations.checkIfFileNameBelongsToVideoType;
@@ -34,15 +43,27 @@ public class MySDAInterlessApp extends Application {
         return instance;
     }
 
-    public String getProgramsDirectory() {
-        String postfix = "/.mysdainterless/programs";
+    private String getRootFolder() {
+        String postfix = "/.mysdainterless";
         File[] storages = ContextCompat.getExternalFilesDirs(this, null);
         if (storages.length <= 1) {// use internal storage
             return Environment.getExternalStorageDirectory().getAbsolutePath() + postfix;
         }
-        String path = storages[1].getAbsolutePath();
+        String path = storages[storages.length-1].getAbsolutePath();//get last loaded drive or sdcard
         // use external sdcard
         return path.substring(0, StringUtils.ordinalIndexOf(path, "/", 3)) + postfix;
+    }
+
+    public String getProgramsDirectory() {
+        return getRootFolder() + "/programs";
+    }
+
+    public String getSettingsFile() {
+        File settingsLocation = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/.mysdainterless");
+        if(!settingsLocation.exists()) {
+            settingsLocation.mkdir();
+        }
+        return settingsLocation.getAbsolutePath() + "/settings.json";
     }
 
     /**
@@ -64,8 +85,10 @@ public class MySDAInterlessApp extends Application {
     /**
      * TODO initially this is meant to be run in onCreate in this class
      */
-    public void initialiseAllPrograms() {
+    public void initialiseAllPrograms() throws IOException {
+        //CryptoLauncher.encrypt(new File(getProgramsDirectory().replace("/.mysdainterless/programs", "")+"/apps"));
         installPrograms();
+        //CryptoLauncher.dencrypt(new File(getProgramsDirectory().replace("/.mysdainterless/programs", "")+"/apps"));
     }
 
     @Override
@@ -78,25 +101,30 @@ public class MySDAInterlessApp extends Application {
         super.onLowMemory();
     }
 
-    private void installPrograms() {
+    private void installPrograms() throws IOException {
+        MySDAService dbService = getService();
         String programsDirectory = getProgramsDirectory();
-        if (StringUtils.isNotBlank(programsDirectory)) {
+        Date now = new Date();
+        List<Status> statuses = new ArrayList<>();
+        if (StringUtils.isNotBlank(programsDirectory) && runInstallPrograms()) {
             File programsFolder = new File(programsDirectory);
             if (programsFolder.exists() & programsFolder.isDirectory()) {
-                File install = new File(programsFolder.getAbsolutePath() + File.separator + MySDAInterlessConstantsAndEvaluations.INSTALL);
-                if (install.exists() && programsFolder.listFiles() != null) {//null without permission
+                if (programsFolder.listFiles() != null) {//null without permission
                     for (File categoryFolder : programsFolder.listFiles()) {
-                        if (categoryFolder.isDirectory() && Arrays.asList(categoryFolder.list()).contains(MySDAInterlessConstantsAndEvaluations.INSTALL)) {
-                            String category = categoryFolder.getName();
-                            for (File programFile : categoryFolder.listFiles()) {
+                        if (categoryFolder.isDirectory()) {
+                            ProgramCategory category = ProgramCategory.valueOfFromDisplayName(categoryFolder.getName());
+                            int totalOfPrograms = 0;
+                            for (int i = 0; i < categoryFolder.listFiles().length; i++) {
+                                File programFile = categoryFolder.listFiles()[i];
                                 String programFileName = programFile.getName();
                                 if (!programFileName.startsWith(".") && checkIfFileNameBelongsToVideoType(programFileName)) {
                                     String[] programProps = getFileNameWithOutExtension(programFile).split("-");
                                     String code = programProps.length == 1 ? programProps[0] : programProps[1];
                                     String name = programProps.length == 1 ? "" : programProps[0].replaceAll("_", " ");
-                                    Program program = new Program(code, name, Program.ProgramCategory.valueOfFromDisplayName(category), programFileName);
+                                    Program program = new Program(code, name, category, programFileName);
                                     try {
-                                        getService().saveProgram(program);
+                                        dbService.saveProgram(program);
+                                        totalOfPrograms++;
                                         //encrypt existing programs
                                         //CryptoLauncher.encrypt(programFile);
                                     } catch (Exception e) {
@@ -104,14 +132,19 @@ public class MySDAInterlessApp extends Application {
                                     }
                                 }
                             }
+                            statuses.add(new Status(category, totalOfPrograms, OrderBy.RANDOM, now, PlayBack.REPEAT_ONE));
                         }
                     }
-                    install.delete();
+                    FilesUtils.write(getSettingsFile(), SettingsUtils.toJSONString(new Settings("", now, NextRun.UPGRADE, statuses)));
                 }
             }
         }
     }
 
+    private boolean runInstallPrograms() throws IOException {
+        File settingsFile = new File(getSettingsFile());
+        return !settingsFile.exists() || settingsFile.length() == 0 || NextRun.INSTALL.equals(SettingsUtils.fromJSONString(FilesUtils.read(getSettingsFile())).getNextRun());
+    }
     private String getFileNameWithOutExtension(File file) {
         String name = file.getName();
         int pos = name.lastIndexOf(".");

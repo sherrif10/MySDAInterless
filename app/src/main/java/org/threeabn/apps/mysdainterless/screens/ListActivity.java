@@ -14,6 +14,7 @@ import org.threeabn.apps.mysdainterless.ProgramSearchCriteria;
 import org.threeabn.apps.mysdainterless.ProgramsList;
 import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.Program;
+import org.threeabn.apps.mysdainterless.modal.ProgramCategory;
 
 import java.io.File;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public abstract class ListActivity extends VideoActivity {
 
     protected abstract List<Program> defineInitialPrograms();
 
-    protected abstract ProgramSearchCriteria defineProgramCategoriesSearchCriteria(Program.ProgramCategory programCategory, String term);
+    protected abstract ProgramSearchCriteria defineProgramCategoriesSearchCriteria(ProgramCategory programCategory, String term);
 
     private ListActivity currentScreen;
 
@@ -37,13 +38,13 @@ public abstract class ListActivity extends VideoActivity {
         super.onCreate(savedInstanceState);
         Spinner categories = (Spinner) findViewById(R.id.programCategorySpinner);
         ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(
-                ListActivity.this, android.R.layout.simple_spinner_item, Program.ProgramCategory.displayNames());
+                ListActivity.this, android.R.layout.simple_spinner_item, ProgramCategory.displayNames());
         categoriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categories.setAdapter(categoriesAdapter);
         categories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Program.ProgramCategory selectedCategory = Program.ProgramCategory.valueOfFromDisplayName(parent.getItemAtPosition(position).toString());
+                ProgramCategory selectedCategory = ProgramCategory.valueOfFromDisplayName(parent.getItemAtPosition(position).toString());
                 if (++categoriesInitialization > 1 && selectedCategory != null && listAdapter != null && !(currentScreen instanceof SearchActivity)) {
                     updateProgramItems(((ProgramsList.ProgramFilter) listAdapter.getFilter()).customFilter(defineProgramCategoriesSearchCriteria(selectedCategory, null)));
                 }
@@ -63,7 +64,7 @@ public abstract class ListActivity extends VideoActivity {
         } else if (currentScreen instanceof SearchActivity) {
             findViewById(R.id.searchEnter).setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Program.ProgramCategory selectedCategory = Program.ProgramCategory.valueOfFromDisplayName(categories.getSelectedItem().toString());
+                    ProgramCategory selectedCategory = ProgramCategory.valueOfFromDisplayName(categories.getSelectedItem().toString());
                     String term = ((EditText) currentScreen.findViewById(R.id.searchText)).getText().toString();
 
                     updateProgramItems(((ProgramsList.ProgramFilter) listAdapter.getFilter()).customFilter(defineProgramCategoriesSearchCriteria(selectedCategory, term)));

@@ -11,10 +11,6 @@ import java.util.Arrays;
 
 public class MySDAInterlessConstantsAndEvaluations {
 
-    public static String PROGRAMS_CSV_FILENAME = "programs.csv";
-
-    public static String INSTALL = "install.txt";
-
     /*
      * TODO improve hard cording here
      */
