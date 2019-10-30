@@ -11,4 +11,12 @@
     <string name="PLAYBACK">PLAYBACK</string>
     <string name="SEARCH">SEARCH</string>
     <string name="FAVOURITE">FAVOURITE</string>
+    <string name="Settings">Settings</string>
+    <string name="SETTINGS">SETTINGS</string>
+    <string name="submit">Submit</string>
+    <string name="previewSeconds">Preview Seconds: </string>
+    <string name="version">Version: </string>
+    <string name="releaseDate">Release Date: </string>
+    <string name="installationDate">Installation Date: </string>
+    <string name="installedProgramsByCategories">Number of Installed programs per Category: </string>
 </resources>

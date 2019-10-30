@@ -11,7 +11,7 @@ import org.threeabn.apps.mysdainterless.modal.Program;
 import org.threeabn.apps.mysdainterless.modal.ProgramCategory;
 import org.threeabn.apps.mysdainterless.settings.NextRun;
 import org.threeabn.apps.mysdainterless.settings.OrderBy;
-import org.threeabn.apps.mysdainterless.settings.PlayBack;
+import org.threeabn.apps.mysdainterless.settings.Repeat;
 import org.threeabn.apps.mysdainterless.settings.Settings;
 import org.threeabn.apps.mysdainterless.settings.Status;
 import org.threeabn.apps.mysdainterless.utils.FilesUtils;
@@ -132,10 +132,10 @@ public class MySDAInterlessApp extends Application {
                                     }
                                 }
                             }
-                            statuses.add(new Status(category, totalOfPrograms, OrderBy.RANDOM, now, PlayBack.REPEAT_ONE));
+                            statuses.add(new Status(category, totalOfPrograms));
                         }
                     }
-                    FilesUtils.write(getSettingsFile(), SettingsUtils.toJSONString(new Settings("", now, NextRun.UPGRADE, statuses)));
+                    FilesUtils.write(getSettingsFile(), SettingsUtils.toJSONString(new Settings("1.0", now, NextRun.UPGRADE, statuses, Repeat.REPEAT_ONE, OrderBy.ORDER_BY_RANDOM, now, 15)));
                 }
             }
         }
@@ -145,6 +145,7 @@ public class MySDAInterlessApp extends Application {
         File settingsFile = new File(getSettingsFile());
         return !settingsFile.exists() || settingsFile.length() == 0 || NextRun.INSTALL.equals(SettingsUtils.fromJSONString(FilesUtils.read(getSettingsFile())).getNextRun());
     }
+
     private String getFileNameWithOutExtension(File file) {
         String name = file.getName();
         int pos = name.lastIndexOf(".");

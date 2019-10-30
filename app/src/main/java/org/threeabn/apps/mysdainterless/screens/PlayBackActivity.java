@@ -3,9 +3,9 @@ package org.threeabn.apps.mysdainterless.screens;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import org.threeabn.apps.mysdainterless.R;
+import org.threeabn.apps.mysdainterless.modal.Playback;
 
 import java.io.File;
 
@@ -20,8 +20,8 @@ public class PlayBackActivity extends VideoActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playback);
-
-        playProgram(R.id.videoView_playback, new File(getIntent().getStringExtra("program")));
-        Toast.makeText(PlayBackActivity.this, "Playing: " + getFileDisplayName(getIntent().getStringExtra("program")), Toast.LENGTH_SHORT).show();
+        Playback playback = (Playback) getIntent().getSerializableExtra("program");
+        playback.setMode(Playback.Mode.FULL_SCREEN);
+        playProgram(R.id.videoView_playback, playback);
     }
 }

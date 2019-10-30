@@ -16,12 +16,26 @@ public class Settings {
 
     private List<Status> statuses;
 
-    public Settings(String version, Date releaseDate,NextRun nextRun, List<Status> statuses) {
+    private Repeat repeat;
+
+    private OrderBy orderBy;
+
+    private Date installationDate;
+
+    private Integer previewSeconds;
+
+    public Settings(String version, Date releaseDate, NextRun nextRun, List<Status> statuses, Repeat repeat, OrderBy orderBy, Date installationDate, Integer previewSeconds) {
         this.version = version;
         this.releaseDate = releaseDate;
         this.nextRun = nextRun;
         this.statuses = statuses;
+        this.repeat = repeat;
+        this.orderBy = orderBy;
+        this.installationDate = installationDate;
+        this.previewSeconds = previewSeconds;
     }
+
+    public Settings() {}
 
     public String getVersion() {
         return version;
@@ -37,6 +51,34 @@ public class Settings {
 
     public List<Status> getStatuses() {
         return statuses;
+    }
+
+    public Repeat getRepeat() {
+        return repeat;
+    }
+
+    public OrderBy getOrderBy() {
+        return orderBy;
+    }
+
+    public Date getInstallationDate() {
+        return installationDate;
+    }
+
+    public Integer getPreviewSeconds() {
+        return previewSeconds;
+    }
+
+    public void setRepeat(Repeat repeat) {
+        this.repeat = repeat;
+    }
+
+    public void setOrderBy(OrderBy orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public void setPreviewSeconds(Integer previewSeconds) {
+        this.previewSeconds = previewSeconds;
     }
 
     @Override

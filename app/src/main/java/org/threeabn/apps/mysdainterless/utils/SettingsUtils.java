@@ -27,15 +27,8 @@ public class SettingsUtils {
         return mapper().writerWithDefaultPrettyPrinter().writeValueAsString(settings);
     }
 
-    public static String toStatusJSONString(Status status) throws JsonProcessingException {
-        return mapper().writerWithDefaultPrettyPrinter().writeValueAsString(status);
-    }
-
     public static Settings fromJSONString(String jsonString) throws JsonParseException, JsonMappingException, IOException {
         return mapper().readValue(jsonString, Settings.class);
     }
 
-    public static Status fromStatusJSONString(String jsonString) throws JsonParseException, JsonMappingException, IOException {
-        return mapper().readValue(jsonString, Status.class);
-    }
 }

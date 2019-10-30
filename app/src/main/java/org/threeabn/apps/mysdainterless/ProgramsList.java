@@ -22,6 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,10 +32,10 @@ import java.util.Map;
 public class ProgramsList extends ArrayAdapter<String> implements Filterable {
     private Activity context;
     public static String SEPARATOR = "<-:->";
-    private Map<String, String> programRefs;
+    private LinkedHashMap<String, String> programRefs;
 
-    public ProgramsList(Activity context, String[] programDisplays, Map<String, String> programRefs) {
-        super(context, R.layout.list_programs, programDisplays);//TODO fetch and rather pass in program name here instead of programPaths
+    public ProgramsList(Activity context, String[] programDisplays, LinkedHashMap<String, String> programRefs) {
+        super(context, R.layout.list_programs, programDisplays);
         this.context = context;
         this.programRefs = programRefs;
     }

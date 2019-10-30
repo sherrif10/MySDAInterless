@@ -8,4 +8,5 @@
     <dimen name="fontSize">20dp</dimen>
     <dimen name="videoPreviewHeight">220dp</dimen>
     <dimen name="videoPreviewWidth">400dp</dimen>
+    <dimen name="settingsInfo">750dp</dimen>
 </resources>

@@ -18,7 +18,9 @@ import android.widget.Toast;
 import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.MySDAInterlessApp;
 import org.threeabn.apps.mysdainterless.R;
+import org.threeabn.apps.mysdainterless.modal.Playback;
 import org.threeabn.apps.mysdainterless.modal.Program;
+import org.threeabn.apps.mysdainterless.settings.Settings;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,27 +43,24 @@ public class MySDAActivity extends Activity {
         }
     }
 
-    public void showSoftKeyboard(Context context, EditText editText) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-    }
-
     public void runActivityByView(final View view, final Context context) {
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (R.id.image_search == v.getId()) {
+                if(R.id.settings == v.getId()) {
+                    startActivity(new Intent(context, SettingsActivity.class));
+                } else if (R.id.image_search == v.getId()) {
                     startActivity(new Intent(context, SearchActivity.class));
                 } else if (R.id.image_favorite == v.getId()) {
                     startActivity(new Intent(context, FavoriteActivity.class));
                 } else if (R.id.image_list == v.getId()) {
                     startActivity(new Intent(context, ProgramsListActivity.class));
-                } else if (R.id.programPreviewPlay == v.getId() && StringUtils.isNoneBlank((String) view.getTag())) {
+                } else if (R.id.programPreviewPlay == v.getId()) {
                     Intent intent = new Intent(context, PlayBackActivity.class);
-
-                    intent.putExtra("program", (String) view.getTag());
+                    intent.putExtra("program", (Playback) view.getTag());
                     startActivity(intent);
-                } else if (R.id.programPreviewFavorite == v.getId() && StringUtils.isNoneBlank((String) view.getTag())) {
-                    File p = new File((String) view.getTag());
+                } else if (R.id.programPreviewFavorite == v.getId()) {
+                    Playback playBack = (Playback) view.getTag();
+                    File p = new File(MySDAInterlessApp.getInstance().getProgramsDirectory() + File.separator + playBack.getProgramRefs().get(playBack.getProgramRefs().keySet().toArray()[playBack.getPosition()]));
 
                     if (p != null && p.exists()) {
                         try {
