@@ -1,6 +1,8 @@
 package org.threeabn.apps.mysdainterless.api;
 
 import android.content.Context;
+
+import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.modal.Program;
 import org.threeabn.apps.mysdainterless.modal.ProgramCategory;
 import org.threeabn.apps.mysdainterless.orm.DBSession;
@@ -51,8 +53,8 @@ public class MySDAService {
         return getDbSession().update(obj, Program.class);
     }
 
-    public Program getProgramByFileName(String fileName) throws SQLException {
-        List<Program> list = getDbSession().getByField(Program.class, "fileName", fileName);
+    public Program getProgramByFileName(String fileName, OrderBy orderBy) throws SQLException {
+        List<Program> list = getDbSession().getByField(Program.class, "fileName", fileName, getOrderByField(orderBy));
 
         if (list != null && list.size() > 0)
             return list.get(0);
@@ -60,15 +62,27 @@ public class MySDAService {
     }
 
     public List<Program> getAllPrograms(OrderBy orderBy) throws SQLException {
-        return getDbSession().getAll(Program.class);
+        return getDbSession().getAll(Program.class, getOrderByField(orderBy));
+    }
+
+    private String getOrderByField(OrderBy orderBy) {
+        if(OrderBy.ORDER_BY_NAME.equals(orderBy)) {
+            return "name";
+        } else if(OrderBy.ORDER_BY_CODE.equals(orderBy)) {
+            return "code";
+        } else if(OrderBy.ORDER_BY_CATEGORY.equals(orderBy)) {
+            return "category";
+        } else {
+            return null;
+        }
     }
 
     public List<Program> getProgramsByCategories(List<ProgramCategory> categories, OrderBy orderBy) throws SQLException {
-        return getDbSession().containedIn("category", ProgramCategory.getNames(categories), Program.class);
+        return getDbSession().containedIn("category", ProgramCategory.getNames(categories), Program.class, getOrderByField(orderBy));
     }
 
     public List<Program> getFavouritedPrograms(OrderBy orderBy) throws SQLException {
-        return getDbSession().getByField(Program.class, "favourited", true);
+        return getDbSession().getByField(Program.class, "favourited", true, getOrderByField(orderBy));
     }
 
 }

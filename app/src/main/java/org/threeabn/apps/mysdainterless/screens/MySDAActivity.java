@@ -82,7 +82,7 @@ public class MySDAActivity extends Activity {
                     if (p != null && p.exists()) {
                         try {
                             String s = p.getName();
-                            Program program = TextUtils.isEmpty(s) ? null : getService().getProgramByFileName(s);
+                            Program program = TextUtils.isEmpty(s) ? null : getService().getProgramByFileName(s, settings.getOrderBy());
                             if (program != null) {
                                 program.setFavourited(!program.isFavourited());
                                 getService().updateProgram(program);
