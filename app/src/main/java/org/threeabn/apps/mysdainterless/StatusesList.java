@@ -1,6 +1,7 @@
 package org.threeabn.apps.mysdainterless;
 
 import android.app.Activity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +33,10 @@ public class StatusesList extends ArrayAdapter<String> implements Filterable {
         View rowView = inflater.inflate(R.layout.list_statuses, null, true);
         TextView category = rowView.findViewById(R.id.category);
         TextView count = rowView.findViewById(R.id.count);
+        category.setGravity(Gravity.LEFT|Gravity.END|Gravity.CENTER_VERTICAL);
         category.setText(statuses.get(position).getCategory().getDisplayName() + " : ");
         count.setText(statuses.get(position).getCount().toString());
+        count.setGravity(Gravity.RIGHT|Gravity.END|Gravity.CENTER_VERTICAL);
 
         return rowView;
     }

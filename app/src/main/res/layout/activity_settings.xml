@@ -45,7 +45,8 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
-                android:layout_marginLeft="@dimen/iconMargin">
+                android:layout_marginLeft="@dimen/iconMargin"
+                android:layout_marginRight="@dimen/iconMargin">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -102,13 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/previewSeconds"
-                        android:textSize="@dimen/fontSize"
-                        android:nextFocusLeft="@+id/previewSeconds"
-                        android:nextFocusRight="@+id/previewSeconds"
-                        android:nextFocusDown="@+id/previewSeconds"
-                        android:nextFocusUp="@+id/previewSeconds">
-                        <requestFocus/>
-                    </TextView>
+                        android:textSize="@dimen/fontSize"/>
                     <EditText
                         android:id="@+id/previewSeconds"
                         android:layout_width="wrap_content"
@@ -128,7 +123,9 @@
                         android:layout_height="wrap_content"
                         android:focusable="true"
                         android:nextFocusRight="@+id/orderBy"
-                        android:nextFocusUp="@+id/repeat"></Spinner>
+                        android:nextFocusUp="@+id/repeat">
+                        <requestFocus/>
+                    </Spinner>
                     <Spinner
                         android:id="@+id/orderBy"
                         android:layout_width="wrap_content"

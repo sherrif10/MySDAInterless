@@ -2,7 +2,6 @@ package org.threeabn.apps.mysdainterless.screens;
 
 import android.os.Bundle;
 
-import org.threeabn.apps.mysdainterless.MySDAInterlessApp;
 import org.threeabn.apps.mysdainterless.ProgramSearchCriteria;
 import org.threeabn.apps.mysdainterless.ProgramsList;
 import org.threeabn.apps.mysdainterless.R;
@@ -19,7 +18,7 @@ public class SearchActivity extends ListActivity {
 
     @Override
     protected List<Program> defineInitialPrograms() {
-        return MySDAInterlessApp.getInstance().filterPrograms(null, null);
+        return filterPrograms(null, null);
     }
 
     @Override

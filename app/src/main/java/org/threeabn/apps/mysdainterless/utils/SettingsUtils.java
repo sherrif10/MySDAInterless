@@ -13,16 +13,22 @@ import org.threeabn.apps.mysdainterless.settings.Settings;
 import org.threeabn.apps.mysdainterless.settings.Status;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class SettingsUtils {
     private static ObjectMapper mapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        mapper.setDateFormat(defaultDateFormat());
 
         return mapper;
     }
+
+    public static DateFormat defaultDateFormat() {
+        return DateFormat.getDateTimeInstance();
+    }
+
     public static String toJSONString(Settings settings) throws JsonProcessingException {
         return mapper().writerWithDefaultPrettyPrinter().writeValueAsString(settings);
     }

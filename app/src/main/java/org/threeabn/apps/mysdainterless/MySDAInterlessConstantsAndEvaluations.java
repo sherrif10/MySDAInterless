@@ -2,7 +2,6 @@ package org.threeabn.apps.mysdainterless;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
 import java.util.Arrays;
 
 /**
@@ -10,14 +9,6 @@ import java.util.Arrays;
  */
 
 public class MySDAInterlessConstantsAndEvaluations {
-
-    /*
-     * TODO improve hard cording here
-     */
-    public static File getDataDirectory() {
-        //TODO change back to "/sdcard/.mysdainterless"
-        return new File("/mnt/ext_sdcard/.mysdainterless");
-    }
 
     /**
      * Supports all video file formats at https://en.wikipedia.org/wiki/Video_file_format by this file creation date
@@ -30,14 +21,6 @@ public class MySDAInterlessConstantsAndEvaluations {
                 ".vob", ".ogv", ".ogg", ".drc", "gif", ".gifv", ".mng", ".avi", ".mov", ".qt", ".wmv", ".yuv", ".rm", ".rmvb",
                 ".asf", ".amv", ".mp4", ".m4p", ".m4v", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv", ".m2v", ".svi", ".3gp", ".3g2",
                 ".mxf", ".roq", ".nsv", ".f4v", ".f4p", ".f4a", ".f4b"}).contains(name.substring(name.lastIndexOf('.')).toLowerCase());
-    }
-
-    public static File getProgramFile(String path) {
-        File program = new File(path);
-        if (!program.exists()) {
-            return null;
-        }
-        return null;
     }
 
 }

@@ -1,10 +1,10 @@
-package org.threeabn.apps.mysdainterless;
+package org.threeabn.apps.mysdainterless.utils;
 
 import android.text.TextUtils;
 
 import org.threeabn.apps.mysdainterless.modal.Program;
 
-public class MySDAInterlessUtils {
+public class ProgramsUtils {
     /**
      * Program
      *

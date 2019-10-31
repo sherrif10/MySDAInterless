@@ -58,33 +58,13 @@ public class DBSession extends OrmLiteSqliteOpenHelper {
 
     private void createAllTables(ConnectionSource cs) throws SQLException {
         Log.i(DBSession.class.getName(), "onCreate");
-        /*TableUtils.createTable(cs, Period.class);
-        TableUtils.createTable(cs, Video.class);
-        TableUtils.createTable(cs, Transcript.class);
-        TableUtils.createTable(cs, Person.class);
-        TableUtils.createTable(cs, User.class);*/
         TableUtils.createTable(cs, Program.class);
-        /*TableUtils.clearTable(cs, Guest.class);
-        TableUtils.clearTable(cs, Host.class);
-        TableUtils.createTable(cs, Channel.class);
-        TableUtils.clearTable(cs, ChannelProgram.class);
-        TableUtils.clearTable(cs, Favourite.class);*/
     }
 
     private void deleteAllTables(ConnectionSource cs) throws SQLException {
         try {
             Log.i(DBSession.class.getName(), "onCreate");
-            /*TableUtils.dropTable(cs, Period.class, false);
-            TableUtils.dropTable(cs, Video.class, false);
-            TableUtils.dropTable(cs, Person.class, false);
-            TableUtils.dropTable(cs, User.class, false);
-            */
-            TableUtils.dropTable(cs, Program.class, false);
-            /*TableUtils.dropTable(cs, Guest.class, false);
-            TableUtils.dropTable(cs, Host.class, false);
-            TableUtils.dropTable(cs, Channel.class, false);
-            TableUtils.dropTable(cs, ChannelProgram.class, false);
-            TableUtils.dropTable(cs, Favourite.class, false);*/
+            TableUtils.dropTable(cs, Program.class, true);
         } catch (SQLException e) {
             e.printStackTrace();
         }

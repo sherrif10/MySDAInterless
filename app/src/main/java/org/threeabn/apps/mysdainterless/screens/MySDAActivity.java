@@ -6,31 +6,48 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
-import org.threeabn.apps.mysdainterless.MySDAInterlessApp;
+import org.threeabn.apps.mysdainterless.utils.ProgramsUtils;
 import org.threeabn.apps.mysdainterless.R;
+import org.threeabn.apps.mysdainterless.api.MySDAService;
 import org.threeabn.apps.mysdainterless.modal.Playback;
 import org.threeabn.apps.mysdainterless.modal.Program;
+import org.threeabn.apps.mysdainterless.modal.ProgramCategory;
+import org.threeabn.apps.mysdainterless.settings.NextRun;
+import org.threeabn.apps.mysdainterless.settings.OrderBy;
+import org.threeabn.apps.mysdainterless.settings.Repeat;
 import org.threeabn.apps.mysdainterless.settings.Settings;
+import org.threeabn.apps.mysdainterless.settings.Status;
+import org.threeabn.apps.mysdainterless.utils.FilesUtils;
+import org.threeabn.apps.mysdainterless.utils.SettingsUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+
+import static org.threeabn.apps.mysdainterless.MySDAInterlessConstantsAndEvaluations.checkIfFileNameBelongsToVideoType;
 
 /**
  * Created by k-joseph on 10/10/2017.
  */
 public class MySDAActivity extends Activity {
+    private MySDAService service;
+    protected DateFormat localeFormat;
+    public File settingsFile;
+    public Settings settings;
 
     /**
      * Hides the soft keyboard
@@ -43,10 +60,10 @@ public class MySDAActivity extends Activity {
         }
     }
 
-    public void runActivityByView(final View view, final Context context) {
+    protected void runActivityByView(final View view, final Context context) {
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(R.id.settings == v.getId()) {
+                if (R.id.settings == v.getId()) {
                     startActivity(new Intent(context, SettingsActivity.class));
                 } else if (R.id.image_search == v.getId()) {
                     startActivity(new Intent(context, SearchActivity.class));
@@ -60,15 +77,15 @@ public class MySDAActivity extends Activity {
                     startActivity(intent);
                 } else if (R.id.programPreviewFavorite == v.getId()) {
                     Playback playBack = (Playback) view.getTag();
-                    File p = new File(MySDAInterlessApp.getInstance().getProgramsDirectory() + File.separator + playBack.getProgramRefs().get(playBack.getProgramRefs().keySet().toArray()[playBack.getPosition()]));
+                    File p = new File(getProgramsDirectory() + File.separator + playBack.getProgramRefs().get(playBack.getProgramRefs().keySet().toArray()[playBack.getPosition()]));
 
                     if (p != null && p.exists()) {
                         try {
                             String s = p.getName();
-                            Program program = TextUtils.isEmpty(s) ? null : MySDAInterlessApp.getInstance().getService().getProgramByFileName(s);
+                            Program program = TextUtils.isEmpty(s) ? null : getService().getProgramByFileName(s);
                             if (program != null) {
                                 program.setFavourited(!program.isFavourited());
-                                MySDAInterlessApp.getInstance().getService().updateProgram(program);
+                                getService().updateProgram(program);
                                 Toast.makeText(MySDAActivity.this, (program.isFavourited() ? "" : "Un-") + "Favorited: " + program.getDisplayName(), Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
@@ -83,6 +100,9 @@ public class MySDAActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        localeFormat = SettingsUtils.defaultDateFormat();
+        initialiseSettings();
+
         List<String> allPermissions = allPermissions();
         for (int i = 0; i < allPermissions.size(); i++) {
             askForPermissions(allPermissions.get(i), i);
@@ -91,8 +111,9 @@ public class MySDAActivity extends Activity {
 
         //Move to MySDAInterlessApp#oncreate
         try {
-            MySDAInterlessApp.getInstance().initialiseAllPrograms();
-        } catch (IOException e) {}
+            initialiseAllPrograms();
+        } catch (IOException e) {
+        }
     }
 
     @Override
@@ -114,4 +135,150 @@ public class MySDAActivity extends Activity {
             ActivityCompat.requestPermissions(MySDAActivity.this, new String[]{permission}, requestCode);
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initialiseSettings();
+    }
+
+    protected String getSettingsFile() {
+        File settingsLocation = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/.mysdainterless");
+        if (!settingsLocation.exists()) {
+            settingsLocation.mkdir();
+        }
+        return settingsLocation.getAbsolutePath() + "/settings.json";
+    }
+
+    protected void initialiseSettings() {
+        settingsFile = new File(getSettingsFile());
+        try {
+            if (settingsFile != null && settingsFile.length() > 0) {
+                settings = SettingsUtils.fromJSONString(FilesUtils.read(settingsFile.getAbsolutePath()));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * TODO initially this is meant to be run in onCreate in this class
+     */
+    protected void initialiseAllPrograms() throws IOException {
+        //CryptoLauncher.encrypt(new File(getProgramsDirectory().replace("/.mysdainterless/programs", "")+"/apps"));
+        installPrograms();
+        //CryptoLauncher.dencrypt(new File(getProgramsDirectory().replace("/.mysdainterless/programs", "")+"/apps"));
+    }
+
+    private void installPrograms() throws IOException {
+        MySDAService dbService = getService();
+        String programsDirectory = getProgramsDirectory();
+        Date now = new Date();
+        List<Status> statuses = new ArrayList<>();
+        if (StringUtils.isNotBlank(programsDirectory) && runInstallPrograms()) {
+            File programsFolder = new File(programsDirectory);
+            if (programsFolder.exists() & programsFolder.isDirectory()) {
+                if (programsFolder.listFiles() != null) {//null without permission
+                    for (File categoryFolder : programsFolder.listFiles()) {
+                        if (categoryFolder.isDirectory()) {
+                            ProgramCategory category = ProgramCategory.valueOfFromDisplayName(categoryFolder.getName());
+                            int totalOfPrograms = 0;
+                            for (int i = 0; i < categoryFolder.listFiles().length; i++) {
+                                File programFile = categoryFolder.listFiles()[i];
+                                String programFileName = programFile.getName();
+                                if (!programFileName.startsWith(".") && checkIfFileNameBelongsToVideoType(programFileName)) {
+                                    String[] programProps = getFileNameWithOutExtension(programFile).split("-");
+                                    String code = programProps.length == 1 ? programProps[0] : programProps[1];
+                                    String name = programProps.length == 1 ? "" : programProps[0].replaceAll("_", " ");
+                                    Program program = new Program(code, name, category, programFileName);
+                                    try {
+                                        dbService.saveProgram(program);
+                                        totalOfPrograms++;
+                                        //encrypt existing programs
+                                        //CryptoLauncher.encrypt(programFile);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                            statuses.add(new Status(category, totalOfPrograms));
+                        }
+                    }
+                    FilesUtils.write(settingsFile.getAbsolutePath(), SettingsUtils.toJSONString(new Settings("1.0", now, NextRun.UPGRADE, statuses, Repeat.REPEAT_ONE, OrderBy.ORDER_BY_RANDOM, now, 15)));
+                }
+            }
+        }
+    }
+
+    private boolean runInstallPrograms() throws IOException {
+        return !settingsFile.exists() || settingsFile.length() == 0 || NextRun.INSTALL.equals(SettingsUtils.fromJSONString(FilesUtils.read(settingsFile.getAbsolutePath())).getNextRun());
+    }
+
+    protected String getFileNameWithOutExtension(File file) {
+        String name = file.getName();
+        int pos = name.lastIndexOf(".");
+        if (pos > 0) {
+            name = name.substring(0, pos);
+        }
+        return name;
+    }
+
+    /**
+     * @param searchText, can be null or applied one or with favorited
+     * @param favorited,  can be null or applied one or with searchText
+     * @return
+     */
+    protected List<Program> filterPrograms(String searchText, Boolean favorited) {
+        List<Program> programs = new ArrayList<>();
+        try {
+            for (Program p : getService().getAllPrograms(settings.getOrderBy())) {//TODO
+                if (ProgramsUtils.programsMatcher(p, searchText)) {
+                    if (favorited == null || (favorited != null && favorited && p.isFavourited())) {
+                        programs.add(p);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e("ERROR: ", e.getLocalizedMessage());
+        }
+        return programs;
+    }
+
+    /**
+     * Returns the first location of programs on the system in precedence; external drive via usb, external sdcard, internal sdcard
+     * @return
+     */
+    public String getProgramsDirectory() {
+        String postfix = "/.mysdainterless/programs";
+        File[] storages = ContextCompat.getExternalFilesDirs(this, null);
+        if (storages.length <= 1) {// use internal storage
+            return Environment.getExternalStorageDirectory().getAbsolutePath() + postfix;
+        }
+        String path = storages[storages.length-1].getAbsolutePath();//get last loaded drive or sdcard
+        File programsFolder = new File(path.substring(0, StringUtils.ordinalIndexOf(path, "/", 3)) + postfix);
+        if(programsFolder.exists() && programsFolder.length() > 0) {
+            return programsFolder.getAbsolutePath();
+        } else if(storages.length > 1) {
+            path = storages[storages.length-2].getAbsolutePath();//get last loaded drive or sdcard
+            programsFolder = new File(path.substring(0, StringUtils.ordinalIndexOf(path, "/", 3)) + postfix);
+            if(programsFolder.exists() && programsFolder.length() > 0) {
+                return programsFolder.getAbsolutePath();
+            }
+        }
+
+        // use external sdcard
+        return path.substring(0, StringUtils.ordinalIndexOf(path, "/", 3)) + postfix;
+    }
+
+    /**
+     * DB initialised by default, just call this service
+     *
+     * @return
+     */
+    public MySDAService getService() {
+        if (service == null)
+            return new MySDAService(this);
+        return service;
+    }
+
 }

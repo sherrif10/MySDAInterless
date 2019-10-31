@@ -9,24 +9,16 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import org.threeabn.apps.mysdainterless.MySDAInterlessApp;
 import org.threeabn.apps.mysdainterless.ProgramSearchCriteria;
 import org.threeabn.apps.mysdainterless.ProgramsList;
 import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.Playback;
 import org.threeabn.apps.mysdainterless.modal.Program;
 import org.threeabn.apps.mysdainterless.modal.ProgramCategory;
-import org.threeabn.apps.mysdainterless.utils.FilesUtils;
-import org.threeabn.apps.mysdainterless.utils.SettingsUtils;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public abstract class ListActivity extends VideoActivity {
     private ProgramsList listAdapter;
@@ -103,20 +95,10 @@ public abstract class ListActivity extends VideoActivity {
                             public void run() {
                                 findViewById(R.id.programPreviewPlay).performClick();
                             }
-                        }, getPreviewSeconds(playBack) * 1000);
+                        }, settings.getPreviewSeconds() * 1000);
                     }
                 }
             });
         }
-    }
-    private Integer getPreviewSeconds(Playback playback) {
-        File settingsFile = new File(MySDAInterlessApp.getInstance().getSettingsFile());
-        Integer seconds = 15;
-        try {
-            seconds =  settingsFile != null && settingsFile.length() > 0 ? SettingsUtils.fromJSONString(FilesUtils.read(settingsFile.getAbsolutePath())).getPreviewSeconds() : seconds;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return seconds;
     }
 }

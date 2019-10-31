@@ -7,8 +7,6 @@ import android.view.WindowManager;
 import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.Playback;
 
-import java.io.File;
-
 /**
  * Created by k-joseph on 23/10/2017.
  */

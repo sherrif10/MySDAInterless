@@ -1,6 +1,5 @@
 package org.threeabn.apps.mysdainterless;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
@@ -17,6 +16,8 @@ import android.widget.TextView;
 import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.modal.Program;
 import org.threeabn.apps.mysdainterless.modal.ProgramCategory;
+import org.threeabn.apps.mysdainterless.screens.MySDAActivity;
+import org.threeabn.apps.mysdainterless.utils.ProgramsUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,17 +25,16 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by k-joseph on 29/10/2017.
  */
 public class ProgramsList extends ArrayAdapter<String> implements Filterable {
-    private Activity context;
+    private MySDAActivity context;
     public static String SEPARATOR = "<-:->";
     private LinkedHashMap<String, String> programRefs;
 
-    public ProgramsList(Activity context, String[] programDisplays, LinkedHashMap<String, String> programRefs) {
+    public ProgramsList(MySDAActivity context, String[] programDisplays, LinkedHashMap<String, String> programRefs) {
         super(context, R.layout.list_programs, programDisplays);
         this.context = context;
         this.programRefs = programRefs;
@@ -55,7 +55,7 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
             String display = (String) new ArrayList(programRefs.keySet()).get(position);
             if (StringUtils.isNotBlank(display)) {
                 txtTitle.setText(display);
-                Bitmap img = retrieveBitmap(MySDAInterlessApp.getInstance().getProgramsDirectory() + File.separator + programRefs.get(display));
+                Bitmap img = retrieveBitmap(context.getProgramsDirectory() + File.separator + programRefs.get(display));
                 imageView.setImageBitmap(img);
             }
         }
@@ -96,28 +96,28 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
         private List<Program> getFilteredResults(ProgramSearchCriteria criteria) {
             ArrayList<Program> listResult = new ArrayList<Program>();
             try {
-                List<Program> programs = MySDAInterlessApp.getInstance().getService().getAllPrograms();
+                List<Program> programs = context.getService().getAllPrograms(context.settings.getOrderBy());
                 List<Program> programsByCategories;
                 List<Program> favouritedPrograms;
                 List<Program> searchedPrograms;
 
                 if (ProgramSearchCriteria.TermCategory.CATEGORY.equals(criteria.getCategory())) {//wrong constraint structure
-                    programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList((ProgramCategory) criteria.getTerm()));
+                    programsByCategories = context.getService().getProgramsByCategories(Arrays.asList((ProgramCategory) criteria.getTerm()), context.settings.getOrderBy());
                     if (ProgramCategory.ALL.equals(criteria.getTerm())) {
                         listResult.addAll(programs);
                     } else {
                         listResult.addAll(programsByCategories);
                     }
                 } else if (ProgramSearchCriteria.TermCategory.CATEGORY_FAVOURITE.equals(criteria.getCategory())) {
-                    programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList((ProgramCategory) criteria.getTerm()));
-                    favouritedPrograms = MySDAInterlessApp.getInstance().getService().getFavouritedPrograms();
+                    programsByCategories = context.getService().getProgramsByCategories(Arrays.asList((ProgramCategory) criteria.getTerm()), context.settings.getOrderBy());
+                    favouritedPrograms = context.getService().getFavouritedPrograms(context.settings.getOrderBy());
                     if (ProgramCategory.ALL.equals(criteria.getTerm())) {
                         listResult.addAll(intersectTwoProgramLists(programs, favouritedPrograms));
                     } else {
                         listResult.addAll(intersectTwoProgramLists(programsByCategories, favouritedPrograms));
                     }
                 } else if (ProgramSearchCriteria.TermCategory.FAVOURITE.equals(criteria.getCategory())) {
-                    favouritedPrograms = MySDAInterlessApp.getInstance().getService().getFavouritedPrograms();
+                    favouritedPrograms = context.getService().getFavouritedPrograms(context.settings.getOrderBy());
                     listResult.addAll(favouritedPrograms);
                 } else if (ProgramSearchCriteria.TermCategory.SEARCH.equals(criteria.getCategory())) {
                     String[] terms = ((String) criteria.getTerm()).split(SEPARATOR);
@@ -126,7 +126,7 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
                     if (ProgramCategory.ALL.equals(selectedCategory)) {
                         listResult.addAll(intersectTwoProgramLists(searchedPrograms, new ArrayList<>(programs)));
                     } else {
-                        programsByCategories = MySDAInterlessApp.getInstance().getService().getProgramsByCategories(Arrays.asList(selectedCategory));
+                        programsByCategories = context.getService().getProgramsByCategories(Arrays.asList(selectedCategory), context.settings.getOrderBy());
                         listResult.addAll(intersectTwoProgramLists(searchedPrograms, programsByCategories));
                     }
                 } else {
@@ -142,7 +142,7 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
     private List<Program> searchPrograms(String term, Collection<Program> programList) {
         List<Program> searchedPrograms = new ArrayList<>();
         for (Program p : programList) {
-            if (MySDAInterlessUtils.programsMatcher(p, term)) {
+            if (ProgramsUtils.programsMatcher(p, term)) {
                 searchedPrograms.add(p);
             }
         }

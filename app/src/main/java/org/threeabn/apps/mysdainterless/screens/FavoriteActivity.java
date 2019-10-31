@@ -2,7 +2,6 @@ package org.threeabn.apps.mysdainterless.screens;
 
 import android.os.Bundle;
 
-import org.threeabn.apps.mysdainterless.MySDAInterlessApp;
 import org.threeabn.apps.mysdainterless.ProgramSearchCriteria;
 import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.Program;
@@ -17,7 +16,7 @@ public class FavoriteActivity extends ListActivity {
 
     @Override
     protected List<Program> defineInitialPrograms() {
-        return MySDAInterlessApp.getInstance().filterPrograms(null, true);
+        return filterPrograms(null, true);
     }
 
     @Override
