@@ -16,7 +16,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
-import org.threeabn.apps.mysdainterless.utils.ProgramsUtils;
 import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.api.MySDAService;
 import org.threeabn.apps.mysdainterless.modal.Playback;
@@ -28,10 +27,12 @@ import org.threeabn.apps.mysdainterless.settings.Repeat;
 import org.threeabn.apps.mysdainterless.settings.Settings;
 import org.threeabn.apps.mysdainterless.settings.Status;
 import org.threeabn.apps.mysdainterless.utils.FilesUtils;
+import org.threeabn.apps.mysdainterless.utils.ProgramsUtils;
 import org.threeabn.apps.mysdainterless.utils.SettingsUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +49,8 @@ public class MySDAActivity extends Activity {
     protected DateFormat localeFormat;
     public File settingsFile;
     public Settings settings;
+    protected View progressBar;
+    protected MySDAActivity currentScreen;
 
     /**
      * Hides the soft keyboard
@@ -61,38 +64,36 @@ public class MySDAActivity extends Activity {
     }
 
     protected void runActivityByView(final View view, final Context context) {
-        view.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (R.id.settings == v.getId()) {
-                    startActivity(new Intent(context, SettingsActivity.class));
-                } else if (R.id.image_search == v.getId()) {
-                    startActivity(new Intent(context, SearchActivity.class));
-                } else if (R.id.image_favorite == v.getId()) {
-                    startActivity(new Intent(context, FavoriteActivity.class));
-                } else if (R.id.image_list == v.getId()) {
-                    startActivity(new Intent(context, ProgramsListActivity.class));
-                } else if (R.id.programPreviewPlay == v.getId()) {
-                    Intent intent = new Intent(context, PlayBackActivity.class);
-                    intent.putExtra("program", (Playback) view.getTag());
-                    startActivity(intent);
-                } else if (R.id.programPreviewFavorite == v.getId()) {
-                    Playback playBack = (Playback) view.getTag();
-                    File p = new File(getProgramsDirectory() + File.separator + playBack.getProgramRefs().get(playBack.getProgramRefs().keySet().toArray()[playBack.getPosition()]));
-
-                    if (p != null && p.exists()) {
-                        try {
-                            String s = p.getName();
-                            Program program = TextUtils.isEmpty(s) ? null : getService().getProgramByFileName(s, settings.getOrderBy());
-                            if (program != null) {
-                                program.setFavourited(!program.isFavourited());
-                                getService().updateProgram(program);
-                                Toast.makeText(MySDAActivity.this, (program.isFavourited() ? "" : "Un-") + "Favorited: " + program.getDisplayName(), Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (Exception e) {
-                            Log.e("program_favoriting_error", e.getMessage());
-                        }
-                    }
-                }
+        view.setOnClickListener((View v) -> {
+            progressBar.setVisibility(View.VISIBLE);
+            if (R.id.settings == v.getId()) {
+                startActivity(new Intent(context, SettingsActivity.class));
+            } else if (R.id.image_search == v.getId()) {
+                startActivity(new Intent(context, SearchActivity.class));
+            } else if (R.id.image_favorite == v.getId()) {
+                startActivity(new Intent(context, FavoriteActivity.class));
+            } else if (R.id.image_list == v.getId()) {
+                startActivity(new Intent(context, ProgramsListActivity.class));
+            } else if (R.id.programPreviewPlay == v.getId()) {
+                Intent intent = new Intent(context, PlayBackActivity.class);
+                intent.putExtra("program", (Playback) view.getTag());
+                startActivity(intent);
+            } else if (R.id.programPreviewFavorite == v.getId()) {
+                Playback playBack = (Playback) view.getTag();
+                File p = new File(getProgramsDirectory() + File.separator + playBack.getProgramRefs().get(playBack.getProgramRefs().keySet().toArray()[playBack.getPosition()]));
+                 if (p != null && p.exists()) {
+                     try {
+                         String s = p.getName();
+                         Program program = TextUtils.isEmpty(s) ? null : getService().getProgramByFileName(s, settings.getOrderBy());
+                         if (program != null) {
+                             program.setFavourited(!program.isFavourited());
+                             getService().updateProgram(program);
+                             Toast.makeText(MySDAActivity.this, (program.isFavourited() ? "" : "Un-") + "Favorited: " + program.getDisplayName(), Toast.LENGTH_SHORT).show();
+                         }
+                     } catch (Exception e) {
+                         Log.e("program_favoriting_error", e.getMessage());
+                     }
+                 }
             }
         });
     }
@@ -101,18 +102,18 @@ public class MySDAActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         localeFormat = SettingsUtils.defaultDateFormat();
+        currentScreen = this;
         initialiseSettings();
 
         List<String> allPermissions = allPermissions();
         for (int i = 0; i < allPermissions.size(); i++) {
             askForPermissions(allPermissions.get(i), i);
         }
-        //TODO restrict auto-rotate after testing on the dongo
 
         //Move to MySDAInterlessApp#oncreate
         try {
             initialiseAllPrograms();
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
         }
     }
 
@@ -139,6 +140,7 @@ public class MySDAActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        progressBar.setVisibility(View.GONE);
         initialiseSettings();
     }
 
@@ -150,10 +152,14 @@ public class MySDAActivity extends Activity {
         return settingsLocation.getAbsolutePath() + "/settings.json";
     }
 
+    protected void afterLayoutInitialisation() {
+        progressBar = findViewById(R.id.progressBar);
+    }
+
     protected void initialiseSettings() {
         settingsFile = new File(getSettingsFile());
         try {
-            if (settingsFile != null && settingsFile.length() > 0) {
+            if (settingsFile != null && settingsFile.exists() && settingsFile.length() > 0) {
                 settings = SettingsUtils.fromJSONString(FilesUtils.read(settingsFile.getAbsolutePath()));
             }
         } catch (IOException e) {
@@ -164,21 +170,25 @@ public class MySDAActivity extends Activity {
     /**
      * TODO initially this is meant to be run in onCreate in this class
      */
-    protected void initialiseAllPrograms() throws IOException {
+    protected void initialiseAllPrograms() throws IOException, SQLException {
         //CryptoLauncher.encrypt(new File(getProgramsDirectory().replace("/.mysdainterless/programs", "")+"/apps"));
         installPrograms();
         //CryptoLauncher.dencrypt(new File(getProgramsDirectory().replace("/.mysdainterless/programs", "")+"/apps"));
     }
 
-    private void installPrograms() throws IOException {
+    private void installPrograms() throws IOException, SQLException {
         MySDAService dbService = getService();
         String programsDirectory = getProgramsDirectory();
         Date now = new Date();
         List<Status> statuses = new ArrayList<>();
         if (StringUtils.isNotBlank(programsDirectory) && runInstallPrograms()) {
+            if(settings != null && NextRun.RE_INSTALL.equals(settings.getNextRun())) {// re-install
+                settingsFile.delete();
+                getService().deleteAllPrograms();
+            }
             File programsFolder = new File(programsDirectory);
             if (programsFolder.exists() & programsFolder.isDirectory()) {
-                if (programsFolder.listFiles() != null) {//null without permission
+                if (programsFolder.listFiles() != null) {// null without permission
                     for (File categoryFolder : programsFolder.listFiles()) {
                         if (categoryFolder.isDirectory()) {
                             ProgramCategory category = ProgramCategory.valueOfFromDisplayName(categoryFolder.getName());
@@ -204,14 +214,25 @@ public class MySDAActivity extends Activity {
                             statuses.add(new Status(category, totalOfPrograms));
                         }
                     }
-                    FilesUtils.write(settingsFile.getAbsolutePath(), SettingsUtils.toJSONString(new Settings("1.0", now, NextRun.UPGRADE, statuses, Repeat.REPEAT_ONE, OrderBy.ORDER_BY_RANDOM, now, 15)));
+                    FilesUtils.write(settingsFile.getAbsolutePath(), SettingsUtils.toJSONString(new Settings(getVersionName(), now, NextRun.UPGRADE, statuses, Repeat.REPEAT_ALL, OrderBy.ORDER_BY_RANDOM, now, 15)));
+                    initialiseSettings();
                 }
             }
         }
     }
 
-    private boolean runInstallPrograms() throws IOException {
-        return !settingsFile.exists() || settingsFile.length() == 0 || NextRun.INSTALL.equals(SettingsUtils.fromJSONString(FilesUtils.read(settingsFile.getAbsolutePath())).getNextRun());
+    private boolean runInstallPrograms() {
+        return !settingsFile.exists() || settingsFile.length() == 0 || (settings != null && NextRun.RE_INSTALL.equals(settings.getNextRun()));
+    }
+
+    private String getVersionName() {
+        String name = "1.0";
+        try {
+            name = this.getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return name;
     }
 
     protected String getFileNameWithOutExtension(File file) {
@@ -228,6 +249,7 @@ public class MySDAActivity extends Activity {
      * @param favorited,  can be null or applied one or with searchText
      * @return
      */
+    // TODO re-write to rather go to the database
     protected List<Program> filterPrograms(String searchText, Boolean favorited) {
         List<Program> programs = new ArrayList<>();
         try {

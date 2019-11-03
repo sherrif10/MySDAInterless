@@ -73,6 +73,10 @@ public class Settings {
         this.repeat = repeat;
     }
 
+    public void setNextRun(NextRun nextRun) {
+        this.nextRun = nextRun;
+    }
+
     public void setOrderBy(OrderBy orderBy) {
         this.orderBy = orderBy;
     }

@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.threeabn.apps.mysdainterless.screens.MainActivity">
+    tools:context="org.threeabn.apps.mysdainterless.screens.FavoriteActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        tools:context="org.threeabn.apps.mysdainterless.screens.FavoriteActivity"
         android:background="@drawable/bluebase">
 
         <LinearLayout
@@ -27,12 +26,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right">
+                android:gravity="right"
+                android:layout_marginRight="@dimen/iconMargin"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="@dimen/iconMargin"
                     android:clickable="false"
                     android:text="@string/FAVOURITE"
                     android:textColor="@color/white"
@@ -105,4 +105,11 @@
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
+
+    <include
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        layout="@layout/progress_bar"/>
 </android.support.constraint.ConstraintLayout>

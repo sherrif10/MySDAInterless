@@ -2,7 +2,6 @@ package org.threeabn.apps.mysdainterless.api;
 
 import android.content.Context;
 
-import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.modal.Program;
 import org.threeabn.apps.mysdainterless.modal.ProgramCategory;
 import org.threeabn.apps.mysdainterless.orm.DBSession;
@@ -85,4 +84,7 @@ public class MySDAService {
         return getDbSession().getByField(Program.class, "favourited", true, getOrderByField(orderBy));
     }
 
+    public void deleteAllPrograms() throws SQLException {
+        getDbSession().deleteAll(Program.class);
+    }
 }

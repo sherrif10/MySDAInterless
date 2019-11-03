@@ -1,4 +1,4 @@
-package org.threeabn.apps.mysdainterless;
+package org.threeabn.apps.mysdainterless.android.adapters;
 
 import android.app.Activity;
 import android.view.Gravity;
@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.ProgramCategory;
 import org.threeabn.apps.mysdainterless.settings.Status;
 
@@ -33,10 +34,8 @@ public class StatusesList extends ArrayAdapter<String> implements Filterable {
         View rowView = inflater.inflate(R.layout.list_statuses, null, true);
         TextView category = rowView.findViewById(R.id.category);
         TextView count = rowView.findViewById(R.id.count);
-        category.setGravity(Gravity.LEFT|Gravity.END|Gravity.CENTER_VERTICAL);
         category.setText(statuses.get(position).getCategory().getDisplayName() + " : ");
         count.setText(statuses.get(position).getCount().toString());
-        count.setGravity(Gravity.RIGHT|Gravity.END|Gravity.CENTER_VERTICAL);
 
         return rowView;
     }

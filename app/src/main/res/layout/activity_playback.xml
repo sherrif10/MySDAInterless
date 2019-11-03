@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scaleType="centerCrop"
-    tools:context="org.threeabn.apps.mysdainterless.screens.MainActivity"
+    tools:context="org.threeabn.apps.mysdainterless.screens.PlayBackActivity"
     android:background="@color/black">
 
     <VideoView

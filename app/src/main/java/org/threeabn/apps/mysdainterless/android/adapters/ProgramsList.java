@@ -1,4 +1,4 @@
-package org.threeabn.apps.mysdainterless;
+package org.threeabn.apps.mysdainterless.android.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
+import org.threeabn.apps.mysdainterless.ProgramSearchCriteria;
+import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.Program;
 import org.threeabn.apps.mysdainterless.modal.ProgramCategory;
 import org.threeabn.apps.mysdainterless.screens.MySDAActivity;

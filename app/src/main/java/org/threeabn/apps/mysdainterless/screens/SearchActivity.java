@@ -3,7 +3,7 @@ package org.threeabn.apps.mysdainterless.screens;
 import android.os.Bundle;
 
 import org.threeabn.apps.mysdainterless.ProgramSearchCriteria;
-import org.threeabn.apps.mysdainterless.ProgramsList;
+import org.threeabn.apps.mysdainterless.android.adapters.ProgramsList;
 import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.Program;
 import org.threeabn.apps.mysdainterless.modal.ProgramCategory;
@@ -30,6 +30,7 @@ public class SearchActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_search);
         super.onCreate(savedInstanceState);
+        afterLayoutInitialisation();
         hideSoftKeyboard(R.id.searchText);
     }
 }

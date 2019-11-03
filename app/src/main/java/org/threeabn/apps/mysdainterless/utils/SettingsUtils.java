@@ -33,7 +33,7 @@ public class SettingsUtils {
         return mapper().writerWithDefaultPrettyPrinter().writeValueAsString(settings);
     }
 
-    public static Settings fromJSONString(String jsonString) throws JsonParseException, JsonMappingException, IOException {
+    public static Settings fromJSONString(String jsonString) throws IOException {
         return mapper().readValue(jsonString, Settings.class);
     }
 

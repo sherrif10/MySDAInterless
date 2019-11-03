@@ -14,9 +14,9 @@ import org.threeabn.apps.mysdainterless.modal.Program;
 
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * TODO Hide behind {@link org.threeabn.apps.mysdainterless.api.MySDAService}
@@ -34,6 +34,7 @@ public class DBSession extends OrmLiteSqliteOpenHelper {
     //TODO TEST: if db file on device is accessible and editable, encrypt it
     public DBSession(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        //reCreateDatabaseTables
         getWritableDatabase();
     }
 
@@ -62,7 +63,7 @@ public class DBSession extends OrmLiteSqliteOpenHelper {
         TableUtils.createTable(cs, Program.class);
     }
 
-    private void deleteAllTables(ConnectionSource cs) throws SQLException {
+    private void deleteAllTables(ConnectionSource cs) {
         try {
             Log.i(DBSession.class.getName(), "onCreate");
             TableUtils.dropTable(cs, Program.class, true);
@@ -74,11 +75,11 @@ public class DBSession extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource cs, int oldVersion, int newVersion) {
         if (oldVersion == 1 && newVersion == 2) {
-            reCreateDatabase(cs);
+            reCreateDatabaseTables(cs);
         }
     }
 
-    public void reCreateDatabase(ConnectionSource cs) {
+    public void reCreateDatabaseTables(ConnectionSource cs) {
         try {
             deleteAllTables(cs);
             createAllTables(cs);
@@ -132,5 +133,17 @@ public class DBSession extends OrmLiteSqliteOpenHelper {
             return dao.query(dao.queryBuilder().orderByRaw("RANDOM()").where().in(fieldName, comparableList).prepare());
         }
         return dao.query(dao.queryBuilder().orderBy(orderBy, true).where().in(fieldName, comparableList).prepare());
+    }
+
+    public <T> void deleteAll(Class<T> clazz) throws SQLException {
+        Dao<T, ?> dao = getDao(clazz);
+        // breaking down into chunks solves: E/SQLiteLog: (1) too many SQL variables
+        int chunkSize = 100;
+        Collection<List<T>> chunks = dao.queryForAll().stream()
+                .collect(Collectors.groupingBy(it -> new AtomicInteger().getAndIncrement() / chunkSize))
+                .values();
+        for(List<T> chunk : chunks) {
+            dao.delete(chunk);
+        }
     }
 }

@@ -18,5 +18,9 @@
     <string name="version">Version: </string>
     <string name="releaseDate">Release Date: </string>
     <string name="installationDate">Installation Date: </string>
-    <string name="installedProgramsByCategories">Number of Installed programs per Category: </string>
+    <string name="installedProgramsByCategories">Number of Installed programs per Category</string>
+    <string name="pleaseWait">Please wait ...</string>
+    <string name="continueReally">Do you really want to Continue?</string>
+    <string name="proceed">Proceed</string>\
+    <string name="cancel">Cancel</string>
 </resources>

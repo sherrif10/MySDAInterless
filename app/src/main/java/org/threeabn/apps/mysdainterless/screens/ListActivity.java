@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import org.threeabn.apps.mysdainterless.ProgramSearchCriteria;
-import org.threeabn.apps.mysdainterless.ProgramsList;
+import org.threeabn.apps.mysdainterless.android.adapters.ProgramsList;
 import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.Playback;
 import org.threeabn.apps.mysdainterless.modal.Program;
@@ -28,12 +28,8 @@ public abstract class ListActivity extends VideoActivity {
 
     protected abstract ProgramSearchCriteria defineProgramCategoriesSearchCriteria(ProgramCategory programCategory, String term);
 
-    private ListActivity currentScreen;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        currentScreen = this;
-
         super.onCreate(savedInstanceState);
         Spinner categories = findViewById(R.id.programCategorySpinner);
         ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(
@@ -43,10 +39,12 @@ public abstract class ListActivity extends VideoActivity {
         categories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                progressBar.setVisibility(View.VISIBLE);
                 ProgramCategory selectedCategory = ProgramCategory.valueOfFromDisplayName(parent.getItemAtPosition(position).toString());
                 if (++categoriesInitialization > 1 && selectedCategory != null && listAdapter != null && !(currentScreen instanceof SearchActivity)) {
                     updateProgramItems(((ProgramsList.ProgramFilter) listAdapter.getFilter()).customFilter(defineProgramCategoriesSearchCriteria(selectedCategory, null)));
                 }
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -61,13 +59,12 @@ public abstract class ListActivity extends VideoActivity {
         if (currentScreen instanceof ProgramsListActivity || currentScreen instanceof FavoriteActivity) {
             runActivityByView(findViewById(R.id.programPreviewFavorite), ListActivity.this);
         } else if (currentScreen instanceof SearchActivity) {
-            findViewById(R.id.searchEnter).setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    ProgramCategory selectedCategory = ProgramCategory.valueOfFromDisplayName(categories.getSelectedItem().toString());
-                    String term = ((EditText) currentScreen.findViewById(R.id.searchText)).getText().toString();
-
-                    updateProgramItems(((ProgramsList.ProgramFilter) listAdapter.getFilter()).customFilter(defineProgramCategoriesSearchCriteria(selectedCategory, term)));
-                }
+            findViewById(R.id.searchEnter).setOnClickListener((View v) -> {
+                progressBar.setVisibility(View.VISIBLE);
+                ProgramCategory selectedCategory = ProgramCategory.valueOfFromDisplayName(categories.getSelectedItem().toString());
+                String term = ((EditText) currentScreen.findViewById(R.id.searchText)).getText().toString();
+                updateProgramItems(((ProgramsList.ProgramFilter) listAdapter.getFilter()).customFilter(defineProgramCategoriesSearchCriteria(selectedCategory, term)));
+                progressBar.setVisibility(View.GONE);
             });
         }
     }
@@ -89,11 +86,14 @@ public abstract class ListActivity extends VideoActivity {
                     findViewById(R.id.programPreviewPlay).setTag(playBack);
                     findViewById(R.id.programPreviewFavorite).setTag(playBack);
                     playProgram(R.id.programPreview, playBack);
+                    // only support autoplay on playback screen
                     if(currentScreen instanceof ProgramsListActivity) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                findViewById(R.id.programPreviewPlay).performClick();
+                                if(currentScreen instanceof ProgramsListActivity) {
+                                    findViewById(R.id.programPreviewPlay).performClick();
+                                }
                             }
                         }, settings.getPreviewSeconds() * 1000);
                     }

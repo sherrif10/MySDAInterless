@@ -1,5 +1,7 @@
 package org.threeabn.apps.mysdainterless.screens;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +15,8 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.threeabn.apps.mysdainterless.R;
-import org.threeabn.apps.mysdainterless.StatusesList;
+import org.threeabn.apps.mysdainterless.android.adapters.StatusesList;
+import org.threeabn.apps.mysdainterless.settings.NextRun;
 import org.threeabn.apps.mysdainterless.settings.OrderBy;
 import org.threeabn.apps.mysdainterless.settings.Repeat;
 import org.threeabn.apps.mysdainterless.utils.FilesUtils;
@@ -32,6 +35,7 @@ public class SettingsActivity extends MySDAActivity {
    private EditText previewSeconds;
    private Spinner repeat;
    private Spinner orderBy;
+   private Spinner nextRun;
    private Button submit;
 
     @Override
@@ -46,6 +50,7 @@ public class SettingsActivity extends MySDAActivity {
         previewSeconds = findViewById(R.id.previewSeconds);
         repeat = findViewById(R.id.repeat);
         orderBy = findViewById(R.id.orderBy);
+        nextRun = findViewById(R.id.nextRun);
         submit = findViewById(R.id.submit);
 
         // render info and settings
@@ -61,38 +66,60 @@ public class SettingsActivity extends MySDAActivity {
         previewSeconds.setText(settings.getPreviewSeconds().toString());
 
         ArrayAdapter<String> repeatAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, moveItemToIndex0(Stream.of(Repeat.values()).map(Repeat::name).toArray(String[]::new), settings.getRepeat().name()));
+                this, android.R.layout.simple_spinner_item, moveItemToFirstIndex(Stream.of(Repeat.values()).map(Repeat::name).toArray(String[]::new), settings.getRepeat().name()));
         repeatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         repeat.setAdapter(repeatAdapter);
-        repeat.requestFocus();
 
         ArrayAdapter<String> orderByAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, moveItemToIndex0(Stream.of(OrderBy.values()).map(OrderBy::name).toArray(String[]::new), settings.getOrderBy().name()));
+                this, android.R.layout.simple_spinner_item, moveItemToFirstIndex(Stream.of(OrderBy.values()).map(OrderBy::name).toArray(String[]::new), settings.getOrderBy().name()));
         orderByAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         orderBy.setAdapter(orderByAdapter);
 
+        ArrayAdapter<String> nextRunAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, moveItemToFirstIndex(Stream.of(NextRun.values()).map(NextRun::name).toArray(String[]::new), settings.getNextRun().name()));
+        nextRunAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        nextRun.setAdapter(nextRunAdapter);
+
         // handle submission
-        submit.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                String secs = previewSeconds.getText().toString();
-                if(StringUtils.isNotBlank(secs)) {
-                    settings.setPreviewSeconds(Integer.parseInt(secs));
-                    settings.setOrderBy(OrderBy.valueOf(orderBy.getSelectedItem().toString()));
-                    settings.setRepeat(Repeat.valueOf(repeat.getSelectedItem().toString()));
-                    try {
-                        FilesUtils.write(settingsFile.getAbsolutePath(), SettingsUtils.toJSONString(settings));
-                        startActivity(new Intent(SettingsActivity.this, MainActivity.class));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    previewSeconds.requestFocus();
+        submit.setOnClickListener((View v) -> {
+            progressBar.setVisibility(View.VISIBLE);
+            // confirm to proceed
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.continueReally);
+            builder.setCancelable(true);
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // do nothing
                 }
-            }
+            });
+            builder.setPositiveButton(R.string.proceed, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                   String secs = previewSeconds.getText().toString();
+                    if(StringUtils.isNotBlank(secs)) {
+                        settings.setPreviewSeconds(Integer.parseInt(secs));
+                        settings.setOrderBy(OrderBy.valueOf(orderBy.getSelectedItem().toString()));
+                        settings.setRepeat(Repeat.valueOf(repeat.getSelectedItem().toString()));
+                        settings.setNextRun(NextRun.valueOf(nextRun.getSelectedItem().toString()));
+                        try {
+                            FilesUtils.write(settingsFile.getAbsolutePath(), SettingsUtils.toJSONString(settings));
+                            startActivity(new Intent(SettingsActivity.this, MainActivity.class));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        previewSeconds.requestFocus();
+                    }
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+            builder.show();
         });
+        repeat.requestFocus();
     }
 
-    private String[] moveItemToIndex0(String[] items, String item) {
+    private String[] moveItemToFirstIndex(String[] items, String item) {
         List<String> itemsList = new ArrayList<>(items.length);
         itemsList.add(item);
         for(String i : items) {

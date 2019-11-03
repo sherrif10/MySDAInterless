@@ -1,5 +1,5 @@
 package org.threeabn.apps.mysdainterless.settings;
 
 public enum NextRun {
-    INSTALL, UPGRADE
+    RE_INSTALL, UPGRADE
 }
