@@ -7,6 +7,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import org.threeabn.apps.mysdainterless.CustomMediaController;
+import org.threeabn.apps.mysdainterless.R;
 import org.threeabn.apps.mysdainterless.modal.Playback;
 import org.threeabn.apps.mysdainterless.settings.Repeat;
 
@@ -27,37 +28,28 @@ public class VideoActivity extends MySDAActivity {
     protected void playProgram(int playerId, Playback playBack) {
         final VideoView videoView = findViewById(playerId);
         position = playBack.getPosition();
-        selectedProgram = new File(getProgramsDirectory() + File.separator + playBack.getProgramRefs().get(playBack.getProgramRefs().keySet().toArray()[position]));
+        selectedProgram = new File(getProgramsDirectory().getAbsolutePath() + File.separator + playBack.getProgramRefs().get(playBack.getProgramRefs().keySet().toArray()[position]));
         if (videoView != null && selectedProgram != null && selectedProgram.exists()) {
-            //todo decrypt and encrypt back when stopped
-            //CryptoLauncher.dencrypt(program);
             videoView.setVideoURI(Uri.fromFile(selectedProgram));
             videoView.setMediaController(new CustomMediaController(this));
 
-            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mp.setLooping(!isRepeatAll(playBack));
-                    videoView.start();
-                    Toast.makeText(VideoActivity.this, "Playing: " + getFileNameWithOutExtension(selectedProgram), Toast.LENGTH_SHORT).show();
-                    //CryptoLauncher.encrypt(program);
-                }
+            videoView.setOnPreparedListener((MediaPlayer mp) -> {
+                mp.setLooping(!isRepeatAll(playBack));
+                videoView.start();
+                Toast.makeText(VideoActivity.this, getString(R.string.playing) + getFileNameWithOutExtension(selectedProgram), Toast.LENGTH_SHORT).show();
             });
 
-            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                  if(isRepeatAll(playBack)) {
-                      if(position == playBack.getProgramRefs().keySet().size() - 1) {
-                          position = playBack.getPosition();
-                      } else {
-                          position++;
-                      }
-                      selectedProgram = new File(getProgramsDirectory() + File.separator + playBack.getProgramRefs().get(playBack.getProgramRefs().keySet().toArray()[position]));
-                      videoView.setVideoURI(Uri.fromFile(selectedProgram));
-                      videoView.start();
-                      Toast.makeText(VideoActivity.this, "Playing: " + getFileNameWithOutExtension(selectedProgram), Toast.LENGTH_SHORT).show();
-                  }
+            videoView.setOnCompletionListener((MediaPlayer mp) -> {
+                if (isRepeatAll(playBack)) {
+                    if (position == playBack.getProgramRefs().keySet().size() - 1) {
+                        position = playBack.getPosition();
+                    } else {
+                        position++;
+                    }
+                    selectedProgram = new File(getProgramsDirectory().getAbsolutePath() + File.separator + playBack.getProgramRefs().get(playBack.getProgramRefs().keySet().toArray()[position]));
+                    videoView.setVideoURI(Uri.fromFile(selectedProgram));
+                    videoView.start();
+                    Toast.makeText(VideoActivity.this, getString(R.string.playing) + getFileNameWithOutExtension(selectedProgram), Toast.LENGTH_SHORT).show();
                 }
             });
         }

@@ -2,8 +2,6 @@ package org.threeabn.apps.mysdainterless.settings;
 
 import org.threeabn.apps.mysdainterless.modal.ProgramCategory;
 
-import java.util.Date;
-
 public class Status {
     private ProgramCategory category;
     private Integer count;
@@ -13,7 +11,8 @@ public class Status {
         this.count = count;
     }
 
-    public Status(){}
+    public Status() {
+    }
 
     public ProgramCategory getCategory() {
         return category;

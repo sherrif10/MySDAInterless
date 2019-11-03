@@ -57,7 +57,7 @@ public class ProgramsList extends ArrayAdapter<String> implements Filterable {
             String display = (String) new ArrayList(programRefs.keySet()).get(position);
             if (StringUtils.isNotBlank(display)) {
                 txtTitle.setText(display);
-                Bitmap img = retrieveBitmap(context.getProgramsDirectory() + File.separator + programRefs.get(display));
+                Bitmap img = retrieveBitmap(context.getProgramsDirectory().getAbsolutePath() + File.separator + programRefs.get(display));
                 imageView.setImageBitmap(img);
             }
         }

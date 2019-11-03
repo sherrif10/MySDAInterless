@@ -10,11 +10,10 @@ public class MainActivity extends MySDAActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        afterLayoutInitialisation();
 
-        runActivityByView(findViewById(R.id.image_search), MainActivity.this);
-        runActivityByView(findViewById(R.id.image_favorite), MainActivity.this);
-        runActivityByView(findViewById(R.id.image_list), MainActivity.this);
-        runActivityByView(findViewById(R.id.settings), MainActivity.this);
+        runByView(findViewById(R.id.image_search), MainActivity.this);
+        runByView(findViewById(R.id.image_favorite), MainActivity.this);
+        runByView(findViewById(R.id.image_list), MainActivity.this);
+        runByView(findViewById(R.id.settings), MainActivity.this);
     }
 }

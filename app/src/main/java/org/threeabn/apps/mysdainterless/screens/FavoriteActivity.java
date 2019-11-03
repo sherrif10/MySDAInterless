@@ -28,6 +28,5 @@ public class FavoriteActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_favorite);
         super.onCreate(savedInstanceState);
-        afterLayoutInitialisation();
     }
 }

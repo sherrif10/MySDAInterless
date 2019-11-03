@@ -111,5 +111,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        layout="@layout/progress_bar"/>
+        layout="@layout/progress_bar" />
 </android.support.constraint.ConstraintLayout>

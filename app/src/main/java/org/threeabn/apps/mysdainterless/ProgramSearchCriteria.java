@@ -14,7 +14,7 @@ public class ProgramSearchCriteria {
     }
 
     public enum TermCategory {
-        CATEGORY, FAVOURITE, CATEGORY_FAVOURITE, TERM, SEARCH
+        CATEGORY, FAVOURITE, CATEGORY_FAVOURITE, SEARCH
     }
 
     public Object getTerm() {

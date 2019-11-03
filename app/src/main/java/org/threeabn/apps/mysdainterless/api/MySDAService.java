@@ -22,7 +22,8 @@ public class MySDAService {
     private static volatile MySDAService mySDAService = new MySDAService();
 
     //private constructor.
-    private MySDAService(){}
+    private MySDAService() {
+    }
 
     public static MySDAService getInstance() {
         return mySDAService;
@@ -65,11 +66,11 @@ public class MySDAService {
     }
 
     private String getOrderByField(OrderBy orderBy) {
-        if(OrderBy.ORDER_BY_NAME.equals(orderBy)) {
+        if (OrderBy.ORDER_BY_NAME.equals(orderBy)) {
             return "name";
-        } else if(OrderBy.ORDER_BY_CODE.equals(orderBy)) {
+        } else if (OrderBy.ORDER_BY_CODE.equals(orderBy)) {
             return "code";
-        } else if(OrderBy.ORDER_BY_CATEGORY.equals(orderBy)) {
+        } else if (OrderBy.ORDER_BY_CATEGORY.equals(orderBy)) {
             return "category";
         } else {
             return null;

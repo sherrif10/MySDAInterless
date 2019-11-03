@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="org.threeabn.apps.mysdainterless.screens.SearchActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bluebase"
         android:scaleType="centerCrop">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/logo"
                 android:layout_marginLeft="@dimen/iconMargin" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/iconMargin"
                 android:orientation="vertical"
                 android:gravity="right">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -37,16 +41,19 @@
                     android:textSize="@dimen/headerFontSize" />
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/backgroundMarginTop"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_horizontal">
+
                 <EditText
                     android:id="@+id/searchText"
                     android:layout_width="wrap_content"
@@ -56,8 +63,10 @@
                     android:nextFocusRight="@+id/programCategorySpinner"
                     android:nextFocusDown="@+id/list_programs_view"
                     android:focusable="true">
+
                     <requestFocus />
                 </EditText>
+
                 <Spinner
                     android:id="@+id/programCategorySpinner"
                     android:layout_width="wrap_content"
@@ -66,6 +75,7 @@
                     android:nextFocusLeft="@+id/searchText"
                     android:nextFocusDown="@+id/list_programs_view"
                     android:focusable="true"></Spinner>
+
                 <Button
                     android:id="@+id/searchEnter"
                     android:layout_width="wrap_content"
@@ -75,10 +85,12 @@
                     android:nextFocusDown="@+id/list_programs_view"
                     android:focusable="true" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
+
                 <ListView
                     android:id="@+id/list_programs_view"
                     android:cacheColorHint="#00000000"
@@ -92,36 +104,51 @@
                     android:nextFocusRight="@+id/programPreviewPlay"
                     android:nextFocusUp="@+id/searchText"
                     android:focusable="true" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/iconPadding"
                     android:gravity="center"
+                    android:layout_marginRight="@dimen/iconMargin"
                     android:orientation="vertical">
+
                     <VideoView
                         android:id="@+id/programPreview"
                         android:layout_width="@dimen/videoPreviewWidth"
                         android:layout_height="@dimen/videoPreviewHeight" />
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/iconPadding">
+
                         <ImageView
                             android:id="@+id/programPreviewPlay"
                             style="@style/iconButton"
                             android:src="@drawable/play"
                             android:nextFocusLeft="@+id/list_programs_view"
+                            android:nextFocusRight="@+id/programPreviewFavorite"
                             android:nextFocusUp="@+id/searchText"
+                            android:focusable="true" />
+
+                        <ImageView
+                            android:id="@+id/programPreviewFavorite"
+                            style="@style/iconButton"
+                            android:src="@drawable/favorite"
+                            android:nextFocusLeft="@+id/programPreviewPlay"
+                            android:nextFocusUp="@+id/programCategorySpinner"
                             android:focusable="true" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
         <include
             android:id="@+id/progressBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
-            layout="@layout/progress_bar"/>
+            layout="@layout/progress_bar" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

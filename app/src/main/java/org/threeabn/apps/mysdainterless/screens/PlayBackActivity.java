@@ -13,12 +13,11 @@ import org.threeabn.apps.mysdainterless.modal.Playback;
 public class PlayBackActivity extends VideoActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_playback);
-        afterLayoutInitialisation();
-
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_playback);
 
         Playback playback = (Playback) getIntent().getSerializableExtra("program");
         playback.setMode(Playback.Mode.FULL_SCREEN);

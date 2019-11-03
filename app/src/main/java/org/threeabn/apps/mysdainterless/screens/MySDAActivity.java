@@ -49,7 +49,6 @@ public class MySDAActivity extends Activity {
     protected DateFormat localeFormat;
     public File settingsFile;
     public Settings settings;
-    protected View progressBar;
     protected MySDAActivity currentScreen;
 
     /**
@@ -63,9 +62,9 @@ public class MySDAActivity extends Activity {
         }
     }
 
-    protected void runActivityByView(final View view, final Context context) {
+    protected void runByView(final View view, final Context context) {
         view.setOnClickListener((View v) -> {
-            progressBar.setVisibility(View.VISIBLE);
+            setProgressBarVisibility(View.VISIBLE);
             if (R.id.settings == v.getId()) {
                 startActivity(new Intent(context, SettingsActivity.class));
             } else if (R.id.image_search == v.getId()) {
@@ -75,25 +74,36 @@ public class MySDAActivity extends Activity {
             } else if (R.id.image_list == v.getId()) {
                 startActivity(new Intent(context, ProgramsListActivity.class));
             } else if (R.id.programPreviewPlay == v.getId()) {
-                Intent intent = new Intent(context, PlayBackActivity.class);
-                intent.putExtra("program", (Playback) view.getTag());
-                startActivity(intent);
+                Object tag = view.getTag();
+                if (tag == null) {
+                    setProgressBarVisibility(View.GONE);
+                } else {
+                    Intent intent = new Intent(context, PlayBackActivity.class);
+                    intent.putExtra("program", (Playback) view.getTag());
+                    startActivity(intent);
+                }
             } else if (R.id.programPreviewFavorite == v.getId()) {
-                Playback playBack = (Playback) view.getTag();
-                File p = new File(getProgramsDirectory() + File.separator + playBack.getProgramRefs().get(playBack.getProgramRefs().keySet().toArray()[playBack.getPosition()]));
-                 if (p != null && p.exists()) {
-                     try {
-                         String s = p.getName();
-                         Program program = TextUtils.isEmpty(s) ? null : getService().getProgramByFileName(s, settings.getOrderBy());
-                         if (program != null) {
-                             program.setFavourited(!program.isFavourited());
-                             getService().updateProgram(program);
-                             Toast.makeText(MySDAActivity.this, (program.isFavourited() ? "" : "Un-") + "Favorited: " + program.getDisplayName(), Toast.LENGTH_SHORT).show();
-                         }
-                     } catch (Exception e) {
-                         Log.e("program_favoriting_error", e.getMessage());
-                     }
-                 }
+                Object tag = view.getTag();
+                if (tag == null) {
+                    setProgressBarVisibility(View.GONE);
+                } else {
+                    Playback playBack = (Playback) tag;
+                    File p = new File(getProgramsDirectory().getAbsolutePath() + File.separator + playBack.getProgramRefs().get(playBack.getProgramRefs().keySet().toArray()[playBack.getPosition()]));
+                    if (p != null && p.exists()) {
+                        try {
+                            String s = p.getName();
+                            Program program = TextUtils.isEmpty(s) ? null : getService().getProgramByFileName(s, settings.getOrderBy());
+                            if (program != null) {
+                                program.setFavourited(!program.isFavourited());
+                                getService().updateProgram(program);
+                                Toast.makeText(MySDAActivity.this, getString(program.isFavourited() ? R.string.favourited : R.string.unFavourited) + program.getDisplayName(), Toast.LENGTH_SHORT).show();
+                                setProgressBarVisibility(View.GONE);
+                            }
+                        } catch (Exception e) {
+                            Log.e("program_favoriting_error", e.getMessage());
+                        }
+                    }
+                }
             }
         });
     }
@@ -140,8 +150,14 @@ public class MySDAActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        progressBar.setVisibility(View.GONE);
-        initialiseSettings();
+        setProgressBarVisibility(View.GONE);
+    }
+
+    protected void setProgressBarVisibility(int visibility) {
+        View progressBar = findViewById(R.id.progressBar);
+        if (progressBar != null) {
+            progressBar.setVisibility(visibility);
+        }
     }
 
     protected String getSettingsFile() {
@@ -150,10 +166,6 @@ public class MySDAActivity extends Activity {
             settingsLocation.mkdir();
         }
         return settingsLocation.getAbsolutePath() + "/settings.json";
-    }
-
-    protected void afterLayoutInitialisation() {
-        progressBar = findViewById(R.id.progressBar);
     }
 
     protected void initialiseSettings() {
@@ -171,25 +183,24 @@ public class MySDAActivity extends Activity {
      * TODO initially this is meant to be run in onCreate in this class
      */
     protected void initialiseAllPrograms() throws IOException, SQLException {
-        //CryptoLauncher.encrypt(new File(getProgramsDirectory().replace("/.mysdainterless/programs", "")+"/apps"));
+        //CryptoLauncher.encrypt(...);
         installPrograms();
-        //CryptoLauncher.dencrypt(new File(getProgramsDirectory().replace("/.mysdainterless/programs", "")+"/apps"));
+        //CryptoLauncher.dencrypt(...);
     }
 
     private void installPrograms() throws IOException, SQLException {
         MySDAService dbService = getService();
-        String programsDirectory = getProgramsDirectory();
+        File programsDirectory = getProgramsDirectory();
         Date now = new Date();
         List<Status> statuses = new ArrayList<>();
-        if (StringUtils.isNotBlank(programsDirectory) && runInstallPrograms()) {
-            if(settings != null && NextRun.RE_INSTALL.equals(settings.getNextRun())) {// re-install
+        if (programsDirectory != null && runInstallPrograms()) {
+            if (settings != null && NextRun.RESET.equals(settings.getNextRun())) {// re-install
                 settingsFile.delete();
                 getService().deleteAllPrograms();
             }
-            File programsFolder = new File(programsDirectory);
-            if (programsFolder.exists() & programsFolder.isDirectory()) {
-                if (programsFolder.listFiles() != null) {// null without permission
-                    for (File categoryFolder : programsFolder.listFiles()) {
+            if (programsDirectory.exists() & programsDirectory.isDirectory()) {
+                if (programsDirectory.listFiles() != null) {// null without permission
+                    for (File categoryFolder : programsDirectory.listFiles()) {
                         if (categoryFolder.isDirectory()) {
                             ProgramCategory category = ProgramCategory.valueOfFromDisplayName(categoryFolder.getName());
                             int totalOfPrograms = 0;
@@ -222,7 +233,7 @@ public class MySDAActivity extends Activity {
     }
 
     private boolean runInstallPrograms() {
-        return !settingsFile.exists() || settingsFile.length() == 0 || (settings != null && NextRun.RE_INSTALL.equals(settings.getNextRun()));
+        return !settingsFile.exists() || settingsFile.length() == 0 || (settings != null && NextRun.RESET.equals(settings.getNextRun()));
     }
 
     private String getVersionName() {
@@ -268,28 +279,37 @@ public class MySDAActivity extends Activity {
 
     /**
      * Returns the first location of programs on the system in precedence; external drive via usb, external sdcard, internal sdcard
+     *
      * @return
      */
-    public String getProgramsDirectory() {
+    public File getProgramsDirectory() {
         String postfix = "/.mysdainterless/programs";
         File[] storages = ContextCompat.getExternalFilesDirs(this, null);
-        if (storages.length <= 1) {// use internal storage
-            return Environment.getExternalStorageDirectory().getAbsolutePath() + postfix;
-        }
-        String path = storages[storages.length-1].getAbsolutePath();//get last loaded drive or sdcard
-        File programsFolder = new File(path.substring(0, StringUtils.ordinalIndexOf(path, "/", 3)) + postfix);
-        if(programsFolder.exists() && programsFolder.length() > 0) {
-            return programsFolder.getAbsolutePath();
-        } else if(storages.length > 1) {
-            path = storages[storages.length-2].getAbsolutePath();//get last loaded drive or sdcard
-            programsFolder = new File(path.substring(0, StringUtils.ordinalIndexOf(path, "/", 3)) + postfix);
-            if(programsFolder.exists() && programsFolder.length() > 0) {
-                return programsFolder.getAbsolutePath();
+        File programsFolder = getUsableProgramsFolder(1, storages, postfix);// get last loaded drive or sdcard
+        if (programsFolder != null && programsFolder.exists() && programsFolder.length() > 0) {
+            return programsFolder;
+        } else if (storages.length > 1) {// 2 usb ports on the box/device
+            programsFolder = getUsableProgramsFolder(2, storages, postfix);// get second last loaded drive or sdcard
+            if (programsFolder != null && programsFolder.exists() && programsFolder.length() > 0) {
+                return programsFolder;
+            } else {
+                programsFolder = getUsableProgramsFolder(3, storages, postfix);// get third last loaded drive or sdcard
+            }
+            if (programsFolder != null && programsFolder.exists() && programsFolder.length() > 0) {
+                return programsFolder;
             }
         }
 
-        // use external sdcard
-        return path.substring(0, StringUtils.ordinalIndexOf(path, "/", 3)) + postfix;
+        return new File(Environment.getExternalStorageDirectory().getAbsolutePath() + postfix);
+    }
+
+    private File getUsableProgramsFolder(int index, File[] storages, String postfix) {
+        String path = storages[storages.length - index].getAbsolutePath();// get index'th last loaded drive or sdcard
+        File programsFolder = new File(path.substring(0, StringUtils.ordinalIndexOf(path, "/", 3)) + postfix);
+        if (programsFolder.exists() && programsFolder.length() > 0) {
+            return programsFolder;
+        }
+        return null;
     }
 
     /**

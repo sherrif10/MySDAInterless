@@ -35,7 +35,8 @@ public class Settings {
         this.previewSeconds = previewSeconds;
     }
 
-    public Settings() {}
+    public Settings() {
+    }
 
     public String getVersion() {
         return version;

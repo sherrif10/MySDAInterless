@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/logo_main"
                 android:layout_marginLeft="@dimen/iconMargin"
-                android:layout_marginRight="@dimen/iconMargin"/>
+                android:layout_marginRight="@dimen/iconMargin" />
 
         </LinearLayout>
 
@@ -56,7 +56,8 @@
                 android:background="@drawable/programs"
                 android:focusable="true"
                 android:nextFocusLeft="@+id/image_favorite"
-                android:nextFocusRight="@+id/settings"/>
+                android:nextFocusRight="@+id/settings" />
+
             <ImageView
                 android:id="@+id/settings"
                 style="@style/iconButton"
@@ -71,5 +72,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        layout="@layout/progress_bar"/>
+        layout="@layout/progress_bar" />
 </android.support.constraint.ConstraintLayout>

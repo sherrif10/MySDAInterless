@@ -28,15 +28,15 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class SettingsActivity extends MySDAActivity {
-   private TextView version;
-   private TextView releaseDate;
-   private TextView installationDate;
-   private ListView statuses;
-   private EditText previewSeconds;
-   private Spinner repeat;
-   private Spinner orderBy;
-   private Spinner nextRun;
-   private Button submit;
+    private TextView version;
+    private TextView releaseDate;
+    private TextView installationDate;
+    private ListView statuses;
+    private EditText previewSeconds;
+    private Spinner repeat;
+    private Spinner orderBy;
+    private Spinner nextRun;
+    private Button submit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,6 @@ public class SettingsActivity extends MySDAActivity {
 
         // handle submission
         submit.setOnClickListener((View v) -> {
-            progressBar.setVisibility(View.VISIBLE);
             // confirm to proceed
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.continueReally);
@@ -96,8 +95,9 @@ public class SettingsActivity extends MySDAActivity {
             builder.setPositiveButton(R.string.proceed, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                   String secs = previewSeconds.getText().toString();
-                    if(StringUtils.isNotBlank(secs)) {
+                    setProgressBarVisibility(View.VISIBLE);
+                    String secs = previewSeconds.getText().toString();
+                    if (StringUtils.isNotBlank(secs)) {
                         settings.setPreviewSeconds(Integer.parseInt(secs));
                         settings.setOrderBy(OrderBy.valueOf(orderBy.getSelectedItem().toString()));
                         settings.setRepeat(Repeat.valueOf(repeat.getSelectedItem().toString()));
@@ -111,7 +111,6 @@ public class SettingsActivity extends MySDAActivity {
                     } else {
                         previewSeconds.requestFocus();
                     }
-                    progressBar.setVisibility(View.GONE);
                 }
             });
             builder.show();
@@ -122,8 +121,8 @@ public class SettingsActivity extends MySDAActivity {
     private String[] moveItemToFirstIndex(String[] items, String item) {
         List<String> itemsList = new ArrayList<>(items.length);
         itemsList.add(item);
-        for(String i : items) {
-            if(!i.equals(item)) {
+        for (String i : items) {
+            if (!i.equals(item)) {
                 itemsList.add(i);
             }
         }

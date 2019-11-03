@@ -90,7 +90,7 @@ public class DBSession extends OrmLiteSqliteOpenHelper {
 
     public <T> List<T> getAll(Class<T> clazz, String orderBy) throws SQLException {
         Dao<T, ?> dao = getDao(clazz);
-        if(StringUtils.isBlank(orderBy)) {
+        if (StringUtils.isBlank(orderBy)) {
             return dao.queryBuilder().orderByRaw("RANDOM()").query();
         }
         return dao.queryBuilder().orderBy(orderBy, true).query();
@@ -120,7 +120,7 @@ public class DBSession extends OrmLiteSqliteOpenHelper {
 
     public <T> List<T> getByField(Class<T> clazz, String fieldName, Object fieldValue, String orderBy) throws SQLException {
         Dao<T, Object> dao = getDao(clazz);
-        if(StringUtils.isBlank(orderBy)) {
+        if (StringUtils.isBlank(orderBy)) {
             return dao.query(dao.queryBuilder().orderByRaw("RANDOM()").where().eq(fieldName, fieldValue).prepare());
         }
 
@@ -129,7 +129,7 @@ public class DBSession extends OrmLiteSqliteOpenHelper {
 
     public <T> List<T> containedIn(String fieldName, List<String> comparableList, Class<T> clazz, String orderBy) throws SQLException {
         Dao<T, ?> dao = getDao(clazz);
-        if(StringUtils.isBlank(orderBy)) {
+        if (StringUtils.isBlank(orderBy)) {
             return dao.query(dao.queryBuilder().orderByRaw("RANDOM()").where().in(fieldName, comparableList).prepare());
         }
         return dao.query(dao.queryBuilder().orderBy(orderBy, true).where().in(fieldName, comparableList).prepare());
@@ -142,7 +142,7 @@ public class DBSession extends OrmLiteSqliteOpenHelper {
         Collection<List<T>> chunks = dao.queryForAll().stream()
                 .collect(Collectors.groupingBy(it -> new AtomicInteger().getAndIncrement() / chunkSize))
                 .values();
-        for(List<T> chunk : chunks) {
+        for (List<T> chunk : chunks) {
             dao.delete(chunk);
         }
     }

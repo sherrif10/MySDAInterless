@@ -12,9 +12,9 @@ public class Playback implements Serializable {
     private Mode mode;
 
     public Playback(int position, LinkedHashMap<String, String> programRefs, Mode mode) {
-      this.position = position;
-      this.programRefs = programRefs;
-      this.mode = mode;
+        this.position = position;
+        this.programRefs = programRefs;
+        this.mode = mode;
     }
 
     public int getPosition() {

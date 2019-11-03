@@ -1,20 +1,11 @@
 package org.threeabn.apps.mysdainterless.modal;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public enum ProgramCategory {
     ALL("Categories: All"),
-    NONE("None"),
     PREACHING_AND_TEACHING("Preaching & Teaching"),
     HEALTH_AND_COOKING("Health & Cooking"),
     MUSIC("Music"),
